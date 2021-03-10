@@ -50,6 +50,10 @@ If you want to build this site locally, run the following:
 1. Close the local server with `CTRL` + `c`.
 1. To restart the local server, run `npm start` from within the `ipfs-docs` folder.
 
+## Planning
+
+To keep everyone aligned on what work is in progress, this project uses weekly milestones to serve as _to-do lists_. Every Wednesday, issues are added to that week's milestone. Any issues that are in the week's milestone that the team won't be able to complete are removed from the milestone. The following week's milestone is also filled out so that at least two weeks of work are visible. Work on the issues is performed Wednesday to Tuesday. If an issue isn't closed by the end of Tuesday, it can be moved into the following week's milestone or removed from the planning altogether. Just because an issue isn't in a milestone does not mean that it won't get address; it just means that we're not aiming to close that issue in the next two weeks.
+
 ## Core members
 
 - [@johnnymatthews](https://github.com/johnnymatthews): Project leadership, organization, and primary contact
