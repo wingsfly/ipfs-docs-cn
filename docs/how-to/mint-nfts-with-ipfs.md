@@ -46,6 +46,14 @@ Production NFT platforms are a fairly complex thing. As with any modern web appl
 
 Since Minty was written to demonstrate the concepts and process of minting IPFS-backed NFTs, we don't need to get caught up in all the details of modern d-app development. Instead, Minty is a simple command-line app written in Javascript. 
 
+::: tip
+
+Want to experiment with NFTs on [Filecoin](https://filecoin.io)?
+
+Check out the [Truffle Suite](https://www.trufflesuite.com/)'s new [Filecoin Box](https://github.com/truffle-box/filecoin-box/), which provides a local Ethereum, Filecoin and IPFS development environment and tooling to help you get started.
+
+:::
+
 ### Install Minty
 
 Let's get Minty installed so we can start playing around with NFTs! To install and run Minty, you must have NPM installed. Windows is not currently supported. Installation of Minty is fairly simple. Just download the GitHub repository, install the NPM dependencies, and start the local testnet environment. 
