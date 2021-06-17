@@ -3,25 +3,25 @@ title: Install IPFS
 description: There are several different ways you can install and interact with IPFS. Find out which one best suits your needs here.
 ---
 
-# Install IPFS
+# 安装IPFS
 
-IPFS is a collection of protocols, packages, and specifications that allow computers to send and receive data. Because of this, users can pick and choose which packages to install when using IPFS. And like shoe sizes, there is no _one-size-fits-all_ solution. A developer building network applications will install a different set of tools to someone who wants to store files on IPFS. Pick the one that best suits what you're here to do:
+IPFS是允许计算机收发数据的一系列协议、包和规范的集合。因此，用户可以自行选择安装哪些包来使用IPFS。正如鞋子的尺寸各不相同一样，并不存在一个全场景通用的解决方案。开发者可以为期望在IPFS中存储文件的人员安装不同系列的工具，从而构建相应的网络应用。也可以如下选择最适合的方案：
 
-## File storage
+## 文件存储
 
-Anyone can use IPFS to store files in a _decentralized_ way. The easiest way to get up and running is by installing the IPFS Desktop application. This app has Go-IPFS built-in and lets you interact with the network through a simple user-interface. [Check it out →](./ipfs-desktop.md)
+所有人都可以使用IPFS来 _分布式_ 存储文件。最简单的使用方式就是安装IPFS桌面应用。该应用内建了Go-IPFS，允许你通过简单的UI与网络进行交互。[查看详情 →](./ipfs-desktop.md)
 
-For long-term storage, users can use the Filecoin network! Filecoin is a peer-to-peer network that stores files on the internet, with built-in economic incentives to ensure files are stored reliably over time. Available storage and pricing are not controlled by any single company. Instead, Filecoin facilitates open markets for storing and retrieving files that anyone can participate in. Learn more over on the [Filecoin docs website.](https://docs.filecoin.io/)
+要长期存储数据的话，用户可以使用Filecoin网络！Filecoin在互联网上通过点对点网络来存储文件，并内置了经济激励措施，从而确保随着时间推移，文件依然能够被可靠的存储。存储的可靠性和定价都不受任何一家公司的控制，相反，Filecoin促进了一个开放的文件存储和索引市场，任何人都可以参与其中。在这里可以查看更多：[Filecoin文档](https://docs.filecoin.io/)
 
-## Application development
+## 应用开发
 
-Want to build decentralized applications and store your application data on IPFS? You'll likely want to install the command-line version of IPFS. There's no GUI to deal with, just raw input and output through your terminal. [Find out more →](./command-line.md)
+期望开发分布式应用，并把应用数据存储在IPFS中的话，可以安装命令行版本的IPFS。该版本没有GUI交互界面，只能通过控制台进行输入输出。[查看详情 →](./command-line.md)
 
-## IPFS as infrastructure
+## IPFS基础设施
 
-Planning to set up several IPFS nodes within one network? You'll want to take a look at installing [IPFS Cluster →](./server-infrastructure.md)
+准备在一个网络中构建多个IPFS节点的话，可以查看安装[IPFS集群 →](./server-infrastructure.md)
 
-## Surf the decentralized web
+## 访问分布式网站
 
-Some browsers such as [Brave](https://brave.com/) and [Opera](https://www.opera.com/) come with IPFS built-in. If your browser doesn't support IPFS yet, you can install an IPFS companion extension that will let you view decentralized web content! [Learn more →](./ipfs-companion.md)
+部分浏览器如[Brave](https://brave.com/) 和 [Opera](https://www.opera.com/)已经内置了IPFS。如果你的浏览器还没有支持IPFS，你可以安装IPFS伴侣插件，从而使你可以访问分布式网站的内容！[了解更多 →](./ipfs-companion.md)
 

@@ -1,23 +1,24 @@
 ---
-title: Introducing Fleek
+title: Fleek简介
 descripton: Fleek is a service that lets you host a website on IPFS without needing to install anything on your computer or run command-line scripts.
 ---
 
-# Introducing Fleek
+# Fleek简介
 
-Most of the steps we've covered in this tutorial series have been fairly manual. Wouldn't it be nice if there were a service that did all the busy work for you, so you could focus on hosting great websites on IPFS? That's where Fleek comes in!
+本系列教程的大部分步骤都需要手动执行，是否有一个服务，能够把这些繁杂的工作都完成了，使得我们可以专注于在IPFS中托管出色的网站？这就是Fleek的用武之地！
+
 
 ![The Fleek homepage, showing a "Build on the New Internet" slogan at the top.](./images/introducing-fleek/fleek-homepage.png)
 
-Fleek is a service that lets you host a website on IPFS without needing to install anything on your computer or deal with the command-line.
+Fleek作为一个服务，能够让你无需在电脑上安装任何程序，或者执行任何命令行命令，即可把网站托管到IPFS中。
 
-We already know that files and folders on IPFS are content-addressed, meaning you can find them using the hash of their content. If the content changes, then the hash changes too. As we've seen in previous lessons, this can be an issue when it comes to updating a website. A single character change to an HTML file will create an entirely new hash!
+我们已经知道在IPFS中，文件夹和文件都是基于内容寻址的，也就是说通过内容的hash可以访问到对应的内容。如果内容发生了变化，它的hash也相应变化了。正如之前教程显示的，这会成为更新网站时的问题。一个HTML文件即便只是修改了一个字符，也会创建一个全新的hash！
 
-Fleek offers a simple workflow. Once you've pushed your changes to Git, Fleek builds, pins, and updates your site! The sevice also integrates well with React, Next.js, Gatsby, Jekyll, Hugo, and [a bunch of other popular development frameworks](https://docs.fleek.co/hosting/site-deployment/#common-frameworks). You can also manage your domains through Fleek, and monitor your sites in a similar method to traditional web development.
+Fleek提供了一个简单的工作流。当你把更新推送到Git时，Fleek能够构建、固定和更新你的网站。此服务也能够与React, Next.js, Gatsby, Jekyll, Hugo和 [许多其他流行的开发框架](https://docs.fleek.co/hosting/site-deployment/#common-frameworks)很好的进行集成。还可以通过Fleek来管理域名，并通过和传统web开发类似的方式来监控网站。
 
-If you're looking to host a fast website on IPFS, Fleek is a great option! For more information check out [Fleek.co](https://fleek.co) and [their documentation](https://docs.fleek.co/).
+Fleek是一个很好的选择，用于在IPFS中快速托管网站！很多信息可以查看[Fleek.co](https://fleek.co)和[文档](https://docs.fleek.co/).
 
-## Host a site
+## 托管站点
 
 If you've never used a service like Fleek, or just need a refresher, this quick guide walks through adding a website to a GitHub repository and linking that repo to your Fleek account.
 

@@ -1,16 +1,16 @@
 ---
-title: Host a single-page website on IPFS
+title: 在IPFS中托管单页面网站
 legacyUrl: https://docs.ipfs.io/guides/examples/websites/
 description: Learn how to host a simple one-page website on IPFS and link up a domain name.
 ---
 
-# Host a single-page website on IPFS
+# 在IPFS中托管单页面网站
 
-In this tutorial, we will host a simple one-page website on IPFS and link up a domain name. This is the first step is a series of tutorials to teach web developers on how to build websites and applications using IPFS.
+本教程中，我们将在IPFS中托管一个简单的单页面网站，并将其关联到一个域名。这是一系列教程中的第一步，用于面向网站开发者说明如何在IPFS中构建网站和应用。
 
-## Install IPFS desktop
+## 安装IPFS Desktop
 
-IPFS desktop application is the easiest way to get up and running quickly with IPFS. The installation steps for IPFS desktop differ between operating systems. Follow the instructions for your system.
+IPFS desktop应用是快速启动和运行IPFS的最简单方法，其安装过程因系统而异，按以下相应系统的说明进行操作。
 
 | [Windows](#windows)                                                        | [macOS](#macos)                                                      | [Linux](#linux)                                                      |
 | -------------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -18,87 +18,87 @@ IPFS desktop application is the easiest way to get up and running quickly with I
 
 ### Windows
 
-1. Download the latest available `.exe` file from the [IPFS desktop downloads page](https://github.com/ipfs-shipyard/ipfs-desktop/releases):
+1. 从[IPFS desktop下载页面](https://github.com/ipfs-shipyard/ipfs-desktop/releases)中下载最新可用的`.exe`文件：
 
    ![The IPFS desktop download page.](./images/single-page-website/install-windows-download-exe-page.png)
 
-2. Run the `.exe` file to start the installation.
-3. Select whether you want to install the application for just yourself or all users on the computer. Click **Next**:
+2. 运行`.exe`文件，以启动应用。
+3. 选择是仅为自己安装还是为所有用户安装，然后点击**Next**：
 
    ![The IPFS desktop install options window.](./images/single-page-website/install-windows-install-options.png)
 
-4. Select the install location for the application. The default location is usually fine. Click **Next**:
+4. 选择应用程序的安装位置，默认位置即可，然后点击**Next**：
 
    ![The IPFS desktop installation location window.](./images/single-page-website/install-windows-install-location.png)
 
-5. Wait for the installation to finish and click **Finish**:
+5. 等待安装完成，然后点击**Finish**：
 
    ![The IPFS desktop installation finished window.](./images/single-page-website/install-windows-install-finish.png)
 
-6. You can now find an IPFS icon in the status bar:
+6. 应该可以在系统状态栏中看到IPFS图标：
 
    ![The IPFS desktop status bar menu in the Windows status bar.](./images/single-page-website/install-windows-ipfs-desktop-status-bar.png)
 
-The IPFS desktop application has finished installing. You can now start to [add your site](#add-your-site).
+此时IPFS Desktop应用已经安装完成，现在可以开始[添加站点](#add-your-site)。
 
 ### MacOS
 
-1. Download the latest available `.dmg` file from the [IPFS desktop downloads page](https://github.com/ipfs-shipyard/ipfs-desktop/releases):
+1. 从[IPFS desktop downloads page](https://github.com/ipfs-shipyard/ipfs-desktop/releases)中下载最新可用的`.dmg`文件：
 
    ![List of available download links in GitHub.](./images/single-page-website/install-macos-dmg-file-link.png)
 
-2. Open the `ipfs-desktop.dmg` file.
-3. Drag the IPFS icon into the **Applications** folder:
+2. 打开`ipfs-desktop.dmg`文件。
+3. 将IPFS图标拖入**Applications**文件夹中：
 
    ![Drag-to-install window in MacOS.](./images/single-page-website/install-macos-drag-ipfs-drag.png)
 
-4. Open your **Applications** folder and open the IPFS desktop application.
-5. You may get a warning saying _IPFS Desktop.app can't be opened_. Click **Show in Finder**:
+4. 打开**Applications**文件夹，然后打开IPFS desktop应用。
+5. 如果出现警告：_IPFS Desktop.app can't be opened_，点击**Show in Finder**:
 
    ![Application cannot be installed error.](./images/single-page-website/install-macos-ipfs-cannot-be-opened.png)
 
-6. Find **IPFS Desktop.app** in your **Applications** folder.
-7. Hold down the `control` key, click **IPFS Desktop.app**, and click **Open**:
+6. 在**Applications** 文件夹中找到**IPFS Desktop.app**。
+7. 按住`control`键，点击**IPFS Desktop.app**，然后点击**Open**：
 
    ![Right click context menu of IPFS Desktop.app.](./images/single-page-website/install-macos-force-open.png)
 
-8. Click **Open** in the new window:
+8. 在新窗口中点击**Open**：
 
    ![Open confirmation window.](./images/single-page-website/install-macos-open-confirmation.png)
 
-9. You can now find an IPFS icon in the status bar:
+9. 在系统状态栏中应该可以看到IPFS图标：
 
    ![The IPFS desktop status bar menu in the macOS status bar.](./images/single-page-website/install-macos-ipfs-desktop-status-bar.png)
 
-The IPFS desktop application has finished installing. You can now start to [add your site](#add-your-site).
+此时IPFS Desktop应用已经安装完成，现在可以开始[添加站点](#add-your-site)。
 
 ### Linux
 
-1. Download the latest available `.deb` file from the [IPFS desktop downloads page](https://github.com/ipfs-shipyard/ipfs-desktop/releases):
-1. Open the `.deb` package in **Software Installer**:
+1. 从[IPFS desktop downloads page](https://github.com/ipfs-shipyard/ipfs-desktop/releases)下载最新可用的`.deb`文件：
+1. 在**Software Installer**中打开`.deb`包：
 
    ![Right-click context menu of the IPFS deb package.](./images/single-page-website/install-ubuntu-software-install.png)
 
-1. Click **Install** and wait for the installation to finish:
+1. 点击**Install**，然后等待安装完成：
 
    ![Install screen within the Ubuntu software installation window.](./images/single-page-website/install-ubuntu-install.png)
 
-1. Click **Applications** or press the Windows key on your keyboard.
-1. Search for `IPFS` and select **IPFS Desktop**:
+1. 单击**Applications**，或者按下键盘的Windows键。
+1. 搜索关键字`IPFS`，然后选择**IPFS Desktop**：
 
    ![Ubuntu search screen with IPFS desktop showing.](./images/single-page-website/install-ubuntu-search-window.png)
 
-1. You can now find an IPFS icon in the status bar:
+1. 在系统状态栏应该可以看到IPFS图标：
 
    ![IPFS icon shown in the Ubuntu status bar.](./images/single-page-website/install-ubuntu-ipfs-running-status-bar.png)
 
-The IPFS desktop application has finished installing. You can now start to [add your site](#add-your-site).
+此时IPFS Desktop应用已经安装完成，现在可以开始[添加站点](#add-your-site)。
 
-## Add your site
+## 添加站点
 
-The next step is to import your site into IPFS using the IPFS desktop app you just installed. The website we'll be using is incredibly simple. The purpose of it is to display random planet-related facts. Each time the page is refreshed, a new fact is displayed. The website is creatively called _Random Planet Facts_.
+下一步是在刚安装的IPFS Desktop中，将你的站点导入到IPFS中。这里示例的网站极其简单，主要用于随机展示与行星相关的知识。每次页面刷新的时候，都会显示一条新的知识。网站名我们称之为：_Random Planet Facts_。
 
-1. Create a file called `index.html` and paste in the following code:
+1. 创建一个文件，名为`index.html`，然后粘贴以下代码到文件中：
 
    ```html
    <!DOCTYPE html>
@@ -182,76 +182,76 @@ The next step is to import your site into IPFS using the IPFS desktop app you ju
    </html>
    ```
 
-2. Open IPFS desktop and go to the **Files** page.
-3. Click **Add** → **File**.
-4. Navigate to your `index.html` file and select **Open**.
+2. 打开IPFS desktop，然后进入**文件**页面。
+3. 点击**导入** → **文件**.
+4. 找到`index.html`文件，然后选择**打开**.
 
    ![Choose a file window open in IPFS desktop.](./images/single-page-website/add-ipfs-desktop-open-file.png)
 
-5. Click the triple dot menu on `index.html` and select **Share link**.
-6. Click **Copy** to copy the file's URL to your clipboard.
+5. 点击`index.html`右侧的`...`菜单，然后选择**分享链接**。
+6. 点击**复制**将该文件的URL复制到剪贴板。
 
    ![Share files window in IPFS desktop.](./images/single-page-website/add-ipfs-desktop-share-files.png)
 
-7. Open a browser and paste in the URL you just copied.
+7. 打开浏览器，然后粘贴刚才复制的URL。
 
-Your browser should load the website in a few moments! This can take up to a few minutes the first time. You can move onto the next section while the site is loading.
+稍等一段时间后，浏览器应该加载显示此网站！第一次打开的时候可能会需要等待几分钟，页面加载时可以继续下一步。
 
-## Pinning files
+## 固定文件
 
-IPFS nodes treat the data they store like a cache, meaning that there is no guarantee the data will continue to be stored. _Pinning_ a file tells an IPFS node to treat the data as essential and not throw it away. You should _pin_ any content you consider important to ensure that data is retained over the long term. IPFS Desktop allows you to pin files straight from the _Files_ tab.
+IPFS节点将他们存储的数据视为缓存，这意味着无法保证数据会一直保存着。 _固定_ 一个文件将通知IPFS节点此数据是重要的，不要丢弃它。对于重要的数据应该都 _固定_ 下来，以确保数据会长期保留。IPFS Desktop支持从 _文件_ 页面直接固定文件。
 
 ![IPFS Desktop application showing the pinning option.](./images/single-page-website/ipfs-desktop-showing-pinning.png)
 
-However, if you want your IPFS data to remain accessible when your local IPFS node goes offline, you might want to use another option like _collaborative clusters_ or a _pinning service_.
+然后，如果要确保本地IPFS节点离线时，IPFS数据仍然可访问，就需要使用其他选项，如 _协作集群_ 或者 _固定服务_。
 
-### Collaborative clusters
+### 协作集群
 
-IPFS collaborative clusters are groups of IPFS nodes that collaboratively pin all content added to the IPFS Cluster by one or many trusted peers. You can learn more about collaborative clusters, including how to set up a cluster yourself, from [cluster.ipfs.io](https://cluster.ipfs.io/documentation/collaborative/setup/)
+IPFS协作集群是由一组IPFS节点组成，这些节点相互协作来固定由一个或多个信任的节点添加的数据内容。你可以在此了解更多关于协作集群，包括如何自行配置集群的信息[cluster.ipfs.io](https://cluster.ipfs.io/documentation/collaborative/setup/)
 
-### Pinning services
+### 固定服务
 
-An easy way to make sure important data is retained is to use a pinning service. These services run lots of IPFS nodes and will _pin_ your data for you! This way, you don't have to run and maintain your own IPFS node. Check out the [Persistence page](/concepts/persistence) for more information on pinning services. In this tutorial, we're going to use [Pinata](https://pinata.cloud/) since it gives new users 1GB of storage for free, and has a very simple interface:
+使用固定服务是确保重要数据被持续保留的最简单方法。该服务中包含大量的IPFS节点，可以为你固定住数据！采用这种方法，你不需要维护自己的IPFS节点。查看[持久化页面](/concepts/persistence)以获取固定服务的更多信息。在本教程中，我们将使用[Pinata](https://pinata.cloud/)，因为它为新用户提供了1GB的免费存储空间，而且有着非常简单的接口：
 
-1. Go to [Pinata.cloud](https://pinata.cloud/) and sign up or log in.
-2. Click **Pinata Upload**.
-3. Select **Upload File** and click **Browse**.
-4. Navigate to your `index.html` file and click **Open**.
-5. Click **Upload**.
-6. Once the file has finished uploading, click **Pin Explorer** to view any files you have pinned.
-7. You should be able to see your `index.html` file pinned:
+1. 访问[Pinata.cloud](https://pinata.cloud/)，然后注册或者登录。
+2. 点击**Pinata Upload**.
+3. 选择**Upload File**，然后点击**Browse**.
+4. 找到`index.html`文件，然后点击**Open**.
+5. 点击**Upload**.
+6. 一旦文件上传成功，点击**Pin Explorer**以查看你固定的文件。
+7. 应该可以看到`index.html`文件已经被固定了：
 
    ![The Pinata Pin Explorer screen showing the index.html pinned.](./images/single-page-website/pinned-index-file-in-pinata.png)
 
-8. Click the **IPFS Hash** of your `index.html` file to open your website through the Pinata gateway.
+8. 点击`index.html`文件的**IPFS Hash**，以从Pinata网关打开你的网站。
 
    ![Random planet fact website pinned using Pinata and displayed in Firefox](./images/single-page-website/pinned-random-planet-fact-website.png)
 
-## Set up a domain
+## 配置域名
 
-This section is completely optional.
+本节内容是完全可选的。
 
-If you have access to a domain name service like Namecheap, Google Domains, GoDaddy, or any other domain service, then you can follow along with these steps. If you don't have a domain name to assign, you can just read along this section. We will dive into using decentralized naming services like Ethereum Naming Service (ENS) in a later section.
+如果你能够访问像Namecheap、Google Domains、GoDaddy或其他的域名服务，那么可以继续后续步骤。如果还没有可分配的域名，可以只是了解下本章节。我们会在后续章节深入探讨如何使用去中心化名字服务，如Ethereum Naming Service (ENS)。
 
-We used Namecheap, but the process is very similar across all domain name services.
+这里我们使用Namecheap来示例，但是这个流程在不同域名服务中都是类似的。
 
-1. Log into your domain name provider.
-2. Go to your domain management window and find the domain you want to assign to your website.
-3. Find where to change the **Redirection Settings**.
-4. In a new tab, go to the [Pinata Pin Explorer](https://pinata.cloud/pinexplorer) screen.
-5. Copy the **IPFS Hash** link.
-6. In your domain name providers **Redirection Settings** section, paste in the **IPFS Hash** link you just copied.
+1. 登录到域名服务提供商的网站中。
+2. 进入域名管理窗口，找到你想要分配给此网站的域名。
+3. 找到修改 **重定向设置（Redirection Settings）** 的位置。
+4. 在新窗口中，打开[Pinata Pin Explorer](https://pinata.cloud/pinexplorer)页面。
+5. 复制**IPFS Hash**链接。
+6. 在域名服务商的**Redirection Settings**项中，粘贴刚才复制的**IPFS Hash**的链接。
 
    ![Redirecting a source URL to an IPFS Hash link within Namecheap.](./images/single-page-website/namecheap-source-url-redirect.png)
 
-7. Save your changes.
+7. 保存你的变更。
 
-Domain name services are fairly slow to update. You should be able to go to your domain and see the website you pinned in a few hours.
+域名服务需要相当一段时间来更新信息，你可以在几小时后访问你的域名，来确认你固定的网站是否已经可以访问。
 
 ![Random planet facts site with the randomplanetfacts.xyz URL.](./images/single-page-website/random-planets-with-correct-url.png)
 
-## Up next
+## 下一步
 
-This project was designed to get you up and running quickly, but there are many improvements we can make here.
+本项目是为了让你能够快速启动和运行，但我们还可以做更多的改进。
 
-You may have noticed that when visiting [randomplanetfacts.xyz](http://randomplanetfacts.xyz), your browser redirects to [gateway.pinata.cloud/ipfs/QmW7S5HR...](https://gateway.pinata.cloud/ipfs/QmW7S5HRLkP4XtPNyT1vQSjP3eRdtZaVtF6FAPvUfduMjA). This isn't great for the user's experience, and it can cause issues with security certificates and other website validation methods. Also, this website is incredibly simple. There are no images, external stylesheets, or javascript files. If you're interested in building a more complex site using IPFS and securing it properly, [carry on with this tutorial series by hosting a multipage website on IPFS.](/how-to/websites-on-ipfs/multipage-website)
+你应该发现，当访问[randomplanetfacts.xyz](http://randomplanetfacts.xyz)的时候，浏览器重定向到了[gateway.pinata.cloud/ipfs/QmW7S5HR...](https://gateway.pinata.cloud/ipfs/QmW7S5HRLkP4XtPNyT1vQSjP3eRdtZaVtF6FAPvUfduMjA)。这不是最佳的用户体验，还可能带来安全证书和其他网站验证方法的问题。同时，本网站极其简单，没有图片、外部样式表或javascript脚本。如果你想使用IPFS构建一个更复杂的网站，并确保其安全性，继续查看本教程之[在IPFS中托管多页面网站](/how-to/websites-on-ipfs/multipage-website)

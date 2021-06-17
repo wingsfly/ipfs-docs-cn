@@ -11,7 +11,7 @@ module.exports = {
     '/': {
       lang: 'en-US',
       title: 'IPFS Docs',
-      description: 'IPFS Documentation'
+      description: 'IPFS文档'
     }
   },
   markdown: {
@@ -70,19 +70,19 @@ module.exports = {
         nav: require('./nav/en'),
         sidebar: [
           {
-            title: 'Install',
+            title: '安装',
             path: '/install/',
             children: [
               'install/ipfs-desktop',
               'install/ipfs-companion',
               'install/command-line',
-              ['install/ipfs-updater', 'Updater'],
+              ['install/ipfs-updater', '更新器'],
               'install/server-infrastructure',
               'install/recent-releases'
             ]
           },
           {
-            title: 'Concepts',
+            title: '概念',
             path: '/concepts/',
             children: [
               {
@@ -151,11 +151,11 @@ module.exports = {
             ]
           },
           {
-            title: 'How-tos',
+            title: '使用方法',
             path: '/how-to/',
             children: [
               {
-                title: 'Quick start',
+                title: '快速入门',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: ['/how-to/command-line-quick-start']

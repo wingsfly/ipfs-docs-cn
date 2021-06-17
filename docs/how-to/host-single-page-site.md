@@ -1,12 +1,12 @@
 ---
-title: Host a single-page site
+title: 托管单页面站点
 legacyUrl: https://docs.ipfs.io/guides/examples/websites/
 description: Learn how to host a simple single-page website on the decentralized web using IPFS.
 ---
 
-# Host a single-page website
+# 托管单页面站点
 
-A great way to get to know IPFS is to use it to host a simple, single-page website. Here's a step-by-step guide to doing just that.
+使用IPFS来托管一个简单的单页面网站，是一个很好的熟悉IPFS的办法。以下是如何实现的指南。A great way to get to know IPFS is to use it to host a simple, single-page website. Here's a step-by-step guide to doing just that.
 
 ::: tip
 We've put together a series of tutorials to walk you through hosting a full website on IPFS. [Take a look!](/how-to/websites-on-ipfs/single-page-website)

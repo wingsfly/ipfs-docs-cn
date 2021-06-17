@@ -1,68 +1,70 @@
 ---
-title: IPFS Companion
+title: IPFS伴侣
 description: The IPFS Companion browser extension allows you to interact with your IPFS node and the extended IPFS network through your browser. Learn how to install it here.
 ---
 
-# IPFS Companion
+# IPFS伴侣
 
-IPFS Companion allows you to interact with your IPFS node and the extended IPFS network through your browser. The add-on is available for Brave, Chrome, Edge, Firefox, and Opera. It enables support for `ipfs://` addresses, automatically loads websites and file paths from an IPFS gateway, allows you to easily import and share a file with IPFS, and more.
+IPFS伴侣支持通过浏览器来与IPFS本地节点和外部网络进行交互。该插件在Brave, Chrome, Edge, Firefox, and Opera中可用。它提供了对`ipfs://`地址的支持，自动加载来自IPFS网关的网站和文件，允许轻松的导入和共享文件到IPFS，以及其他功能。
 
-IPFS Companion works in tandem with an IPFS node running on your local machine, so make sure you have a [node installed](/install/ipfs-desktop/) before installing this add-on.
+IPFS伴侣需要与本机的IPFS节点协同工作，因此安装插件前，确认已[安装节点](/install/ipfs-desktop/)。
 
-## Install
+## 安装
 
-The easiest way to install IPFS Companion is through your browser's add-on store:
+最简单的方式是通过浏览器的扩展程序应用商店来安装：
 
 | [Firefox](https://www.mozilla.org/firefox/new/) \| [Firefox for Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox)          | [Chrome](https://www.google.com/chrome/) \| [Brave](https://brave.com/) \| [Opera](https://www.opera.com/) \| [Edge](https://www.microsoftedgeinsider.com/)                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Install From AMO](https://ipfs.io/ipfs/QmWNa64XjA78QvK3zG2593bSMizkDXXcubDHjnRDYUivqt)](https://addons.mozilla.org/firefox/addon/ipfs-companion/) | [![Install from Chrome Store](https://ipfs.io/ipfs/QmU4Qm5YEKy5yHmdAgU2fD7PjZLgrYTUUbxTydqG2QK3TT)](https://chrome.google.com/webstore/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch) |
 
-Make sure you have [IPFS installed](https://ipfs.io/#install) on your computer as well. Because IPFS Companion (in its standard configuration) talks to your computer's local IPFS node to work its browser magic, you'll need to have IPFS running on your computer, too.
+确保本机已经安装了[IPFS](https://ipfs.io/#install)。因为IPFS伴侣（标准配置中）通过与本机IPFS节点的通讯来发挥作用，因此本机的IPFS节点也要处于运行状态。
 
-## Features
+## 特性
 
-IPFS Companion supercharges your browser for the DWeb with features including the following:
+IPFS伴侣增强了浏览器的DWeb特性，提供如下功能：
 
-### Detect URLs with IPFS paths
+### 检测IPFS路径格式的URL
 
-IPFS Companion detects and tests requests for IPFS-like paths, such as `/ipfs/{cid}` or `/ipns/{peerid_or_host-with-dnslink}`, on any website. If a path is a valid IPFS address, it is redirected to load from your local gateway. The gateway at `localhost` will also automatically switch to a subdomain to provide a unique origin for each website:
+IPFS伴侣检测并验证任何网站中IPFS-like的路径请求，如`/ipfs/{cid}`或`/ipns/{peerid_or_host-with-dnslink}`。如果该路径是有效的IPFS地址，则会重定向到本地网关中来加载此数据。位于`localhost`的网关也会将其转换为一个子域名，以给各个网站提供该数据的唯一数据源：
 
 > `https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR`  
 > → `http://localhost:8080/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR`
 > → `http://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs.localhost:8080`
 
-### Detect DNSLink-enabled URLs
+### 检测DNSLink-enabled URLs
 
-IPFS Companion detects DNSLink info in the DNS records of websites. If a site uses DNSLink, IPFS Companion redirects the HTTP request to your local gateway:
+IPFS伴侣在网站的DNS记录中检测DNSLink信息，如果一个网站中使用了DNSLink，IPFS伴侣将重定向该HTTP请求到本地网关中处理：
 
 > `http://docs.ipfs.io`  
 > → `http://localhost:8080/ipns/docs.ipfs.io` → `http://docs.ipfs.io.ipns.localhost:8080/`
 
-### Detect pages with `x-ipfs-path` headers
+### 检测包含`x-ipfs-path`头信息的页面
 
-IPFS Companion also upgrades transport to IPFS if it finds the `x-ipfs-path` in any HTTP response headers. This acts as a fallback for cases when an IPFS path is not present in the URL.
+IPFS伴侣在任何HTTP响应中检测到`x-ipfs-path`头信息时，也会将交互传输升级为IPFS。这是一个备选方案，用于在请求的URL中没有包含IPFS路径时，仍然能够正确处理IPFS数据。
 
-### Toggle redirects globally or per site
+### 全局/单站点切换重定向
 
-You can disable and re-enable local gateway redirects in several ways:
+以下方式均可以禁用和重新启用本地网关重定向：
 
-- Suspend redirects globally in IPFS Companion's preferences.
-- Suspend redirects per site using the toggle under the _current tab_ or in IPFS Companion's preferences.
-- Add `x-ipfs-companion-no-redirect` to the URL itself as a hash ([example](https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR#x-ipfs-companion-no-redirect)) or query parameter ([example](https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR?x-ipfs-companion-no-redirect)).
+- 在IPFS伴侣的首选项中暂停全局重定向。
+- IPFS伴侣的首选项的当前页切换按钮，可以暂停对应网站的重定向。
+- 在URL的hash部分或者query参数中添加`x-ipfs-companion-no-redirect`描述。
+example：[https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR#x-ipfs-companion-no-redirect](https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR#x-ipfs-companion-no-redirect)
+example：[example：https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR?x-ipfs-companion-no-redirect](https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR?x-ipfs-companion-no-redirect)
 
-### Access frequently-used IPFS actions from your browser bar
+### 在浏览器工具栏中访问常用的IPFS操作
 
-IPFS Companion enables you to quickly and easily access common actions from your browser bar with just a few clicks:
+IPFS伴侣使你在浏览器工具栏中简单点击，即可快速便捷的访问IPFS的常用操作：
 
-- See how many peers you're connected with a glance at the cube icon in your browser bar.
-- Check your IPFS API and gateway status by clicking the cube icon to reveal the main menu.
-- Right-click images and other page assets to easily add them to IPFS, including the option to preserve file names.
-- Choose the _Quick Import/Share..._ option in the main menu for quick drag-and-drop import from a browser tab.
-- Pin or unpin IPFS resources directly from the main menu.
-- Copy shareable public gateway links, IPFS content paths, or CIDs of IPFS resources directly from the main menu.
-- Launch the [IPFS Web UI dashboard](https://github.com/ipfs-shipyard/ipfs-webui) from the main menu with a single click.
-- Toggle gateway redirects or switch all IPFS Companion features on or off quickly and easily from the main menu.
+- 直接在立方体图标上显示当前已连接的节点数。
+- 单击图标显示主菜单，以查看IPFS API和网关状态。
+- 在页面图片和其他元素上右键，即可轻松将其添加到IPFS中，并保留其文件名（如图片）。
+- 选择主菜单中的导入功能，开启一个浏览器页面，该页面支持拖拽导入文件。
+- 从主菜单中直接固定或者取消固定IPFS资源。
+- 直接从主菜单中复制可共享的公共网关链接、IPFS内容路径或者IPFS资源的CID。
+- 在主菜单中单击打开[IPFS网页仪表盘](https://github.com/ipfs-shipyard/ipfs-webui)。
+- 从主菜单中快速切换网关重定向或者打开/关闭所有的特性。
 
-## Further documentation
+## 更多文档
 
-If you want to delve deeper into IPFS Companion, check out the project's documentation at [github.com/ipfs-shipyard/ipfs-companion →](https://github.com/ipfs-shipyard/ipfs-companion)
+如果你想深入研究IPFS伴侣，查看该项目的文档[github.com/ipfs-shipyard/ipfs-companion →](https://github.com/ipfs-shipyard/ipfs-companion)

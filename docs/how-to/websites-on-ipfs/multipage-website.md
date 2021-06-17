@@ -1,22 +1,22 @@
 ---
-title: Multi-page website
+title: 多页面网站
 description: Learn how to host a website with multiple pages and external assets on IPFS.
 ---
 
-# Multi-page website
+# 多页面网站
 
-In this guide, you will learn how to host a website with multiple pages and external assets on IPFS. This tutorial is the second in a series of tutorials aimed at teaching web developers how to build websites and applications using IPFS. You don't need to have completed the previous tutorial to understand what's going on here, but if you're new to the IPFS ecosystem, it's a good idea to follow through the [single page website guide](/how-to/websites-on-ipfs/single-page-website) before you start this one. It will give you a solid foundation to work off.
+本教程中，会说明如何在IPFS中托管多页面，且包含外部资源的网站。此教程是面向网站开发者，说明如何在IPFS中构建网站和应用的第二部分。前一部分的教程不是必须了解的，但是如果你刚开始接触IPFS生态，建议开始本章节前阅读[单页面网站教程](/how-to/websites-on-ipfs/single-page-website)，它会为你提供一个坚实的基础。
 
-## Prerequisites
+## 先决条件
 
-If you followed the previous tutorial, you would already have the IPFS Desktop application installed. If not, you can grab it from the [IPFS Shipyard](https://github.com/ipfs-shipyard/ipfs-desktop).
+如果已经阅读前一教程，应该已经安装了IPFS Desktop应用，如若没有，可以从此获取[IPFS Shipyard](https://github.com/ipfs-shipyard/ipfs-desktop)。
 
-## Project set up
+## 项目配置
 
-Before we dig into IPFS, let's first create the files we'll need for this mini-project.
+在深入了解IPFS之前，我们需要首先创建这个小型项目所需要的相关文件。
 
-1. Create a folder called `multi-page-first-step`.
-1. Within this new folder, create a file called `index.html` and paste in the following code. We'll continue using the [Random Planet Facts](http://randomplanetfacts.xyz) website from the previous tutorial, with an added link to an _About_ page:
+1. 创建一个目录，名为`multi-page-first-step`。
+1. 在此新目录中，创建一个名为`index.html`的文件，将以下代码粘贴进去。我们还将继续使用前一教程的[Random Planet Facts](http://randomplanetfacts.xyz)网站，同时添加一个链接，指向 _About_ 页面：
 
 ```html
 <!DOCTYPE html>
@@ -105,7 +105,7 @@ Before we dig into IPFS, let's first create the files we'll need for this mini-p
 </html>
 ```
 
-1. Create another file, this time called `about.html` and paste in the following code:
+1. 创建另一个文件，命名为`about.html`，并粘贴以下代码：
 
 ```html
 <!DOCTYPE html>
@@ -148,12 +148,12 @@ Before we dig into IPFS, let's first create the files we'll need for this mini-p
 </html>
 ```
 
-1. Add your name to the `Created by ___.` line. If everyone reading this tutorial just copies and pastes the same code, then everyone will get the _exact same_ CID! While there's nothing wrong with this, it's more fun to use a CID that is unique to your project.
-1. Finally, download this image and save it in the folder as `moon-logo.png`:
+1. 在`Created by ___.`行加入你的名字，不然每个学习此教程的人都复制/粘贴了相同的代码，结果都得到了完全相同的CID！这本身没有什么问题，但对你的项目来说，可以生成一个唯一的CID显得更有意思一些。
+1. 最后，下载此图片，将其保存到目录中，并命名为`moon-logo.png`：
 
    ![Icon of the moon with stars and circles in the background.](./images/multipage-website/moon-logo.png)
 
-You should now have a folder that looks something like this:
+现在整个目录的结构应该如下：
 
 ```
   multi-page-first-step/
@@ -162,39 +162,39 @@ You should now have a folder that looks something like this:
   └── moon-logo.png
 ```
 
-## Add files to IPFS
+## 添加文件到IPFS
 
-Now that you've got the project ready, we can add things to IPFS using the IPFS Desktop application. Instead of adding the files individually, we can add the whole project folder, and the IPFS Desktop app will take care of the rest for us!
+现在整个项目已经就绪了，我们可以通过IPFS Desktop把它们添加到IPFS中。这里我们不会单独添加每个文件，而是添加整个项目的目录，IPFS Desktop会帮我们处理好后续的事情！
 
-1. Open the IPFS Desktop application and select **Add** > **Folder**.
-1. Select the `multi-page-website` folder. Once it's loaded, you should be able to see the folder within the application:
+1. 打开IPFS Desktop应用，然后选择**Add** > **Folder**。
+1. 选择`multi-page-website`目录，一旦添加完成，你应该在应用中可以看到这个文件夹：
 
    ![The IPFS Desktop application with the multi-page project folder showing.](./images/multipage-website/ipfs-desktop-with-multi-page-folder-showing.png)
 
-1. Click the triple dot menu to the right and select **Share link**.
-1. Click **Copy** and paste the link in a browser. You should be able to see your website with the logo!
+1. 点击右侧的`...`菜单，然后选择**Share link**。
+1. 点击**Copy**，然后将链接粘贴到浏览器地址栏中，你应该可以看到这个网站及其Logo!
 
    ![Random space facts open in a Firefox browser window.](./images/multipage-website/website-open-in-firefox.png)
 
-   Try clicking the link to the about page. You should be able to browse between the pages with no problem.
+   尝试点击about页面的链接，你应该可以正常的访问这些页面。
 
-## Publish to IPNS
+## 发布到IPNS
 
-:::tip This step is optional
-You don't have to complete this section. However, it offers some valuable insight into how IPNS and IPFS work together.
+:::tip 这一步是可选的
+并不必须完成这一步，然而，它提供了一些关于IPNS和IPFS如何协作的有用信息。
 :::
 
-Using CIDs to get content is great; it means that the user always gets the content that they want. But what if the user doesn't know _what_ they're looking for and just wants the _latest_ version of that content? This is where IPNS comes in handy.
+通过CID来获取内容是很好的方案，这可以确保用户总能获得他们所期望的内容。但是当用户只想获取某个内容的最新版本，但并不知道所对应的具体内容时该怎么办呢？这时可以通过IPNS来轻松满足。
 
-Instead of sharing the CID of your website, you publish the root CID of your website to IPNS and then share the _key_ you get from IPNS.
+在这种情况下，你无需分享你网站的CID，而是发布它的根CID到IPNS中，然后分享你从IPNS中获得的 _key_。
 
-1. Open a terminal window, and navigate to where your multi-page project is saved:
+1. 打开一个终端控制台，进入你的multi-page项目所在的目录：
 
     ```shell
     cd ~/Code/random-planet-facts
     ```
 
-1. Double check that this project has been added to IPFS by running `ipfs add -r .`:
+1. 通过运行`ipfs add -r .`，再次确认此项目已经添加到IPFS中：
 
     ```shell
     ipfs add -r .
@@ -206,8 +206,8 @@ Instead of sharing the CID of your website, you publish the root CID of your web
     > 12.65 KiB / 12.65 KiB [=====================================================] 100.00%
     ```
 
-1. Copy the last CID `QmchJPQN...` from the output of the `ipfs add` command.
-1. Publish your project to IPNS using `ipfs name publich /ipfs/QMchJPQN...`. Replace `QMchJPQN...` with the CID you got in the last step:
+1. 复制`ipfs add`命令所输出的最后的一个CID`QmchJPQN...`。
+1. 用`ipfs name publish /ipfs/QMchJPQN...`命令来发布你的项目到IPNS中，把`QMchJPQN...`替换为上一步所对应的CID：
 
     ```shell
     ipfs name publish /ipfs/QmchJPQNLE5EUSYTzfzUsNFyPozXyANiZHFDSFKWdLNdRR
@@ -215,10 +215,10 @@ Instead of sharing the CID of your website, you publish the root CID of your web
     > Published to k51qzi5uqu5dh9gnl66grpnpuhj245ha1xq9ajtmuf7swe847zovdg1t9a0xiz: /ipfs/QmchJPQNLE5EUSYTzfzUsNFyPozXyANiZHFDSFKWdLNdRR
     ```
 
-    The `k51qzi...` is your IPFS installation's key! This is what you can use to point people to your content.
+    这里`k51qzi...`形式的是你的IPFS安装程序所对应的key！通过这个key可以让其他人访问到你的数据内容。
 
-1. You should now be able to view your project by going to `https://gateway.ipfs.io/ipns/k51qzi...`. Replace `k51qzi...` with the output from the previous step.
-1. Whenever you make any changes to your project, simply re-add your content to IPFS and publish it to IPNS:
+1. 现在你可以通过访问`https://gateway.ipfs.io/ipns/k51qzi...`来查看你的项目，需要把`k51qzi...`替换为上一步所输出的key。
+1. 然后当你对项目进行了任何修改的时候，只要简单的重新添加到IPFS中，然后把它再次发布到IPNS中：
 
     ```shell
     ipfs add -r .
@@ -232,11 +232,11 @@ Instead of sharing the CID of your website, you publish the root CID of your web
     > Published to k51qzi5uqu5dh9gnl66grpnpuhj245ha1xq9ajtmuf7swe847zovdg1t9a0xiz: /ipfs/QmchJPQNLE5EUSYTzfzUsNFyPozXyANiZHFDSFKWdLNdRR
     ```
 
-    Now, just head back to the `https://gateway.ipfs.io/ipns/k51qzi...` link to view your updates!
+    现在可以重新打开`https://gateway.ipfs.io/ipns/k51qzi...`，以获取你的更新内容。
 
-This is just the tip of the iceberg when it comes to IPNS. [Check out the IPNS page to learn more →](../../concepts/ipns)
+这里只是IPNS的冰山一角。[查看IPNS页面以了解更多 →](../../concepts/ipns)
 
-## Up next
+## 下一步
 
-In the next tutorial, we'll look at [linking a domain name to your site!](/how-to/websites-on-ipfs/link-a-domain)
+在下一教程中，我们会了解如何[为网站绑定域名](/how-to/websites-on-ipfs/link-a-domain)
 

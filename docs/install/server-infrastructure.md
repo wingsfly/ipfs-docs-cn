@@ -1,19 +1,19 @@
 ---
-title: Server infrastructure
+title: 服务器基础设施
 description: IPFS Cluster provides data orchestration across a swarm of IPFS daemons by allocating, replicating, and tracking a global pin-set distributed among multiple peers. Learn how to install it here.
 ---
 
-# Server infrastructure
+# 服务器基础设施
 
-If you want to install IPFS in a server environment and offer IPFS as a service, you should look at IPFS Cluster. IPFS Cluster provides data orchestration across a swarm of IPFS daemons by allocating, replicating, and tracking a global pin-set distributed among multiple peers. This makes it significantly easier to manage multiple IPFS nodes and ensure that data is available across an internal network.
+如果准备在服务器中安装IPFS，并将IPFS作为服务对外提供，应当安装IPFS集群。通过分配、复制和追踪在多个节点间分布的全局固定数据集，IPFS集群在一个IPFS守护集群中提供了数据协调服务。这显著简化了对多个IPFS节点的管理和确保内网中的数据可用性。
 
-## Create a local cluster
+## 创建本地集群
 
-To see if IPFS Cluster is suitable for your project, follow this quick start guide and spin up a local IPFS Cluster instance. At the end of this guide, you will have a solid understanding of how IPFS Cluster is set up and how to interact with it. If you'd rather create a production-ready cluster, take a look at the [official IPFS Cluster documentation →](https://cluster.ipfs.io/)
+要确认IPFS集群是否适合当前的项目，可以按照此快速入门指南启动一个本地IPFS集群实例。完成该指南后，你将对IPFS集群的设置方法和交互方式有一个深入的理解。如果你要创建一个生产环境可用的集群，参照[官方IPFS集群文档 →](https://cluster.ipfs.io/)
 
-### Prerequsites
+### 先决条件
 
-You must have both [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/) installed. Check that they're both installed properly by asking for their version:
+需要已安装[Docker](https://docs.docker.com/install/)和[Docker Compose](https://docs.docker.com/compose/install/)。通过查询相应版本，确认已正确安装：
 
 ```bash
 docker version
@@ -30,17 +30,17 @@ docker-compose version
 > ...
 ```
 
-If you're having issues here, head over to the [official Docker documentation to fix your problem →](https://docs.docker.com/)
+如果遇到问题，请前往[官方Docker文档 →](https://docs.docker.com/)以解决问题。
 
-### Steps
+### 步骤
 
-1. Download the latest `ipfs-cluster-ctl` package from [dist.ipfs.io](https://dist.ipfs.io/#ipfs-cluster-ctl):
+1. 从[dist.ipfs.io](https://dist.ipfs.io/#ipfs-cluster-ctl)下载最新的`ipfs-cluster-ctl`包：
 
     ```bash
     wget https://dist.ipfs.io/ipfs-cluster-ctl/v0.13.1/ipfs-cluster-ctl_v0.13.1_linux-amd64.tar.gz
     ```
 
-1. Unzip the package:
+1. 解压包：
 
    ```bash
    tar xvzf ipfs-cluster-ctl_v0.13.0_linux-amd64.tar.gz
@@ -52,13 +52,13 @@ If you're having issues here, head over to the [official Docker documentation to
    > ipfs-cluster-ctl/README.md
    ```
 
-1. Download the [`docker-composer.yml` file](https://raw.githubusercontent.com/ipfs/ipfs-cluster/master/docker-compose.yml) and place it into the `ipfs-cluster-ctl` directory:
+1. 下载[`docker-composer.yml` file](https://raw.githubusercontent.com/ipfs/ipfs-cluster/master/docker-compose.yml)，放在`ipfs-cluster-ctl`目录下：
 
    ```bash
    wget https://raw.githubusercontent.com/ipfs/ipfs-cluster/master/docker-compose.yml
    ```
 
-1. Start the cluster using `docker-compose`. You may have to run as root:
+1. 使用`docker-compose`启动集群，需要以root身份运行：
 
    ```bash
    docker-compose up
@@ -70,13 +70,13 @@ If you're having issues here, head over to the [official Docker documentation to
    > ...
    ```
 
-   You may see some errors like:
+   可能看到如下的错误：
 
    ```bash
    cluster2    | 2020-10-27T15:20:15.116Z  ERROR   ipfshttp    error posting to IPFS:Post "http://172.18.0.2:5001/api/v0/pin/ls?type=recursive": dial tcp 172.18.0.2:5001: connect: connection refused
    ```
 
-   You can safely ignore these for now. They're showing because some of the IPFS nodes within the cluster haven't finished spinning up yet. Everything should have loaded after a couple of minutes:
+   当前可以忽略这些错误，这些错误是因为集群中的部分IPFS节点还没有启动，在若干分钟后，所有组件应该都已运行起来：
 
    ```bash
    > ipfs1       | API server listening on /ip4/0.0.0.0/tcp/5001
@@ -85,7 +85,7 @@ If you're having issues here, head over to the [official Docker documentation to
    > ipfs1       | Daemon is ready
    ```
 
-1. You can now interact with your cluster. In a new terminal, navigate to the `ipfs-cluster-ctl` directory and list the peers within the cluster:
+1. 现在可以和集群进行交互了。在一个新的终端控制台中，进入`ipfs-cluster-ctl`目录，查看集群的节点：
 
     ```bash
     ./ipfs-cluster-ctl peers ls
@@ -107,7 +107,7 @@ If you're having issues here, head over to the [official Docker documentation to
     > ...
     ```
 
-1. Add a file into the cluster:
+1. 在集群中添加一个文件：
 
    ```bash
    wget https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg
@@ -116,7 +116,7 @@ If you're having issues here, head over to the [official Docker documentation to
    > added QmdzvHZt6QRJzySuVzURUvKCUzrgGwksvrsnqTryqxD4yn Neptune_-_Voyager_2_(29347980845)_flatten_crop.jpg
    ```
 
-1. See the status of that file across the cluster of IPFS nodes using the CID given above:
+1. 使用以上给出的CID查看IPFS集群中的文件状态：
 
    ```bash
    ./ipfs-cluster-ctl status QmdzvHZt6QRJzySuVzURUvKCUzrgGwksvrsnqTryqxD4yn
@@ -127,9 +127,9 @@ If you're having issues here, head over to the [official Docker documentation to
    > > cluster1             : PINNED | 2020-10-27T15:42:39.984842325Z
    ```
 
-   This shows us that `QmdzvHZ...` is pinned across the three IPFS nodes within our cluster.
+   以上显示`QmdzvHZ...`已经在我们集群中的三个IPFS节点中固定了。
 
-1. When you're finished playing around, kill the cluster. You may have to run this as root:
+1. 当已经完成体验后，可以终止该集群。此操作需要root权限：
 
    ```bash
    docker-compose kill
@@ -142,7 +142,7 @@ If you're having issues here, head over to the [official Docker documentation to
    > Killing ipfs2    ... done
    ```
 
-   The terminal running the `ipfs-cluster-ctl` daemon will close any open connections:
+   运行`ipfs-cluster-ctl`守护进程的终端会断开所有当前的连接：
 
    ```bash
    > ...
@@ -154,6 +154,6 @@ If you're having issues here, head over to the [official Docker documentation to
    > ipfs2 exited with code 137
    ```
 
-## Next steps
+## 下一步
 
-If you want to delve deeper into IPFS Cluster, check out the project's documentation at [cluster.ipfs.io →](https://cluster.ipfs.io/)
+如果需要深入研究IPFS集群，查看该项目的文档[cluster.ipfs.io →](https://cluster.ipfs.io/)

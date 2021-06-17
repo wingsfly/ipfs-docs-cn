@@ -1,16 +1,16 @@
 ---
-title: Concepts
+title: 概念
 legacyUrl: https://docs.ipfs.io/guides/concepts/
 description: Get started on understanding the key ingredients in the decentralized web and how IPFS works.
 ---
 
-# IPFS concepts
+# IPFS概念
 
-New to IPFS or the distributed web? Here's where to get started on understanding the key ingredients in what makes IPFS work. Because IPFS is a system that hopes to change how we use the Internet, it comes with many new concepts! This section aims to get you up to speed quickly.
+如果是刚接触IPFS或分布式网络的话，从这里可以开始了解IPFS运行机制的核心因素。IPFS期望改变我们使用互联网的方式，因此带来了许多新概念，本章节旨在让你快速上手。
 
-## Video overviews
+## 视频概览
 
-Want the basics in theater mode? Check out these helpful videos for an overview of how IPFS works with files and the overall data lifecycle in the d-web.
+期望通过视频来了解基础信息的话，可以查看这些有用的视频，了解IPFS如何处理文件，以及分布式网络中完整的数据生命周期。
 
 @[youtube](Z5zNPwMDYGg)
 
@@ -26,60 +26,61 @@ Want the basics in theater mode? Check out these helpful videos for an overview 
 
 ## IPFS 101
 
-Get the basic concepts of IPFS in one place, including:
+一站式获取IPFS的基础概念，包括：
 
-- [What is IPFS?](/concepts/what-is-ipfs/)
-- [How IPFS works](/concepts/how-ipfs-works/)
+- [什么是IPFS?](/concepts/what-is-ipfs/)
+- [IPFS如何运作](/concepts/how-ipfs-works/)
 - [IPFS primer](https://dweb-primer.ipfs.io/)
-- [Glossary](/concepts/glossary/)
-- [FAQ](/concepts/faq/)
+- [词汇表](/concepts/glossary/)
+- [常见问题](/concepts/faq/)
 
-## Examples and case studies
+## 示例和案例研究
 
-Get inspired by usage ideas, explore examples of IPFS implemented in the wild, and dig deeper with case studies on applications and projects in which IPFS plays a crucial role.
+从使用理念中获得启发，探索IPFS的广泛应用示例，并深入发掘和学习那些IPFS起着至关重要作用的应用项目的案例。
 
-- [Usage ideas & examples](/concepts/usage-ideas-examples/)
-- [Case study: Arbol](/concepts/case-study-arbol/)
-- [Case study: Audius](/concepts/case-study-audius/)
-- [Case study: Fleek](/concepts/case-study-fleek/)
-- [Case study: LikeCoin](/concepts/case-study-likecoin/)
-- [Case study: Morpheus.Network](/concepts/case-study-morpheus/)
-- [Case study: OpenBazaar](/concepts/case-study-openbazaar/)
+- [使用理念和示例](/concepts/usage-ideas-examples/)
+- [案例学习: Arbol](/concepts/case-study-arbol/)
+- [案例学习: Audius](/concepts/case-study-audius/)
+- [案例学习: Fleek](/concepts/case-study-fleek/)
+- [案例学习: LikeCoin](/concepts/case-study-likecoin/)
+- [案例学习: Morpheus.Network](/concepts/case-study-morpheus/)
+- [案例学习: OpenBazaar](/concepts/case-study-openbazaar/)
 
-## Content-addressed storage
+## 基于内容寻址的存储
 
-Referring to files by their content, not their location, is one of the most powerful concepts within IPFS. Learn why with explainers on:
+通过文件内容，而不是他们的位置来引用文件，是IPFS最强大的概念之一。以下说明了其原因：
 
-- [Content addressing](/concepts/content-addressing/)
-- [Cryptographic hashing](/concepts/hashing/)
-- [Immutability](/concepts/immutability/)
+- [内容寻址](/concepts/content-addressing/)
+- [加密散列](/concepts/hashing/)
+- [不变性](/concepts/immutability/)
 - [Persistence, permanence and pinning](/concepts/persistence/)
 
-## Peer-to-peer file sharing
+## 点对点文件共享
 
-Sharing files between peers is incredibly powerful — and has many nuances! Learn about file-sharing paradigms and tools:
+节点间共享文件极其强大，并且有许多细微差别！以下可以了解文件共享的范例和工具：
 
-- [Distributed Hash Tables (DHTs)](/concepts/dht/)
+- [分布式哈希表(DHTs)](/concepts/dht/)
 - [Merkle DAGs](/concepts/merkle-dag/)
 - [Bitswap](/concepts/bitswap/)
 - [IPLD](/concepts/ipld/)
 - [IPNS](/concepts/ipns/)
 - [libp2p](/concepts/libp2p/)
-- [File systems](/concepts/file-systems/)
+- [文件系统](/concepts/file-systems/)
 
-## Integrating IPFS and the existing Web
+## 在现有网站中集成IPFS
 
-IPFS aims to be the future of the internet, but it still needs to play well with today's Web. Here are some ways to do just that:
+IPFS旨在构建下一代互联网，但也需要与现有互联网很好的协同。以下是一些协同方式：
 
-- [IPFS Gateway](/concepts/ipfs-gateway/)
+- [IPFS网关](/concepts/ipfs-gateway/)
 - [DNSLink](/concepts/dnslink/)
 
-## Further reading
+## 进一步阅读
 
-Want a more in-depth look into the decentralized web? Here are a few papers that are useful for understanding IPFS, whether it be understanding the IPFS spec itself or the background for the web, protocols, hashing, and so on. [Read the papers →](/concepts/further-reading/academic-papers)
+还想进一步深入了解分布式网络的话，以下是一些有助于理解IPFS的论文，包括理解IPFS规范本身，或者背景的网络、协议、散列等内容。[Read the papers →](/concepts/further-reading/academic-papers)
 
-You may also be interested in the community made [IPFS Primer →](https://dweb-primer.ipfs.io/)
+还可以关注社区构建的[IPFS Primer →](https://dweb-primer.ipfs.io/)
 
-## Don't see what you're looking for?
+## 没有找到想了解的信息？
 
-We're adding more documentation all the time and making ongoing revisions to existing docs, but if you don't see what you need, please [file an issue](https://github.com/ipfs/ipfs-docs/issues/new?assignees=&labels=OKR+3%3A+Content+Improvement%2C+docs-ipfs&template=content-request.md&title=%5BCONTENT+REQUEST%5D+%28add+your+title+here%21%29) to let us know! We also recommend visiting the [IPFS forums](https://discuss.ipfs.io/) for support and discussion with IPFS enthusiasts and experts worldwide.
+我们一直在添加更多的文档，并对已有的文档进行持续修订，但是如果仍未找到需要的内容，可以在
+[file an issue](https://github.com/ipfs/ipfs-docs/issues/new?assignees=&labels=OKR+3%3A+Content+Improvement%2C+docs-ipfs&template=content-request.md&title=%5BCONTENT+REQUEST%5D+%28add+your+title+here%21%29)告知我们！我们也推荐访问[IPFS论坛](https://discuss.ipfs.io/)以与世界各地的IPFS爱好者和专家交流，并获取支持。

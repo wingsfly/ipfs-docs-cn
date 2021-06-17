@@ -1,55 +1,54 @@
 ---
-title: IPFS Documentation
+title: IPFS文档
 legacyUrl: https://docs.ipfs.io/
 description: The home page for developer documentation for IPFS, the InterPlanetary File System.
 ---
 
-# Learn how to build the future of the internet
+# 学习如何构建互联网的未来
 
 ::: callout
-No matter who you are or what you're creating, you can be part of the movement to create the next generation of the internet. This site contains everything you need to start building using the InterPlanetary File System (IPFS) and pave the way for the future Web.
+无论你是谁、你正在做什么，你都可以参与到这场构建下一代互联网的运动中来。本站包含了你开始使用星际文件系统（IPFS）所需的一切，从而铺平了通向未来网络的道路。
 :::
 
-Check out some of the most popular content in these docs below — or explore the main site menu to learn about <a href="/concepts/">key concepts</a>, try out <a href="/how-to/">how-to guides</a>, see <a href="/reference/">API and CLI references</a>, or just <a href="/install/">install IPFS</a> and get hacking.
+你可以在以下的文档中查看最常用的内容，也可以通过主菜单来学习<a href="/concepts/">核心概念</a>, 尝试一下<a href="/how-to/">基本教程</a>, 查阅<a href="/reference/">API 和 CLI 参考</a>, 或者直接<a href="/install/">安装IPFS</a>来体验。
 
-## Download IPFS tools
+## 下载IPFS工具
 
-These tools can help you use and build on IPFS more quickly and efficiently — give them a try today!
+以下工具能够让你更快更有效的使用和构建IPFS，立即来试试吧！
 
-| [Browser Companion](https://github.com/ipfs-shipyard/ipfs-companion)            | [IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop)                                          | [IPLD Explorer](https://explore.ipld.io/)                           |
+| [浏览器伴侣](https://github.com/ipfs-shipyard/ipfs-companion) | [IPFS桌面](https://github.com/ipfs-shipyard/ipfs-desktop) | [IPLD浏览器](https://explore.ipld.io/) |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
 | ![The IPFS browser companion in Firefox.](./images/ipfs-companion.png =300x200) | ![The IPFS desktop app running on MacOS with the status tab open.](./images/ipfs-desktop.png =300x200) | ![The IPLD Explorer homepage.](./images/ipld-explorer.png =300x200) |
 
-## Host your website on IPFS
+## 在IPFS上托管网站
 
-Protect yourself from single-point-of-failure risks and benefit from decentralized infrastructure by hosting your static website using IPFS. If you're new to IPFS, this is an excellent place to start learning how to build on the decentralized web.
+通过在IPFS上托管静态网站，可以受益于分布式的基础设施，从而避免承受单点故障的风险。如果你刚接触IPFS，这里是开始学习如何构建分布式网站的绝佳去处：
 
-[Start the tutorial →](/how-to/websites-on-ipfs/single-page-website/)
+[开启教程 →](/how-to/websites-on-ipfs/single-page-website/)
 
-## Learn about the decentralized web
+## 了解去中心化网络
 
-Want to know more about the decentralized web (Dweb) and how it's changing the internet? These resources will give you a clearer understanding of the Dweb movement, and how it's improving the world:
+想知道更多关于去中心化网络（Dweb）的知识，以及它是如何改变互联网的？以下资源让你更清晰的了解Dweb运动，以及它是如何改变世界的：
+- [什么是IPFS](/concepts/what-is-ipfs/)
+- [点对点共享](/concepts/dht/)
+- [基于内容寻址的数据](/concepts/content-addressing/)
 
-- [What is IPFS](/concepts/what-is-ipfs/)
-- [Peer-to-peer sharing](/concepts/dht/)
-- [Content-addressed data](/concepts/content-addressing/)
-
-[See more guides in the Concepts section →](/concepts/)
+[在概念部分可以查阅更多说明 →](/concepts/)
 
 ::: callout
-ProtoSchool's self-guided [interactive tutorials](https://proto.school/tutorials) are designed to introduce you to decentralized web concepts, protocols, and tools. Explore js-ipfs APIs by completing browser-based coding challenges in ProtoSchool's [IPFS course](https://proto.school/course/ipfs), or explore code-free intros to essential dweb concepts and related projects in the IPFS ecosystem.
+ProtoSchool的自助 [互动式教程](https://proto.school/tutorials) 用于向你介绍去中心化网络的概念、协议以及工具。可以通过完成ProtoSchool的[IPFS课程](https://proto.school/course/ipfs)里的基于浏览器的开发挑战，来探索js-ipfs APIs；也可以无需代码开发，仅浏览IPFS生态中的去中心化网络基本概念和相关项目。
 :::
 
-## See what others are building
+## 查看其他正在构建的项目
 
-Are you looking for inspiration? You can find a huge collection of awesome community projects over at Awesome IPFS.
+如果你正在寻求灵感的话，可以在下面找到大量采用了IPFS的很好的社区项目。
 
-[Check out Awesome IPFS now →](https://awesome.ipfs.io/)
+[立即访问Awesome IPFS →](https://awesome.ipfs.io/)
 
 ![The Awesome IPFS homepage.](./images/awesome-ipfs.png =740x420)
 
-## Be part of the IPFS community
+## 成为IPFS社区的一份子
 
-IPFS has a bustling community of designers, developers, writers, and activists who are all helping to improve the project. You can join in by attending a local meetup, helping out at a conference, chatting online through [Matrix channels](/community/chat), or joining a discussion in [the IPFS forum](https://discuss.ipfs.io/).
+IPFS拥有一个由设计师、开发人员、作家和活动家构成的繁荣社区，他们都在帮助改进这个项目。你也可以通过参加本地聚会、在会议上提供帮助、在[Matrix频道](/community/chat)上交流、或者参与[IPFS论坛](https://discuss.ipfs.io/)的讨论来加入这个社区。
 
-[Find out more in the Community section →](/community/)
+[在社区部分了解更多 →](/community/)
