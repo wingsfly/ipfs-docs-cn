@@ -155,13 +155,13 @@ module.exports = {
             path: '/how-to/',
             children: [
               {
-                title: '快速入门',
+                title: '快速启动',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: ['/how-to/command-line-quick-start']
               },
               {
-                title: 'Customize your install',
+                title: '自定义安装',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: [
@@ -172,7 +172,7 @@ module.exports = {
                   '/how-to/run-ipfs-inside-docker',
                   [
                     'https://github.com/ipfs/js-ipfs/tree/master/examples/custom-ipfs-repo',
-                    'Customize an IPFS repo'
+                    '自定义IPFS存储'
                   ]
                 ]
               },

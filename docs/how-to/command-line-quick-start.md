@@ -1,24 +1,24 @@
 ---
-title: Command-line quick start
+title: 命令行快速启动
 legacyUrl: https://docs.ipfs.io/introduction/usage/
 description: Quick-start guide for installing and getting started with IPFS from the command line.
 ---
 
-# Command-line quick start
+# 命令行快速启动
 
-If you're command-line savvy and just want to get up and running with IPFS right away, follow this quick-start guide. Please note that this guide assumes that you'll be installing go-ipfs, the reference implementation written in Go.
+如果你精通命令行，并且只想立即启动和运行IPFS，按此教程执行。注意本教程假设你已经安装了go-ipfs，用Go语言编写的参考实现。
 
-::: tip
-Don’t want to use the command line right now? Give the desktop-app implementation of IPFS a try. It also does all the steps listed on this page automatically, so you can run IPFS from the terminal later whenever you want. [Download IPFS Desktop now](https://github.com/ipfs-shipyard/ipfs-desktop)
+::: 提示
+当前还不想使用命令行的话，可以尝试桌面应用的实现。它会自动完成本页面列出的各个步骤，因此你随时也可以在终端控制台中运行IPFS。[立即下载IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop)
 :::
 
-## Prerequisites
+## 先决条件
 
-If you have not yet installed Go-IPFS, follow the [install instructions](../../install/command-line).
+如果还没有安装Go-IPFS，按此[安装说明](../../install/command-line)。
 
-## Initialize the repository
+## 初始化仓库
 
-`ipfs` stores all its settings and internal data in a directory called _the repository._ Before using IPFS for the first time, you’ll need to initialize the repository with the `ipfs init` command:
+`ipfs`把它的所有设置和内部数据保存在一个名为 _the repository_ 的目录。首次使用IPFS之前，需要用`ipfs init`命令初始化该仓库：
 
 ```bash
 ipfs init
@@ -31,19 +31,19 @@ ipfs init
 >   ipfs cat /ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme
 ```
 
-If you are running on a server in a data center, you should initialize IPFS with the `server` profile. Doing so will prevent IPFS from creating a lot of data center-internal traffic trying to discover local nodes:
+如果是在数据中心的服务器上运行，应当使用`server`配置项来初始化IPFS。这样能够防止IPFS创建大量试图发现本地节点的内部流量：
 
 ```bash
 ipfs init --profile server
 ```
 
-There are a whole host of other configuration options you may want to set — check [the full reference](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md) for more.
+还可以配置许多其他的配置选项，在[完整参考](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md)中确认其他的配置项。
 
-The hash after `peer identity:` is your node’s ID and will be different from the one shown in the above output. Other nodes on the network use it to find and connect to you. You can run `ipfs id` at any time to get it again if you need it.
+在`peer identity:`之后的hash值是你的节点ID，这个值和上面显示的不会一样。网络中其他的节点通过此ID来发现和连接到该节点。随时可以通过运行`ipfs id`命令来查看此ID。
 
-Now, try running the command suggested to you in the output of `ipfs init`. The one that looks like `ipfs cat /ipfs/<HASH>/readme`.
+现在可以尝试运行`ipfs init`输出信息中推荐的命令，类似于`ipfs cat /ipfs/<HASH>/readme`。
 
-You should see something like this:
+可以看到类似如下的结果：
 
 ```
 Hello and Welcome to IPFS!
@@ -74,15 +74,15 @@ Check out some of the other files in this directory:
   ./security-notes
 ```
 
-You can explore other objects in the repository. In particular, the `quick-start` directory which shows example commands to try:
+还可以继续浏览仓库中的其他对象。尤其可以浏览`quick-start`，这个会显示其他可以尝试的命令示例：
 
 ```bash
 ipfs cat /ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/quick-start
 ```
 
-## Take your node online
+## 节点上线
 
-Once you're ready to join your node to the public network, run the ipfs daemon in another terminal and wait for all three lines below to appear to know that your node is ready:
+在准备好让节点加入到公共网络中时，在另一个终端中运行ipfs守护进程，等到下面的三行信息出现，说明你的节点已经就绪了：
 
 ```bash
 ipfs daemon
@@ -92,9 +92,9 @@ ipfs daemon
 > Gateway server listening on /ip4/127.0.0.1/tcp/8080
 ```
 
-Make a note of the TCP ports you receive. If they are different, use yours in the commands below.
+记下这里显示的端口号，如果和上面不一样，在以下的命令中，需要将端口指定为所收到的值。
 
-Now, switch back to your original terminal. If you’re connected to the network, you should be able to see the IPFS addresses of your peers when you run:
+然后切换为原来的终端，如果你已经连接到网络中，应当可以运行以下命令看到你的节点中的IPFS地址信息：
 
 ```bash
 ipfs swarm peers
@@ -105,17 +105,17 @@ ipfs swarm peers
 > /ip4/178.62.8.190/tcp/4002/p2p/QmdXzZ25cyzSF99csCQmmPZ1NTbWTe8qtKFaZKpZQPdTFB
 ```
 
-These are a combination of `<transport address>/p2p/<hash-of-public-key>`.
+这些地址的组合形式为：`<transport address>/p2p/<hash-of-public-key>`。
 
-Now, you should be able to get objects from the network. Try:
+现在你可以从网络中获取对象数据了，尝试：
 
 ```bash
 ipfs cat /ipfs/QmSgvgwxZGaBLqkGyWemEDqikCqU52XxsYLKtdy3vGZ8uq > ~/Desktop/spaceship-launch.jpg
 ```
 
-Using the above command, IPFS searches the network for the CID `QmSgv...` and writes the data into a file called `spaceship-launch.jpg` on your Desktop.
+以上命令让IPFS在网络中搜索CID为`QmSgv...`的内容，并将数据写到你的桌面上一个名为`spaceship-launch.jpg`的文件中。
 
-Next, try sending objects to the network, and then viewing it in your favorite browser. The example below uses `curl` as the browser, but you can open the IPFS URL in other browsers as well:
+下一步，可以尝试发送对象到网络中，然后在你的浏览器中查看。以下示例以`curl`模拟浏览器请求，你也可以直接在浏览器中打开对应的IPFS URL：
 
 ```bash
 hash=`echo "I <3 IPFS -$(whoami)" | ipfs add -q`
@@ -124,11 +124,11 @@ curl "https://ipfs.io/ipfs/$hash"
 > I <3 IPFS -<your username>
 ```
 
-Cool, huh? The gateway served a file _from your computer_. The gateway queried the Distributed hash table (DHT), found your machine, requested the file, your computer sent it to the gateway, and the gateway sent it to your browser.
+很不错吧？这时IPFS网关已经从你的计算机中获取了一个文件。网关首先查询了分布式哈希表(DHT)，找到你的主机，然后请求了对应的文件，你的计算机把文件发送给网关，然后网关把这个文件返回给你的浏览器。
 
-Depending on the state of the network, `curl` may take a while. The public gateways may be overloaded or having a hard time reaching you.
+根据网络状况的不同，`curl`可能需要花费一段时间。公共网关也可能超载，或者很难联系到你的计算机。
 
-You can also check it out at your own local gateway:
+也可以通过你的本地网关来获取该文件：
 
 ```bash
 curl "http://127.0.0.1:8080/ipfs/$hash"
@@ -136,32 +136,32 @@ curl "http://127.0.0.1:8080/ipfs/$hash"
 > I <3 IPFS -<your username>
 ```
 
-By default, your gateway is not exposed to the world. It only works locally.
+默认情况下，你的网关并不对外公开，它仅提供本地服务。
 
-## Web console
+## Web控制台
 
-You can view the web console on your local node by going to `localhost:5001/webui`. This should bring up a console like this:
+可以打开`localhost:5001/webui`来查看你本地节点的web控制台。这个控制台应该类似下面这样：
 
 ![Web console connection view](./images/command-line-quick-start/webui-connection.png)
 
-## IPFS Companion
+## IPFS伴侣
 
-While we are at it, [IPFS Companion](https://github.com/ipfs-shipyard/ipfs-companion#ipfs-companion) is a browser extension that simplifies access to IPFS resources and adds support for the IPFS protocol.
+如我们所可以看到的，[IPFS伴侣](https://github.com/ipfs-shipyard/ipfs-companion#ipfs-companion)是一个浏览器扩展程序，可以简化我们对IPFS资源的访问，并扩展了浏览器对IPFS协议的支持。
 
-It will automatically redirect IPFS gateway requests to your local daemon so that you are not relying on or trusting remote gateways.
+它能够自动将对IPFS网关的请求转发到我们的本地守护进程中，这样你就不需要依赖或者信任远程的网关。
 
-It runs in Firefox (desktop and Android) and various Chromium-based browsers such as Google Chrome or [Brave](https://brave.com).
-[Check out its features](https://github.com/ipfs-shipyard/ipfs-companion#features) and install it today!
+它可以在Firefox(桌面版和安卓版)和各类Chromiumn内核的浏览器中运行，如Google Chrome或者[Brave](https://brave.com)。
+[查看其特性](https://github.com/ipfs-shipyard/ipfs-companion#features)并立即安装吧！
 
-- [Direct download](https://github.com/ipfs-shipyard/ipfs-companion#install)
-- [Install from Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ipfs-companion/)
-- [Install from Chrome Store](https://chrome.google.com/webstore/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch)
+- [直接下载](https://github.com/ipfs-shipyard/ipfs-companion#install)
+- [从Firefox附加组件中安装](https://addons.mozilla.org/firefox/addon/ipfs-companion/)
+- [从Chrome应用商店中安装](https://chrome.google.com/webstore/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch)
 
-## Troubleshooting
+## 常见故障
 
-### Check your Go version
+### 检查Go版本
 
-IPFS works with Go 1.12.0 or later. To check what go version you have installed, type `go version`:
+IPFS需要Go 1.12.0及以上版本。可以运行`go version`来查看其版本：
 
 ```bash
 go version
@@ -169,12 +169,12 @@ go version
 > go version go1.12.2 linux/amd64
 ```
 
-If you need to update, we recommend you install from the [canonical Go packages](https://golang.org/doc/install). Package managers often contain out-of-date Go packages.
+如果需要更新，推荐从[canonical Go packages](https://golang.org/doc/install)安装。包管理器中的Go包通常都过期了。
 
-### Check that FUSE is installed
+### 检查FUSE是否已安装
 
-You need to install and set up FUSE in order to mount the file system. For more details on setting up FUSE, see [github.com/ipfs/go-ipfs/blob/master/docs/fuse.md](https://github.com/ipfs/go-ipfs/blob/master/docs/fuse.md)
+如果要挂载文件系统，需要安装和配置FUSE。更多如何配置FUSE的信息，可以参考[github.com/ipfs/go-ipfs/blob/master/docs/fuse.md](https://github.com/ipfs/go-ipfs/blob/master/docs/fuse.md)
 
-### Further help
+### 更多帮助
 
-The IPFS community is friendly and able to help! Get support from other IPFS developers in the official [IPFS forums](https://discuss.ipfs.io/), or join the conversation on [Matrix](/community/chat/).
+IPFS社区非常友好，也很愿意提供帮助！可以在官方[IPFS论坛](https://discuss.ipfs.io/)中获取其他IPFS开发者的支持，或者在[Matrix](/community/chat/)中加入交流讨论。

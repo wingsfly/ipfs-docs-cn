@@ -1,124 +1,97 @@
 ---
-title: Configure a node
+title: 配置节点
 description: IPFS nodes can be customzied using the configuration file. The default values should be fine for most use-cases. However, you may want to make some changes if you are running a specialized IPFS node, or simply want to tweak things to your liking.
 ---
 
-# Configure a node
+# 配置节点
 
-IPFS is configured through a json formatted text file, located by default at `~/.ipfs/config`. Implementation-specific information can be found within the [go-ipfs](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md) and [js-ipfs](https://github.com/ipfs/js-ipfs/blob/master/docs/CONFIG.md) repositories. It is read once at node instantiation, either for an offline command, or when starting the daemon. Commands that execute on a running daemon do not read the config file at runtime.
+IPFS配置文件是json格式，默认位于`~/.ipfs/config`。与实现相关的特定信息可以在[go-ipfs](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md)和[js-ipfs](https://github.com/ipfs/js-ipfs/blob/master/docs/CONFIG.md)仓库中找到。它会在节点实例化时被读取加载一次，包括在离线命令调用或作为守护进程启动的时候。在正在运行的守护进程中执行命令，不会读取配置文件。
 
-## Profiles
+## 配置选项profile
 
-Configuration profiles allow you to tweak configuration quickly. Profiles can be
-applied with `--profile` flag to `ipfs init` or with the `ipfs config profile apply` command. When a profile is applied a backup of the configuration file
-will be created in `$IPFS_PATH`.
+配置选项允许你快速调整配置。可以在`ipfs init`中指定 `--profile`标识或者在`ipfs config profile apply`命令中应用配置选项。当应用一个配置选项时，会在`$IPFS_PATH`路径下创建一个当前配置的备份。
 
-The available configuration profiles are listed below. You can also find them
-documented in `ipfs config profile --help`.
+可用的配置选项参见如下，也可以通过`ipfs config profile --help`查看对应信息：
 
 - `server`
 
-  Disables local host discovery, recommended when
-  running IPFS on machines with public IPv4 addresses.
+  禁用本地节点发现，当IPFS所在的主机拥有公网IPv4地址时，建议采用此配置。
 
 - `randomports`
 
-  Use a random port number for swarm.
+  使用随机的swarm端口号。
 
 - `default-datastore`
 
-  Configures the node to use the default datastore (flatfs).
+  配置节点为使用默认数据存储（flatfs）。
 
-  Read the "flatfs" profile description for more information on this datastore.
+  关于此数据存储的信息，阅读"flatfs"配置项的说明。
 
-  This profile may only be applied when first initializing the node.
+  该配置项只能在第一次初始化节点时使用。
 
 - `local-discovery`
 
-  Sets default values to fields affected by the server
-  profile, enables discovery in local networks.
+  将受server配置选项影响的字段设为默认值，以启用本地网络发现功能。
 
 - `test`
 
-  Reduces external interference of IPFS daemon, this
-  is useful when using the daemon in test environments.
+  减少IPFS守护进程的外部干扰，在测试环境中使用守护进程时有用。
 
 - `default-networking`
 
-  Restores default network settings.
-  Inverse profile of the test profile.
+  恢复默认的网络设置。
+  反转test的配置。
 
 - `flatfs`
 
-  Configures the node to use the flatfs datastore.
+  配置节点以采用flatfs数据存储。
 
-  This is the most battle-tested and reliable datastore, but it's significantly
-  slower than the badger datastore. You should use this datastore if:
+  这是最久经考验和最可靠的数据存储，但它相对badger数据存储明显要慢。应该在以下情形下使用此数据存储：
 
-  - You need a very simple and very reliable datastore you and trust your
-    filesystem. This datastore stores each block as a separate file in the
-    underlying filesystem so it's unlikely to loose data unless there's an issue
-    with the underlying file system.
-  - You need to run garbage collection on a small (<= 10GiB) datastore. The
-    default datastore, badger, can leave several gigabytes of data behind when
-    garbage collecting.
-  - You're concerned about memory usage. In its default configuration, badger can
-    use up to several gigabytes of memory.
+  - 需要一个极其简单又极其可靠的数据存储，并且信任你的文件系统。此数据存储将每个块数据作为独立文件存储在底层文件系统中，因此除非底层文件系统存在问题，否则不太可能丢失数据。
+  - 需要在一个较小的(<= 10GiB)数据存储中运行垃圾回收。默认的数据存储，badger，在垃圾回收时可能会产生若干G的数据。
+  - 需要关注内存使用状况时。在默认的配置中，badger可能会使用高达数G的内存。
 
-  This profile may only be applied when first initializing the node.
+  该配置项只能在第一次初始化节点时使用。
 
 - `badgerds`
 
-  Configures the node to use the badger datastore.
+  配置节点以采用badger数据存储。
 
-  This is the fastest datastore. Use this datastore if performance, especially
-  when adding many gigabytes of files, is critical. However:
+  这是最快的数据存储。如果特别关注性能，尤其是添加许多GB的文件数据时的性能，此数据存储非常有用。然而：
 
-  - This datastore will not properly reclaim space when your datastore is
-    smaller than several gigabytes. If you run IPFS with '--enable-gc' (you have
-    enabled block-level garbage collection), you plan on storing very little data in
-    your IPFS node, and disk usage is more critical than performance, consider using
-    flatfs.
-  - This datastore uses up to several gigabytes of memory.
+  - 当你的数据存储少于一定的GB值时，该数据存储可能无法回收存储空间。如果你使用'--enable-gc'参数（从而启用块级别的垃圾回收）来运行IPFS，计划在IPFS节点中存储非常少的数据，并且磁盘占用率优先于性能考虑时，应当考虑使用flatfs。
+  - 此数据存储会占用最多若干GB的内存。
 
-  This profile may only be applied when first initializing the node.
+  该配置项只能在第一次初始化节点时使用。
 
 - `lowpower`
 
-  Reduces daemon overhead on the system. May affect node
-  functionality - performance of content discovery and data
-  fetching may be degraded.
+  减少守护进程的系统开销。这可能会影响到节点的功能 - 如内容发现和数据获取的性能可能会降低。
 
-## Types
+## 取值类型Types
 
-This document refers to the standard JSON types (e.g., `null`, `string`,
-`number`, etc.), as well as a few custom types, described below.
+配置文件使用标准JSON类型（如`null`, `string`, `number`等），以及一些新的自定义类型数据，如下描述：
 
 ### `flag`
 
-Flags allow enabling and disabling features. However, unlike simple booleans,
-they can also be `null` (or omitted) to indicate that the default value should
-be chosen. This makes it easier for go-ipfs to change the defaults in the
-future unless the user _explicitly_ sets the flag to either `true` (enabled) or
-`false` (disabled). Flags have three possible states:
+Flags允许启动或者禁用特性。与普通的布尔值不同，此类型可以为`null` (或者省略值)，表示使用默认值。这使得go-ipfs后续可以更容易的修改默认值，除非用户 _明确的_ 将flag设为`true`(启用)或者`false`(禁用)。Flags取三种可能值：
 
-- `null` or missing (apply the default value).
-- `true` (enabled)
-- `false` (disabled)
+- `null` 或缺失 (使用默认值)
+- `true` (启用)
+- `false` (禁用)
 
 ### `priority`
 
-Priorities allow specifying the priority of a feature/protocol and disabling the
-feature/protocol. Priorities can take one of the following values:
+Priorities可以指定特性/协议的优先级，也可以禁用特性/协议。Priorities可以取以下值：
 
-- `null`/missing (apply the default priority, same as with flags)
-- `false` (disabled)
-- `1 - 2^63` (priority, lower is preferred)
+- `null`/缺失 (使用默认的优先级，同flags)
+- `false` (禁用)
+- `1 - 2^63` (优先级取值，数值越低优先级越高)
 
 ### `strings`
 
-Strings is a special type for conveniently specifying a single string, an array
-of strings, or null:
+Strings是一个特殊类型，用于更方便的指定单个字符串、字符串数组或者空值：
 
 - `null`
 - `"a single string"`
@@ -126,53 +99,49 @@ of strings, or null:
 
 ### `duration`
 
-Duration is a type for describing lengths of time, using the same format go
-does (e.g, `"1d2h4m40.01s"`).
+Duration用于描述时间长度，使用Go的时间长度格式。(如 `"1d2h4m40.01s"`)。
 
 ## `Addresses`
 
-Contains information about various listener addresses to be used by this node.
+包含了本节点使用的各种监听地址信息。
 
 ### `Addresses.API`
 
-Multiaddr or array of multiaddrs describing the address to serve the local HTTP
-API on.
+多重地址或者多重地址数组，用以描述本地HTTP API服务的地址。
 
-Supported Transports:
+支持的传输协议：
 
 - tcp/ip{4,6} - `/ipN/.../tcp/...`
 - unix - `/unix/path/to/socket`
 
-Default: `/ip4/127.0.0.1/tcp/5001`
+默认值：`/ip4/127.0.0.1/tcp/5001`
 
-Type: `strings` (multiaddrs)
+值类型：`strings` (多重地址)
 
 ### `Addresses.Gateway`
 
-Multiaddr or array of multiaddrs describing the address to serve the local
-gateway on.
+多重地址或者多重地址数组，用以描述本地网关服务的地址。
 
-Supported Transports:
+支持的传输协议：
 
 - tcp/ip{4,6} - `/ipN/.../tcp/...`
 - unix - `/unix/path/to/socket`
 
-Default: `/ip4/127.0.0.1/tcp/8080`
+默认值：`/ip4/127.0.0.1/tcp/8080`
 
-Type: `strings` (multiaddrs)
+值类型：`strings` (多重地址)
 
 ### `Addresses.Swarm`
 
-Array of multiaddrs describing which addresses to listen on for p2p swarm
-connections.
+多重地址数组，用以描述监听p2p swarm连接的地址。
 
-Supported Transports:
+支持的传输协议：
 
 - tcp/ip{4,6} - `/ipN/.../tcp/...`
 - websocket - `/ipN/.../tcp/.../ws`
 - quic - `/ipN/.../udp/.../quic`
 
-Default:
+默认值：
 
 ```json
 [
@@ -183,34 +152,34 @@ Default:
 ]
 ```
 
-Type: `array[string]` (multiaddrs)
+值类型：`array[string]` (多重地址)
 
 ### `Addresses.Announce`
 
-If non-empty, this array specifies the swarm addresses to announce to the
-network. If empty, the daemon will announce inferred swarm addresses.
+非空时，指定一个广播到网络中的swarm地址数组。
+取空值时，守护进程会自行推定其swarm地址数组并广播。
 
-Default: `[]`
+默认值：`[]`
 
-Type: `array[string]` (multiaddrs)
+值类型：`array[string]` (多重地址)
 
 ### `Addresses.NoAnnounce`
 
-Array of swarm addresses not to announce to the network.
+指定不要广播到网络中的swarm地址数组。
 
-Default: `[]`
+默认值：`[]`
 
-Type: `array[string]` (multiaddrs)
+值类型：`array[string]` (多重地址)
 
 ## `API`
 
-Contains information used by the API gateway.
+包含API网关会使用的信息。
 
 ### `API.HTTPHeaders`
 
-Map of HTTP headers to set on responses from the API HTTP server.
+API HTTP服务器响应中会包含的HTTP头字段映射表。
 
-Example:
+示例：
 
 ```json
 {
@@ -218,142 +187,116 @@ Example:
 }
 ```
 
-Default: `null`
+默认值：`null`
 
-Type: `object[string -> array[string]]` (header names -> array of header values)
+值类型：`object[string -> array[string]]` (头字段名称 -> 头字段取值数组)
 
 ## `AutoNAT`
 
-Contains the configuration options for the AutoNAT service. The AutoNAT service
-helps other nodes on the network determine if they're publicly reachable from
-the rest of the internet.
+包含AutoNAT服务的配置选项。AutoNAT为网络中的其他节点提供服务，帮助它们确定自己是否可以被互联网中其他节点公开访问到。
 
 ### `AutoNAT.ServiceMode`
 
-When unset (default), the AutoNAT service defaults to _enabled_. Otherwise, this
-field can take one of two values:
+（默认）未设置时，AutoNAT值为 _enabled_。否则该字段可以取以下值：
 
-- "enabled" - Enable the service (unless the node determines that it, itself,
-  isn't reachable by the public internet).
-- "disabled" - Disable the service.
+- "enabled" - 启用服务（除非节点检测到自己无法被公网直接访问）。
+- "disabled" - 禁用服务。
 
-Additional modes may be added in the future.
+未来可能会扩展更多的模式。
 
-Type: `string` (one of `"enabled"` or `"disabled"`)
+值类型：`string` (`"enabled"`或`"disabled"`二者取一)
 
 ### `AutoNAT.Throttle`
 
-When set, this option configure's the AutoNAT services throttling behavior. By
-default, go-ipfs will rate-limit the number of NAT checks performed for other
-nodes to 30 per minute, and 3 per peer.
+该选项用于设置AutoNAT服务的限制行为。
+默认go-ipfs会限制给其他节点进行NAT检测的速率为：每分钟最多检测30次，其中每个节点最多检测3次。
 
 ### `AutoNAT.Throttle.GlobalLimit`
 
-Configures how many AutoNAT requests to service per `AutoNAT.Throttle.Interval`.
+配置每个`AutoNAT.Throttle.Interval`周期内所提供的AutoNAT服务请求数。
 
-Default: 30
+默认值：30
 
-Type: `integer` (non-negative, `0` means unlimited)
+值类型：`integer` (非负值，`0`表示不限制)
 
 ### `AutoNAT.Throttle.PeerLimit`
 
-Configures how many AutoNAT requests per-peer to service per `AutoNAT.Throttle.Interval`.
+配置每个`AutoNAT.Throttle.Interval`周期内为每个节点提供的AutoNAT服务请求数。
 
-Default: 3
+默认值：3
 
-Type: `integer` (non-negative, `0` means unlimited)
+值类型：`integer` (非负值，`0`表示不限制)
 
 ### `AutoNAT.Throttle.Interval`
 
-Configures the interval for the above limits.
+配置上面AutoNAT限定所对应的一个周期的时长。
 
-Default: 1 Minute
+默认值：1 Minute
 
-Type: `duration` (when `0`/unset, the default value is used)
+值类型：`duration` (取`0`/未设定时，使用默认值)
 
 ## `Bootstrap`
 
-Bootstrap is an array of multiaddrs of trusted nodes to connect to in order to
-initiate a connection to the network.
+Bootstrap是一组信任节点的多重地址列表，用于初始化时更快的连接到网络中。
 
-Default: The ipfs.io bootstrap nodes
+默认值：ipfs.io提供的bootstrap节点
 
-Type: `array[string]` (multiaddrs)
+值类型：`array[string]` (多重地址)
 
 ## `Datastore`
 
-Contains information related to the construction and operation of the on-disk
-storage system.
+包含与磁盘存储系统构建和操作相关的信息。
 
 ### `Datastore.StorageMax`
 
-A soft upper limit for the size of the ipfs repository's datastore. With `StorageGCWatermark`,
-is used to calculate whether to trigger a gc run (only if `--enable-gc` flag is set).
+IPFS仓库数据存储的软上限值。与`StorageGCWatermark`选项一起可以用于计算是否需要触发垃圾回收机制的运行(仅在指定`--enable-gc`标识的时候)。
 
-Default: `"10GB"`
+默认值：`"10GB"`
 
-Type: `string` (size)
+值类型：`string` (size)
 
 ### `Datastore.StorageGCWatermark`
 
-The percentage of the `StorageMax` value at which a garbage collection will be
-triggered automatically if the daemon was run with automatic gc enabled (that
-option defaults to false currently).
+`StorageMax`的百分比值，用于指定当守护进程启用了垃圾回收时（当前该选项默认为禁用），何时会自动触发垃圾回收。
 
-Default: `90`
+默认值：`90`
 
-Type: `integer` (0-100%)
+值类型：`integer` (0-100%)
 
 ### `Datastore.GCPeriod`
 
-A time duration specifying how frequently to run a garbage collection. Only used
-if automatic gc is enabled.
+一个时间长度值，指定垃圾回收的运行频度。仅在垃圾回收启用时生效。
 
-Default: `1h`
+默认值：`1h`
 
-Type: `duration` (an empty string means the default value)
+值类型：`duration` (空值表示使用默认值)
 
 ### `Datastore.HashOnRead`
 
-A boolean value. If set to true, all block reads from disk will be hashed and
-verified. This will cause increased CPU utilization.
+布尔值。设为true时，从磁盘读取块数据时会计算其hash并校验。这会提升CPU占用。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Datastore.BloomFilterSize`
 
-A number representing the size in bytes of the blockstore's [bloom
-filter](https://en.wikipedia.org/wiki/Bloom_filter). A value of zero represents
-the feature being disabled.
+指定块存储的[布隆过滤器（bloom filter）](https://en.wikipedia.org/wiki/Bloom_filter)的字节数大小。取值为0表示关闭该特性。
 
-This site generates useful graphs for various bloom filter values:
-<https://hur.st/bloomfilter/?n=1e6&p=0.01&m=&k=7> You may use it to find a
-preferred optimal value, where `m` is `BloomFilterSize` in bits. Remember to
-convert the value `m` from bits, into bytes for use as `BloomFilterSize` in the
-config file. For example, for 1,000,000 blocks, expecting a 1% false positive
-rate, you'd end up with a filter size of 9592955 bits, so for `BloomFilterSize`
-we'd want to use 1199120 bytes. As of writing, [7 hash
-functions](https://github.com/ipfs/go-ipfs-blockstore/blob/547442836ade055cc114b562a3cc193d4e57c884/caching.go#L22)
-are used, so the constant `k` is 7 in the formula.
+这个网站已经生成了一些有用的各种布隆过滤器取值所对应的图表数据：<https://hur.st/bloomfilter/?n=1e6&p=0.01&m=&k=7>。可以使用它来找到一个首选最优值，其中`m`对应于`BloomFilterSize`的比特位长。记住配置文件中要把比特位单位的`m`取值转换为字节单位的`BloomFilterSize`大小。例如，对于1,000,000个块数据，希望低于1%的假正例概率，最终会得到过滤器的大小为9592955 bits，因此`BloomFilterSize`应该取值为1199120 bytes。这里使用的是[7 hash functions](https://github.com/ipfs/go-ipfs-blockstore/blob/547442836ade055cc114b562a3cc193d4e57c884/caching.go#L22)，因此公式中常量`k`取值为7。
 
-Default: `0` (disabled)
+默认值：`0` (disabled)
 
-Type: `integer` (non-negative, bytes)
+值类型：`integer` (非负值，bytes)
 
 ### `Datastore.Spec`
 
-Spec defines the structure of the ipfs datastore. It is a composable structure,
-where each datastore is represented by a json object. Datastores can wrap other
-datastores to provide extra functionality (eg metrics, logging, or caching).
+Spec定义了ipfs数据存储的结构。这是一个可组合的结构，其中每个数据存储由一个json对象来表示。数据存储中还可以封装其他的数据存储，从而提供额外的功能（如指标、日志或缓存）。
 
-This can be changed manually, however, if you make any changes that require a
-different on-disk structure, you will need to run the [ipfs-ds-convert
-tool](https://github.com/ipfs/ipfs-ds-convert) to migrate data into the new
-structures.
+这个可以手动修改，然而，如果修改导致了任何磁盘存储结构的变化，需要运行[ipfs-ds-convert
+tool](https://github.com/ipfs/ipfs-ds-convert)工具来将数据迁移到新的结构中。
 
-Default:
+默认值：
 
 ```
 {
@@ -384,60 +327,60 @@ Default:
 }
 ```
 
-Type: `object`
+值类型：`object`
 
 ## `Discovery`
 
-Contains options for configuring ipfs node discovery mechanisms.
+包含了配置ipfs节点发现机制所对应的选项。
 
 ### `Discovery.MDNS`
 
-Options for multicast dns peer discovery.
+多播DNS节点发现的选项。
 
 #### `Discovery.MDNS.Enabled`
 
-A boolean value for whether or not mdns should be active.
+布尔值，指定是否启用mdns。
 
-Default: `true`
+默认值：`true`
 
-Type: `bool`
+值类型：`bool`
 
 #### `Discovery.MDNS.Interval`
 
-A number of seconds to wait between discovery checks.
+mdns发现的检测间隔值，单位为秒。
 
-Default: `5`
+默认值：`5`
 
-Type: `integer` (integer seconds, 0 means the default)
+值类型：`integer` (整数秒值, 0表示默认值)
 
 ## `Gateway`
 
-Options for the HTTP gateway.
+HTTP网关的选项。
 
 ### `Gateway.NoFetch`
 
-When set to true, the gateway will only serve content already in the local repo
-and will not fetch files from the network.
+设为true时，网关仅提供本地仓库已有的文件，不再从网络中去获取文件。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Gateway.NoDNSLink`
 
+布尔值，配置DNSLink是否去查询HTTP头中的`Host`字段对应的值。
 A boolean to configure whether DNSLink lookup for value in `Host` HTTP header
 should be performed. If DNSLink is present, content path stored in the DNS TXT
 record becomes the `/` and respective payload is returned to the client.
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Gateway.HTTPHeaders`
 
-Headers to set on gateway responses.
+网关响应中包含的头信息。
 
-Default:
+默认值：
 
 ```json
 {
@@ -447,23 +390,23 @@ Default:
 }
 ```
 
-Type: `object[string -> array[string]]`
+值类型：`object[string -> array[string]]`
 
 ### `Gateway.RootRedirect`
 
-A url to redirect requests for `/` to.
+将`/`请求重定向到此url。
 
-Default: `""`
+默认值：`""`
 
-Type: `string` (url)
+值类型：`string` (url)
 
 ### `Gateway.Writable`
 
-A boolean to configure whether the gateway is writeable or not.
+布尔值，配置网关是否可写。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Gateway.PathPrefixes`
 
@@ -495,26 +438,26 @@ location /blog/ {
 }
 ```
 
-Default: `[]`
+默认值：`[]`
 
-Type: `array[string]`
+值类型：`array[string]`
 
 ### `Gateway.PublicGateways`
 
-`PublicGateways` is a dictionary for defining gateway behavior on specified hostnames.
+`PublicGateways`是一个字典，定义了针对特定的主机名，网关所对应的行为。
 
-Hostnames can optionally be defined with one or more wildcards.
+主机名支持一个或多个通配符。
 
-Examples:
+示例：
 
-- `*.example.com` will match requests to `http://foo.example.com/ipfs/*` or `http://{cid}.ipfs.bar.example.com/*`.
-- `foo-*.example.com` will match requests to `http://foo-bar.example.com/ipfs/*` or `http://{cid}.ipfs.foo-xyz.example.com/*`.
+- `*.example.com`可以匹配`http://foo.example.com/ipfs/*`或者`http://{cid}.ipfs.bar.example.com/*`。
+- `foo-*.example.com`可以匹配`http://foo-bar.example.com/ipfs/*`或者`http://{cid}.ipfs.foo-xyz.example.com/*`。
 
 #### `Gateway.PublicGateways: Paths`
 
-Array of paths that should be exposed on the hostname.
+一组可以在主机名上公开的路径。
 
-Example:
+示例：
 
 ```json
 {
@@ -528,48 +471,63 @@ Example:
 }
 ```
 
-Above enables `http://example.com/ipfs/*` and `http://example.com/ipns/*` but not `http://example.com/api/*`
+以上启用了`http://example.com/ipfs/*`和`http://example.com/ipns/*`，但没有启用`http://example.com/api/*`
 
-Default: `[]`
+默认值：`[]`
 
-Type: `array[string]`
+值类型：`array[string]`
 
 #### `Gateway.PublicGateways: UseSubdomains`
 
-A boolean to configure whether the gateway at the hostname provides [Origin isolation](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)
-between content roots.
+布尔值，配置主机名所对应的网关是否对不同的内容数据提供[源隔离](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)。
 
-- `true` - enables [subdomain gateway](#https://docs.ipfs.io/how-to/address-ipfs-on-web/#subdomain-gateway) at `http://*.{hostname}/`
+- `true` - 在`http://*.{hostname}/`上启用[子域名网关](#https://docs.ipfs.io/how-to/address-ipfs-on-web/#subdomain-gateway)
 
-  - **Requires whitelist:** make sure respective `Paths` are set.
-    For example, `Paths: ["/ipfs", "/ipns"]` are required for `http://{cid}.ipfs.{hostname}` and `http://{foo}.ipns.{hostname}` to work:
-    `json "Gateway": { "PublicGateways": { "dweb.link": { "UseSubdomains": true, "Paths": ["/ipfs", "/ipns"], } } } `
-  - **Backward-compatible:** requests for content paths such as `http://{hostname}/ipfs/{cid}` produce redirect to `http://{cid}.ipfs.{hostname}`
-  - **API:** if `/api` is on the `Paths` whitelist, `http://{hostname}/api/{cmd}` produces redirect to `http://api.{hostname}/api/{cmd}`
+  - **白名单需求：** 确保设置了相应的`Paths`值。
+    例如，需要指定`Paths: ["/ipfs", "/ipns"]`，以使得`http://{cid}.ipfs.{hostname}`和`http://{foo}.ipns.{hostname}`路径有效：
+    ```json 
+    "Gateway": { 
+      "PublicGateways": { 
+        "dweb.link": { 
+          "UseSubdomains": true, 
+          "Paths": ["/ipfs", "/ipns"], 
+        } 
+      } 
+    } 
+    ```
+  - **向后兼容：** 对内容路径如`http://{hostname}/ipfs/{cid}`的请求，会重定向到`http://{cid}.ipfs.{hostname}`
+  - **API：** 如果`Paths`白名单中包含`/api`，`http://{hostname}/api/{cmd}`会重定向到`http://api.{hostname}/api/{cmd}`
 
-- `false` - enables [path gateway](https://docs.ipfs.io/how-to/address-ipfs-on-web/#path-gateway) at `http://{hostname}/*`
-  - Example:
-  `json "Gateway": { "PublicGateways": { "ipfs.io": { "UseSubdomains": false, "Paths": ["/ipfs", "/ipns", "/api"], } } } `
+- `false` - 在`http://{hostname}/*`上启用[路径网关](https://docs.ipfs.io/how-to/address-ipfs-on-web/#path-gateway)
+  - 示例：
+  ```json
+  "Gateway": {
+    "PublicGateways": {
+      "ipfs.io": {
+        "UseSubdomains": false,
+        "Paths": ["/ipfs", "/ipns", "/api"], 
+      } 
+    } 
+  } 
+  ```
   <!-- **(not implemented yet)** due to the lack of Origin isolation, cookies and storage on `Paths` will be disabled by [Clear-Site-Data](https://github.com/ipfs/in-web-browsers/issues/157) header -->
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 #### `Gateway.PublicGateways: NoDNSLink`
 
-A boolean to configure whether DNSLink for hostname present in `Host`
-HTTP header should be resolved. Overrides global setting.
-If `Paths` are defined, they take priority over DNSLink.
+布尔值，配置该主机名下HTTP的`Host`头的DNSLink是否解析。覆盖全局配置，如果定义了`Paths`，则优先使用`Paths`。
 
-Default: `false` (DNSLink lookup enabled by default for every defined hostname)
+默认值：`false` (默认对每个主机名启用DNSLink查询)
 
-Type: `bool`
+值类型：`bool`
 
-#### Implicit defaults of `Gateway.PublicGateways`
+#### `Gateway.PublicGateways`隐式默认值
 
-Default entries for `localhost` hostname and loopback IPs are always present.
-If additional config is provided for those hostnames, it will be merged on top of implicit values:
+`localhost`主机名和回环IP的入口都有默认配置。
+如果为这些主机名提供了额外的配置，则会和隐含的默认值合并：
 
 ```json
 {
@@ -584,9 +542,7 @@ If additional config is provided for those hostnames, it will be merged on top o
 }
 ```
 
-It is also possible to remove a default by setting it to `null`.
-For example, to disable subdomain gateway on `localhost`
-and make that hostname act the same as `127.0.0.1`:
+也可以将默认设置设为`null`以移除。如要禁用`localhost`的子域名网关，并使它与`127.0.0.1`表现一致：
 
 ```shell
 $ ipfs config --json Gateway.PublicGateways '{"localhost": null }'
@@ -594,9 +550,9 @@ $ ipfs config --json Gateway.PublicGateways '{"localhost": null }'
 
 ### `Gateway` recipes
 
-Below is a list of the most common public gateway setups.
+以下是最常见的公共网关配置。
 
-- Public [subdomain gateway](https://docs.ipfs.io/how-to/address-ipfs-on-web/#subdomain-gateway) at `http://{cid}.ipfs.dweb.link` (each content root gets its own Origin)
+- `http://{cid}.ipfs.dweb.link`上的公共[子域名网关](https://docs.ipfs.io/how-to/address-ipfs-on-web/#subdomain-gateway) (每个根内容有自己的源)
 
   ```shell
   $ ipfs config --json Gateway.PublicGateways '{
@@ -607,15 +563,15 @@ Below is a list of the most common public gateway setups.
     }'
   ```
 
-  **Backward-compatible:** this feature enables automatic redirects from content paths to subdomains:
+  **向后兼容：** 该特性启用了内容路径到子域名的自动重定向：
   `http://dweb.link/ipfs/{cid}` → `http://{cid}.ipfs.dweb.link`
-  **X-Forwarded-Proto:** if you run go-ipfs behind a reverse proxy that provides TLS, make it add a `X-Forwarded-Proto: https` HTTP header to ensure users are redirected to `https://`, not `http://`. It will also ensure DNSLink names are inlined to fit in a single DNS label, so they work fine with a wildcart TLS cert ([details](https://github.com/ipfs/in-web-browsers/issues/169)). The NGINX directive is `proxy_set_header X-Forwarded-Proto "https";`.:
+  **X-Forwarded-Proto:** 如果你是在提供TLS的反向代理后面运行的go-ipfs，需要配置添加`X-Forwarded-Proto: https` HTTP头，以确保用户会被重定向到`https://`而不是`http://`上。还要确保DNSLink名称是内联的（inlined）以适配单DNS标签，这样才能与通配符TLS证书正常工作([详情](https://github.com/ipfs/in-web-browsers/issues/169))。NGINX对应的配置是：`proxy_set_header X-Forwarded-Proto "https";`.:
   `http://dweb.link/ipfs/{cid}` → `https://{cid}.ipfs.dweb.link`
   `http://dweb.link/ipns/your-dnslink.site.example.com` → `https://your--dnslink-site-example-com.ipfs.dweb.link`
-  **X-Forwarded-Host:** we also support `X-Forwarded-Host: example.com` if you want to override subdomain gateway host from the original request:
+  **X-Forwarded-Host:** 如果想覆盖子域名网关的主机名，也支持通过`X-Forwarded-Host: example.com`来实现：
   `http://dweb.link/ipfs/{cid}` → `http://{cid}.ipfs.example.com`
 
-- Public [path gateway](https://docs.ipfs.io/how-to/address-ipfs-on-web/#path-gateway) at `http://ipfs.io/ipfs/{cid}` (no Origin separation)
+- `http://ipfs.io/ipfs/{cid}` 上的公共[路径网关](https://docs.ipfs.io/how-to/address-ipfs-on-web/#path-gateway) (没有源隔离)
 
   ```shell
   $ ipfs config --json Gateway.PublicGateways '{
@@ -626,19 +582,18 @@ Below is a list of the most common public gateway setups.
     }'
   ```
 
-- Public [DNSLink](https://dnslink.io/) gateway resolving every hostname passed in `Host` header.
+- 公共[DNSLink](https://dnslink.io/)网关，会解析在`Host`头中传入的每个主机名。
 
   ```shell
   $ ipfs config --json Gateway.NoDNSLink true
   ```
 
-  - Note that `NoDNSLink: false` is the default (it works out of the box unless set to `true` manually)
+  - 默认为`NoDNSLink: false` (it works out of the box unless set to `true` manually)
 
 - Hardened, site-specific [DNSLink gateway](https://docs.ipfs.io/how-to/address-ipfs-on-web/#dnslink-gateway).
-  Disable fetching of remote data (`NoFetch: true`)
-  and resolving DNSLink at unknown hostnames (`NoDNSLink: true`).
-  Then, enable DNSLink gateway only for the specific hostname (for which data
-  is already present on the node), without exposing any content-addressing `Paths`:
+  禁用获取远程数据 (`NoFetch: true`)
+  解析未知主机名的DNSLink (`NoDNSLink: true`).
+  然后，只对特定的主机名启用DNSLink网关(for which data is already present on the node)，不对外暴露任何基于内容寻址的路径：
   "NoFetch": true,
   "NoDNSLink": true,
   ```shell
@@ -656,64 +611,60 @@ Below is a list of the most common public gateway setups.
 
 ### `Identity.PeerID`
 
-The unique PKI identity label for this configs peer. Set on init and never read,
-it's merely here for convenience. Ipfs will always generate the peerID from its
-keypair at runtime.
+当前配置节点的唯一PKI标识标签。它在初始化时设置，后续也不会再被访问。这里仅仅是为了方便使用。IPFS在运行时会基于它的密钥对来生成节点ID。
 
-Type: `string` (peer ID)
+值类型：`string` (peer ID)
 
 ### `Identity.PrivKey`
 
-The base64 encoded protobuf describing (and containing) the nodes private key.
+base64编码的protobuf内容，包含了节点的私钥。
 
-Type: `string` (base64 encoded)
+值类型：`string` (base64 encoded)
 
 ## `Ipns`
 
 ### `Ipns.RepublishPeriod`
 
-A time duration specifying how frequently to republish ipns records to ensure
-they stay fresh on the network.
+时间长度值，指定重新发布ipns记录的时间频度，以确保它在网络中持续有效。
 
-Default: 4 hours.
+默认值：4 hours.
 
-Type: `interval` or an empty string for the default.
+值类型：`interval` 或者空值，表示使用默认值。
 
 ### `Ipns.RecordLifetime`
 
-A time duration specifying the value to set on ipns records for their validity
-lifetime.
+时间长度值，指定ipns记录的有效时长。
 
-Default: 24 hours.
+默认值：24 hours.
 
-Type: `interval` or an empty string for the default.
+值类型：`interval` 或者空值，表示使用默认值。
 
 ### `Ipns.ResolveCacheSize`
 
 The number of entries to store in an LRU cache of resolved ipns entries. Entries
 will be kept cached until their lifetime is expired.
 
-Default: `128`
+默认值：`128`
 
-Type: `integer` (non-negative, 0 means the default)
+值类型：`integer` (non-negative, 0 means the default)
 
 ## `Mounts`
 
-FUSE mount point configuration options.
+FUSE挂载点的配置选项。
 
 ### `Mounts.IPFS`
 
-Mountpoint for `/ipfs/`.
+`/ipfs/`的挂载点。
 
-Default: `/ipfs`
+默认值：`/ipfs`
 
-Type: `string` (filesystem path)
+值类型：`string` (filesystem path)
 
 ### `Mounts.IPNS`
 
-Mountpoint for `/ipns/`.
+`/ipns/`的挂载点
 
-Default: `/ipns`
+默认值：`/ipns`
 
 Type: `string` (filesystem path)
 
@@ -723,24 +674,23 @@ Sets the FUSE allow other option on the mountpoint.
 
 ## `Pinning`
 
-Pinning configures the options available for pinning content
-(i.e. keeping content longer term instead of as temporarily cached storage).
+Pinning可以配置固定内容相关的选项。
+(如保持内容长期有效，而不是临时缓存)。
 
 ### `Pinning.RemoteServices`
 
-`RemoteServices` maps a name for a remote pinning service to its configuration.
+`RemoteServices` 提供了一组名称和对应的远程固定服务及其配置的映射表。
 
-A remote pinning service is a remote service that exposes an API for managing
-that service's interest in longer term data storage.
+远程固定服务是一个远程服务，它公开了API，用于管理该服务所关注的长期数据存储。
 
-The exposed API conforms to the specification defined at
-https://ipfs.github.io/pinning-services-api-spec/
+公开的API需要符合在[pinning-services-api-spec](https://ipfs.github.io/pinning-services-api-spec/) 定义的规范。
+
 
 #### `Pinning.RemoteServices: API`
 
-Contains information relevant to utilizing the remote pinning service
+包含与使用该远程固定服务相关的信息
 
-Example:
+示例：
 
 ```json
 {
@@ -759,91 +709,70 @@ Example:
 
 ##### `Pinning.RemoteServices: API.Endpoint`
 
-The HTTP(S) endpoint through which to access the pinning service
+HTTP(S)入口，用于方案固定服务
 
-Example: "https://pinningservice.tld:1234/my/api/path"
+示例："https://pinningservice.tld:1234/my/api/path"
 
-Type: `string`
+值类型：`string`
 
 ##### `Pinning.RemoteServices: API.Key`
 
-The key through which access to the pinning service is granted
+授权访问固定服务的密钥
 
-Type: `string`
+值类型：`string`
 
 ## `Pubsub`
 
-Pubsub configures the `ipfs pubsub` subsystem. To use, it must be enabled by
+Pubsub用于配置`ipfs pubsub`子系统。 To use, it must be enabled by
 passing the `--enable-pubsub-experiment` flag to the daemon.
 
 ### `Pubsub.Router`
 
+设置pubsub默认使用的节点消息路由，可以是以下取值：
 Sets the default router used by pubsub to route messages to peers. This can be one of:
 
-- `"floodsub"` - floodsub is a basic router that simply _floods_ messages to all
-  connected peers. This router is extremely inefficient but _very_ reliable.
-- `"gossipsub"` - [gossipsub][] is a more advanced routing algorithm that will
-  build an overlay mesh from a subset of the links in the network.
+- `"floodsub"` - floodsub是一个基础的路由，简单将消息发给所有连接的节点。此路由效率极低，但是非常可靠。
+- `"gossipsub"` - [gossipsub][]是一个更高级的路由算法，它从网络链接的子集中构建了一层覆盖网格。
 
-Default: `"gossipsub"`
+默认值：`"gossipsub"`
 
-Type: `string` (one of `"floodsub"`, `"gossipsub"`, or `""` (apply default))
+值类型：`string` (`"floodsub"`, `"gossipsub"`，或者`""`之一 (使用默认值))
 
-[gossipsub]: https://github.com/libp2p/specs/tree/master/pubsub/gossipsub
+[gossipsub](https://github.com/libp2p/specs/tree/master/pubsub/gossipsub)
 
 ### `Pubsub.DisableSigning`
 
-Disables message signing and signature verification. Enable this option if
-you're operating in a completely trusted network.
+禁用消息签名和签名验证。如果在完全可信的网络中运行节点，可以启用此选项。
 
-It is _not_ safe to disable signing even if you don't care _who_ sent the
-message because spoofed messages can be used to silence real messages by
-intentionally re-using the real message's message ID.
+即使不在意谁发送的消息，禁用签名依然不安全。因为通过恶意复用真实消息的消息ID，欺诈消息可以使得真实消息被静音忽略。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ## `Peering`
 
-Configures the peering subsystem. The peering subsystem configures go-ipfs to
-connect to, remain connected to, and reconnect to a set of nodes. Nodes should
-use this subsystem to create "sticky" links between frequently useful peers to
-improve reliability.
+配置对等连接子系统。对等连接子系统配置了go-ipfs如何连接、保持连接和重新连接到一组节点。通过使用这个子系统，可以在常用的节点间创建粘性链接，从而提升可靠性。
 
-Use-cases:
+使用场景：
 
-- An IPFS gateway connected to an IPFS cluster should peer to ensure that the
-  gateway can always fetch content from the cluster.
-- A dapp may peer embedded go-ipfs nodes with a set of pinning services or
-  textile cafes/hubs.
-- A set of friends may peer to ensure that they can always fetch each other's
-  content.
+- 连接到IPFS集群的IPFS网关应该保持节点链接，以确保网关总是可以从集群中获取内容。
+- 一个dapp应该链接到内嵌的go-ipfs节点，从而可获取相应的内容固定服务或文件网关。
+- 好友之间应该保持链接，以确保随时可以获取对方的内容信息。
 
-When a node is added to the set of peered nodes, go-ipfs will:
+当一个节点添加到互联节点集合中之后，go-ipfs会：
 
-1. Protect connections to this node from the connection manager. That is,
-   go-ipfs will never automatically close the connection to this node and
-   connections to this node will not count towards the connection limit.
-2. Connect to this node on startup.
-3. Repeatedly try to reconnect to this node if the last connection dies or the
-   node goes offline. This repeated re-connect logic is governed by a randomized
-   exponential backoff delay ranging from ~5 seconds to ~10 minutes to avoid
-   repeatedly reconnect to a node that's offline.
+1. 在连接管理器中保持到该节点的连接。此时，go-ipfs永远不会自动断开到此节点的连接，而且与此节点的连接不会计入连接限制中。
+3. 当节点离线或者之前的连接断开时，会反复尝试重连。重连逻辑按照随机指数衰退来计算重连间隔，时延从5s到10分钟进行变化，以避免一直反复重连已经离线的节点。
 
-Peering can be asymmetric or symmetric:
+对等连接可以是非对称的或者对称的：
 
-- When symmetric, the connection will be protected by both nodes and will likely
-  be vary stable.
-- When asymmetric, only one node (the node that configured peering) will protect
-  the connection and attempt to re-connect to the peered node on disconnect. If
-  the peered node is under heavy load and/or has a low connection limit, the
-  connection may flap repeatedly. Be careful when asymmetrically peering to not
-  overload peers.
+- 对称连接时，连接会被双方保护，从而保持稳定。
+- 非对称连接时，只有一个节点（配置了对等连接的节点）会保护连接并在断开后尝试重连。当对等节点负载较重或者连接限制数很低时，连接可能反复波动。因此在使用非对称连接时，要注意保持负载不要多重。
 
 ### `Peering.Peers`
 
-The set of peers with which to peer.
+用于对等连接的节点集合。
 
 ```json
 {
@@ -863,73 +792,59 @@ The set of peers with which to peer.
 }
 ```
 
-Where `ID` is the peer ID and `Addrs` is a set of known addresses for the peer. If no addresses are specified, the DHT will be queried.
+这里`ID`是节点的ID，`Addrs`是已知的节点地址集合。如果没有指定地址，将会查询DHT以获取。
 
-Additional fields may be added in the future.
+未来可能扩展其他字段。
 
-Default: empty.
+默认值：empty.
 
-Type: `array[peering]`
+值类型：`array[peering]`
 
 ## `Reprovider`
 
 ### `Reprovider.Interval`
 
-Sets the time between rounds of reproviding local content to the routing
-system. If unset, it defaults to 12 hours. If set to the value `"0"` it will
-disable content reproviding.
+设置将本地内容重新提交到路由系统的时间间隔。如果未设置，默认值为12小时。如果设为`"0"`，将禁用内容重新提交。
 
-Note: disabling content reproviding will result in other nodes on the network
-not being able to discover that you have the objects that you have. If you want
-to have this disabled and keep the network aware of what you have, you must
-manually announce your content periodically.
+注意：禁用内容重新提交将导致网络中的其他节点无法发现你拥有哪些数据内容。如果你既想禁用此选项，又期望网络能够知道你拥有的数据内容，需要手动定期向网络发布你所拥有的内容。
 
-Type: `array[peering]`
+值类型：`array[peering]`
 
 ### `Reprovider.Strategy`
 
-Tells reprovider what should be announced. Valid strategies are:
+告知应该发布哪些重新提交内容。有效策略值包括：
 
-- "all" - announce all stored data
-- "pinned" - only announce pinned data
-- "roots" - only announce directly pinned keys and root keys of recursive pins
+- "all" - 发布所有存储的数据
+- "pinned" - 只发布固定的数据
+- "roots" - 只发布直接固定的键值，以及递归固定数据的根键值
 
-Default: all
+默认值：all
 
-Type: `string` (or unset for the default)
+值类型：`string` (未设置时取默认值)
 
 ## `Routing`
 
-Contains options for content, peer, and IPNS routing mechanisms.
+包含内容、节点和IPNS路由机制的选项。
 
 ### `Routing.Type`
 
-Content routing mode. Can be overridden with daemon `--routing` flag.
+内容路由模式。守护进程启动时的`--routing`选项会覆盖这里的取值。
 
-There are two core routing options: "none" and "dht" (default).
+有两种核心路由选项："none"和"dht" (默认)
 
-- If set to "none", your node will use _no_ routing system. You'll have to
-  explicitly connect to peers that have the content you're looking for.
-- If set to "dht" (or "dhtclient"/"dhtserver"), your node will use the IPFS DHT.
+- 设为"none"时，节点不会使用路由系统，必须明确连接到你需要的内容所在的节点，以获取其数据。
+- 设为"dht"时(或者"dhtclient"/"dhtserver")，节点会使用IPFS DHT。
 
-When the DHT is enabled, it can operate in two modes: client and server.
+当启用DHT时，可以以两种模式运行：客户端 或者 服务器模式。
 
-- In server mode, your node will query other peers for DHT records, and will
-  respond to requests from other peers (both requests to store records and
-  requests to retrieve records).
-- In client mode, your node will query the DHT as a client but will not respond
-  to requests from other peers. This mode is less resource intensive than server
-  mode.
+- 服务器模式下，节点会向其他节点查询DHT记录，同时也会响应其他节点的DHT请求（包括存储记录的请求和检索记录的请求）。
+- 客户端模式下，节点会作为客户端向其他节点查询DHT，但不会响应其他节点的DHT请求。这种模式比服务器模式占用更少的资源。
 
-When `Routing.Type` is set to `dht`, your node will start as a DHT client, and
-switch to a DHT server when and if it determines that it's reachable from the
-public internet (e.g., it's not behind a firewall).
+当`Routing.Type`设为`dht`时，节点以DHT客户端模式启动,当检测到可被公网发现（如没有出于防火墙之后）时，将切换为DHT服务器模式。
 
-To force a specific DHT mode, client or server, set `Routing.Type` to
-`dhtclient` or `dhtserver` respectively. Please do not set this to `dhtserver`
-unless you're sure your node is reachable from the public network.
+也可以将`Routing.Type`设为`dhtclient`或`dhtserver`，以相应强制指定DHT为客户端或者服务器模式。如果无法确定你的节点可被公网发现，不要设置为`dhtserver`。
 
-**Example:**
+**示例：**
 
 ```json
 {
@@ -939,147 +854,112 @@ unless you're sure your node is reachable from the public network.
 }
 ```
 
-Default: dht
+默认值：dht
 
-Type: `string` (or unset for the default)
+值类型：`string` (or unset for the default)
 
 ## `Swarm`
 
-Options for configuring the swarm.
+配置swarm的选项。
 
 ### `Swarm.AddrFilters`
 
-An array of addresses (multiaddr netmasks) to not dial. By default, IPFS nodes
-advertise _all_ addresses, even internal ones. This makes it easier for nodes on
-the same network to reach each other. Unfortunately, this means that an IPFS
-node will try to connect to one or more private IP addresses whenever dialing
-another node, even if this other node is on a different network. This may
-trigger netscan alerts on some hosting providers or cause strain in some setups.
+一组不连接的地址（多重地址掩码）。默认情况下，IPFS节点会公告所有的地址，包括内部地址。这使得在同一网络内的节点更容易相互连接。不好的地方在于，这也意味着IPDS节点在连接其他节点时，会尝试连接一个或多个私有IP地址，即便其他节点处于与之不同的网络中。这可能会在某些托管服务商那里触发网络扫描的警告，或对某些设置造成压力。
 
-The `server` configuration profile fills up this list with sensible defaults,
-preventing dials to all non-routable IP addresses (e.g., `192.168.0.0/16`) but
-you should always check settings against your own network and/or hosting
-provider.
+`server`配置选项会为这个列表填充一个合理的默认值，阻止连接到所有不可路由的地址（如`192.168.0.0/16`），但是你总是应该把这些设置，和自己的网络环境或者托管服务商的网络环境对比检查。
 
-Default: `[]`
+默认值：`[]`
 
-Type: `array[string]`
+值类型：`array[string]`
 
 ### `Swarm.DisableBandwidthMetrics`
 
-A boolean value that when set to true, will cause ipfs to not keep track of
-bandwidth metrics. Disabling bandwidth metrics can lead to a slight performance
-improvement, as well as a reduction in memory usage.
+布尔值。设为true时，会导致IPFS不追踪带宽指标。禁用带宽指标可能会导致性能的轻微改善，同时减少了内存占用。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Swarm.DisableNatPortMap`
 
-Disable automatic NAT port forwarding.
+禁用NAT端口自动转发。
 
-When not disabled (default), go-ipfs asks NAT devices (e.g., routers), to open
-up an external port and forward it to the port go-ipfs is running on. When this
-works (i.e., when your router supports NAT port forwarding), it makes the local
-go-ipfs node accessible from the public internet.
+没有禁用（默认值）时，go-ipfs会请求NAT设备（如路由器）打开一个外部端口，并将此端口的数据转发到go-ipfs运行的端口上。这种情况下（也就是你的路由器支持NAT端口转发），本地的go-ipfs节点可以被公网访问到。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Swarm.DisableRelay`
 
-Deprecated: Set `Swarm.Transports.Network.Relay` to `false`.
+已弃用。对应于设置`Swarm.Transports.Network.Relay`为`false`。
 
-Disables the p2p-circuit relay transport. This will prevent this node from
-connecting to nodes behind relays, or accepting connections from nodes behind
-relays.
+禁用p2p回环中继传输。这会禁止节点连接中继之后的节点，或者接受中继之后节点的连接。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Swarm.EnableRelayHop`
 
-Configures this node to act as a relay "hop". A relay "hop" relays traffic for other peers.
+配置本节点作为一个中继跳跃点。一个中继跳跃点能够为其他节点中继流量。
 
-WARNING: Do not enable this option unless you know what you're doing. Other
-peers will randomly decide to use your node as a relay and consume _all_
-available bandwidth. There is _no_ rate-limiting.
+警告：除非你知道该行为的具体意义，否则不要启动此选项。其他节点可以随机决定使用你的节点作为中继，并消耗所有可用的带宽，且没有任何速率限制。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
 ### `Swarm.EnableAutoRelay`
 
-Enables "automatic relay" mode for this node. This option does two _very_
-different things based on the `Swarm.EnableRelayHop`. See
-[#7228](https://github.com/ipfs/go-ipfs/issues/7228) for context.
+启用本节点的自动中继模式。该选项与`Swarm.EnableRelayHop`一起会提供两种非常不同的特性。参考
+[#7228](https://github.com/ipfs/go-ipfs/issues/7228)。
 
-Default: `false`
+默认值：`false`
 
-Type: `bool`
+值类型：`bool`
 
-#### Mode 1: `EnableRelayHop` is `false`
+#### 模式1： `EnableRelayHop`值为`false`
 
-If `Swarm.EnableAutoRelay` is enabled and `Swarm.EnableRelayHop` is disabled,
-your node will automatically _use_ public relays from the network if it detects
-that it cannot be reached from the public internet (e.g., it's behind a
-firewall). This is likely the feature you're looking for.
+如果启用了`Swarm.EnableAutoRelay`，同时禁用了`Swarm.EnableRelayHop`，节点在发现自己无法被公网所发现时（如在防火墙之后），会自动使用网络中的公共中继。这是该选项所期望的特性。
 
-If you enable `EnableAutoRelay`, you should almost certainly disable
-`EnableRelayHop`.
+如果启用了`EnableAutoRelay`，那么几乎可以确定应该禁用`EnableRelayHop`。
 
-#### Mode 2: `EnableRelayHop` is `true`
+#### 模式2： `EnableRelayHop`值为`true`
 
-If `EnableAutoRelay` is enabled and `EnableRelayHop` is enabled, your node will
-_act_ as a public relay for the network. Furthermore, in addition to simply
-relaying traffic, your node will advertise itself as a public relay. Unless you
-have the bandwidth of a small ISP, do not enable both of these options at the
-same time.
+如果启用了`Swarm.EnableAutoRelay`，同时还启用了`Swarm.EnableRelayHop`，节点将充当网络的公共中继。此外，除了简单的中继流量，节点还会对外发布自身为公共中继。除非你拥有小型ISP的带宽，否则不要同时启用这两个选项。
 
 ### `Swarm.EnableAutoNATService`
 
-**REMOVED**
+**已移除**
 
-Please use [`AutoNAT.ServiceMode`][].
+请使用 [`AutoNAT.ServiceMode`][].
 
 ### `Swarm.ConnMgr`
 
-The connection manager determines which and how many connections to keep and can
-be configured to keep. Go-ipfs currently supports two connection managers:
+连接管理器用于决策哪些连接和多少连接可以被配置保持并保持这些连接。Go-ipfs当前支持两种连接管理器：
 
-- none: never close idle connections.
-- basic: the default connection manager.
+- none: 从不关闭空闲连接。
+- basic: 默认的连接管理器。
 
-Default: basic
+默认值：basic
 
 #### `Swarm.ConnMgr.Type`
 
-Sets the type of connection manager to use, options are: `"none"` (no connection
-management) and `"basic"`.
+设置要使用的连接管理器的类型，可选项为：`"none"` (无连接管理器)和`"basic"`。
 
-Default: "basic".
+默认值："basic".
 
-Type: `string` (when unset or `""`, the default connection manager is applied
-and all `ConnMgr` fields are ignored).
+值类型：`string` (未设置或值为`""`，使用默认的连接管理器，且忽略所有的`ConnMgr`其他字段值)。
 
-#### Basic Connection Manager
+#### basic连接管理器
 
-The basic connection manager uses a "high water", a "low water", and internal
-scoring to periodically close connections to free up resources. When a node
-using the basic connection manager reaches `HighWater` idle connections, it will
-close the least useful ones until it reaches `LowWater` idle connections.
+基本连接管理器使用“高水位”、“低水位”和内部评分来定期关闭连接以回收资源。当一个节点使用了基本管理器，且空闲连接数达到“高水位”时，它将依次关闭最无用的连接，直到空闲连接数下降到“低水位”。
 
-The connection manager considers a connection idle if:
+连接管理器在如下情形下判定一个连接为空闲状态：
 
-- It has not been explicitly _protected_ by some subsystem. For example, Bitswap
-  will protect connections to peers from which it is actively downloading data,
-  the DHT will protect some peers for routing, and the peering subsystem will
-  protect all "peered" nodes.
-- It has existed for longer than the `GracePeriod`.
+- 它没有明确的收到某些子系统的保护。如Bitswap会保护其正在主动下载数据的节点连接。DHT会保护用于路由的节点。对等连接子系统会保护所有的对等节点连接。
+- 该连接存活的时间超过了`GracePeriod`。
 
 **Example:**
 
@@ -1098,190 +978,155 @@ The connection manager considers a connection idle if:
 
 ##### `Swarm.ConnMgr.LowWater`
 
-LowWater is the number of connections that the basic connection manager will
-trim down to.
+低水位是基本连接管理器会将连接数降低到的数值。
 
-Default: `600`
+默认值：`600`
 
-Type: `integer`
+值类型：`integer`
 
 ##### `Swarm.ConnMgr.HighWater`
 
-HighWater is the number of connections that, when exceeded, will trigger a
-connection GC operation. Note: protected/recently formed connections don't count
-towards this limit.
+高水位是超过此连接数后，会触发连接垃圾回收的数值。注意：受保护的/最近形成的连接不会计算到这个限制统计中。
 
-Default: `900`
+默认值：`900`
 
-Type: `integer`
+值类型：`integer`
 
 ##### `Swarm.ConnMgr.GracePeriod`
 
-GracePeriod is a time duration that new connections are immune from being closed
-by the connection manager.
+GracePeriod是一个时间长度值，表示免于被连接管理器关闭的新建连接的持续时长。
 
-Default: `"20s"`
+默认值：`"20s"`
 
-Type: `duration`
+值类型：`duration`
 
 ### `Swarm.Transports`
 
-Configuration section for libp2p transports. An empty configuration will apply
-the defaults.
+libp2p传输的配置部分。空配置则会使用默认值。
 
 ### `Swarm.Transports.Network`
 
-Configuration section for libp2p _network_ transports. Transports enabled in
-this section will be used for dialing. However, to receive connections on these
-transports, multiaddrs for these transports must be added to `Addresses.Swarm`.
+libp2p网络传输的配置部分。这里启用的传输网络类型将用于对外连接，同时为了接受这些传输网络类型的连接，对应类型的多重地址需要添加到`Addresses.Swarm`选项中。
 
-Supported transports are: QUIC, TCP, WS, and Relay.
+支持的传输类型包括：QUIC, TCP, WS, 和 Relay。
 
-Each field in this section is a `flag`.
+本节中的每个字段都是一个`flag`值。
 
 #### `Swarm.Transports.Network.TCP`
 
-[TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) is the most
-widely used transport by go-ipfs nodes. It doesn't directly support encryption
-and/or multiplexing, so libp2p will layer a security & multiplexing transport
-over it.
+[TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)是go-ipfs节点使用最广泛的传输协议。它本身并不直接支持加密或者多路复用，因此libp2p在其上构建了一个安全/多路复用的传输层。
 
-Default: Enabled
+默认值：Enabled
 
-Type: `flag`
+值类型：`flag`
 
-Listen Addresses:
+监听地址：
 
-- /ip4/0.0.0.0/tcp/4001 (default)
-- /ip6/::/tcp/4001 (default)
+- /ip4/0.0.0.0/tcp/4001 (默认)
+- /ip6/::/tcp/4001 (默认)
 
 #### `Swarm.Transports.Network.Websocket`
 
-[Websocket](https://en.wikipedia.org/wiki/WebSocket) is a transport usually used
-to connect to non-browser-based IPFS nodes from browser-based js-ipfs nodes.
+[Websocket](https://en.wikipedia.org/wiki/WebSocket)传输协议常用于基于浏览器的js-ipfs节点连接到非浏览器的IPFS节点的时候。
 
-While it's enabled by default for dialing, go-ipfs doesn't listen on this
-transport by default.
+go-ipfs默认支持此传输协议的对外连接，但默认不会监听此传输类型。
 
-Default: Enabled
+默认值：Enabled
 
-Type: `flag`
+值类型：`flag`
 
-Listen Addresses:
+监听地址：
 
 - /ip4/0.0.0.0/tcp/4002/ws
 - /ip6/::/tcp/4002/ws
 
 #### `Swarm.Transports.Network.QUIC`
 
-[QUIC](https://en.wikipedia.org/wiki/QUIC) is a UDP-based transport with
-built-in encryption and multiplexing. The primary benefits over TCP are:
+[QUIC](https://en.wikipedia.org/wiki/QUIC)是一个基于UDP的传输协议，且内建支持了加密和多路复用。它相对于TCP的优势在于：
 
-1. It doesn't require a file descriptor per connection, easing the load on the OS.
-2. It currently takes 2 round trips to establish a connection (our TCP transport
-   currently takes 6).
+1. 不需要每个连接占用一个文件描述符，减轻了操作系统的负载。
+2. 目前只需要往返两次即可建立连接（TCP传输需要往返6次以完成连接）。
 
-Default: Enabled
+默认值：Enabled
 
-Type: `flag`
+值类型：`flag`
 
-Listen Addresses:
+监听地址：
 
-- /ip4/0.0.0.0/udp/4001/quic (default)
-- /ip6/::/udp/4001/quic (default)
+- /ip4/0.0.0.0/udp/4001/quic (默认)
+- /ip6/::/udp/4001/quic (默认)
 
 #### `Swarm.Transports.Network.Relay`
 
-[Libp2p Relay](https://github.com/libp2p/specs/tree/master/relay) proxy
-transport that forms connections by hopping between multiple libp2p nodes. This
-transport is primarily useful for bypassing firewalls and NATs.
+[Libp2p Relay](https://github.com/libp2p/specs/tree/master/relay)是一个代理传输协议，在多个libp2p节点间代理跳转以形成连接。这个传输协议在穿透防火墙和NATs时很有用。
 
-Default: Enabled
+默认值：Enabled
 
-Type: `flag`
+值类型：`flag`
 
-Listen Addresses: This transport is special. Any node that enables this
-transport can receive inbound connections on this transport, without specifying
-a listen address.
+监听地址：这个传输协议很特殊。任何启用此类型传输的节点无需指定监听地址，就能够收到此类型的传入连接。
 
 ### `Swarm.Transports.Security`
 
-Configuration section for libp2p _security_ transports. Transports enabled in
-this section will be used to secure unencrypted connections.
+libp2p安全传输的配置部分。启用这部分特性能够增强未加密连接的安全性。
 
-Security transports are configured with the `priority` type.
+安全传输配置采用`priority`值类型。
 
-When establishing an _outbound_ connection, go-ipfs will try each security
-transport in priority order (lower first), until it finds a protocol that the
-receiver supports. When establishing an _inbound_ connection, go-ipfs will let
-the initiator choose the protocol, but will refuse to use any of the disabled
-transports.
+建立出站连接的时候，go-ipfs会按优先级次序（从低到高）依次尝试每个安全传输选项，直到找到一个接收方也支持的协议为止。建立入站连接的时候，go-ipfs会让发起者选择协议，但会拒绝使用任何已禁用的传输协议。
 
-Supported transports are: TLS (priority 100), SECIO (Disabled: i.e. priority false), Noise
-(priority 300).
+支持的安全传输协议包括：TLS (priority 100), SECIO (禁用: 即priority false), Noise
+(priority 300)。
 
-No default priority will ever be less than 100.
+任何默认的优先级都不会低于100。
 
 #### `Swarm.Transports.Security.TLS`
 
-[TLS](https://github.com/libp2p/specs/tree/master/tls) (1.3) is the default
-security transport as of go-ipfs 0.5.0. It's also the most scrutinized and
-trusted security transport.
+[TLS](https://github.com/libp2p/specs/tree/master/tls) (1.3)是go-ipfs 0.5.0默认的安全传输协议。它也是最广泛被审查和可信的安全传输协议。
 
-Default: `100`
+默认值：`100`
 
-Type: `priority`
+值类型：`priority`
 
 #### `Swarm.Transports.Security.SECIO`
 
-[SECIO](https://github.com/libp2p/specs/tree/master/secio) was the most widely
-supported IPFS & libp2p security transport. However, it is currently being
-phased out in favor of more popular and better vetted protocols like TLS and
-Noise.
+[SECIO](https://github.com/libp2p/specs/tree/master/secio) 曾是IPFS&libp2p安全传输层支持最广泛的协议。不过，目前正在被逐步淘汰，取而代之的是更流行的和经过更好的审查的协议，如TLS和Noise。
 
-Default: `false`
+默认值：`false`
 
-Type: `priority`
+值类型：`priority`
 
 #### `Swarm.Transports.Security.Noise`
 
-[Noise](https://github.com/libp2p/specs/tree/master/noise) is slated to replace
-TLS as the cross-platform, default libp2p protocol due to ease of
-implementation. It is currently enabled by default but with low priority as it's
-not yet widely supported.
+[Noise](https://github.com/libp2p/specs/tree/master/noise) 因为其易于实现，将替代TLS作为跨平台libp2p的默认协议。当前默认启用，但因为尚未广泛支持，优先级较低。
 
-Default: `300`
+默认值：`300`
 
-Type: `priority`
+值类型：`priority`
 
 ### `Swarm.Transports.Multiplexers`
 
-Configuration section for libp2p _multiplexer_ transports. Transports enabled in
-this section will be used to multiplex duplex connections.
+libp2p多路复用传输的配置部分。启用这部分特性将支持多路复用的双工连接。
 
-Multiplexer transports are secured the same way security transports are, with
-the `priority` type. Like with security transports, the initiator gets their
-first choice.
+多路复用采用和安全传输一样的保护方式，使用`priority`值类型。与安全传输一样，发起者优先进行选择。
 
-Supported transports are: Yamux (priority 100) and Mplex (priority 200)
+支持的传输类型包括：Yamux (priority 100) 和 Mplex (priority 200)
 
-No default priority will ever be less than 100.
+任何默认的优先级都不会低于100。
 
 ### `Swarm.Transports.Multiplexers.Yamux`
 
-Yamux is the default multiplexer used when communicating between go-ipfs nodes.
+Yamux是go-ipfs节点间通讯时默认使用的多路复用器。
 
-Default: `100`
+默认值：`100`
 
-Type: `priority`
+值类型：`priority`
 
 ### `Swarm.Transports.Multiplexers.Mplex`
 
-Mplex is the default multiplexer used when communicating between go-ipfs and all
-other IPFS and libp2p implementations. Unlike Yamux:
+Mplex是go-ipfs和所有其他节点以及libp2p实现通讯时默认使用的多路复用器。和Yamux不同的是：
 
 The mounts config values specifies the default mount points for the IPFS and IPNS virtual file systems, if no other directories are specified by the `ipfs mount` command. These folders should exist, and have permissions for your user to be able to mount to them via fuse.
 
-Default: `200`
+默认值：`200`
 
-Type: `priority`
+值类型：`priority`

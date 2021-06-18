@@ -1,14 +1,14 @@
 ---
-title: Modify the bootstrap list
+title: 修改引导列表
 legacyUrl: https://docs.ipfs.io/guides/examples/bootstrap/
 description: Learn how to modify the IPFS bootstrap peers list to create a personal IPFS network.
 ---
 
-# Modify the bootstrap peers list
+# 修改引导节点列表
 
-The IPFS bootstrap list is a list of peers with which the IPFS daemon learns about other peers on the network. IPFS comes with a default list of trusted peers, but you are free to modify the list to suit your needs. One popular use for a custom bootstrap list is to create a personal IPFS network.
+IPFS引导列表是一个对等节点的列表，IPFS守护进程可以从这里了解到网络中其他节点的信息。IPFS带有一个默认的信任节点列表，你也可以按需自行修改这个列表。通常可以自定义一个引导列表来创建一个私有的IPFS网络。
 
-First, let's list your node's bootstrap list:
+首先，列出当前节点的引导列表：
 
 ```bash
 ipfs bootstrap list
@@ -19,41 +19,41 @@ ipfs bootstrap list
 > /ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
 ```
 
-The lines listed above are the addresses of the default IPFS bootstrap nodes — they are run by the IPFS development team. The addresses listed are fully resolved and specified in [multiaddr](https://github.com/multiformats/multiaddr) format, which makes every protocol explicit. This way, your node knows exactly where to reach the bootstrap nodes — the location is unambiguous.
+以上列出的是默认的IPFS引导节点的地址，它们是由IPFS开发团队运行维护。列出的地址完全按照[multiaddr](https://github.com/multiformats/multiaddr)格式规范定义和解析，使得每个协议都很明确。这样你的节点就确切知道如何访问到这些引导节点 - 这些地址都是很明确的。
 
-Don't change this list unless you understand what it means to do so. Bootstrapping is an important security point of failure in distributed systems: malicious bootstrap peers could only introduce you to other malicious peers. It is recommended to keep the default list provided by the IPFS dev team, or — in the case of setting up private networks — a list of nodes you control. Don't add peers to this list that you don't trust.
+除非你知道你行为的具体影响，不要修改以上的列表。引导是分布式系统中一个重要的安全故障点：恶意的引导节点只会把你介绍到其他的恶意节点处。建议一直保留IPFS开发团队所提供的默认列表，或者在配置私有网络的情形下，才指定一个你自己控制的节点列表。不要把不信任的节点加入到这个列表中来。
 
-Here, we add a new peer to the bootstrap list:
+这里我们将添加一个新的节点到引导列表中：
 
 ```bash
 > ipfs bootstrap add /ip4/25.196.147.100/tcp/4001/p2p/QmaMqSwWShsPg2RbredZtoneFjXhim7AQkqbLxib45Lx4S
 ```
 
-Here, we remove a node from the bootstrap list:
+然后我们从引导列表中移除一个节点：
 
 ```bash
 > ipfs bootstrap rm /ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
 ```
 
-Let's say we want to create a backup of our new bootstrap list. We can easily do this by redirecting stdout of `ipfs bootstrap list` to a file:
+此时我们可以创建一个新引导列表的备份。可以通过重定向`ipfs bootstrap list`的输出到一个文件中来简单实现：
 
 ```bash
 > ipfs bootstrap list >save
 ```
 
-If we ever want to start from scratch, we can delete the entire bootstrap list at once:
+如果我们想从头开始，可以立即删除整个引导列表：
 
 ```bash
 > ipfs bootstrap rm --all
 ```
 
-With an empty list, we can restore the default bootstrap list:
+在空列表的情形下，我们可以恢复默认的引导列表：
 
 ```bash
 > ipfs bootstrap add --default
 ```
 
-Remove the entire bootstrap list again, and restore our saved one by piping the contents of the saved file to `ipfs bootstrap add`:
+再次移除整个引导列表，然后通过管道连接将保存文件的内容送给`ipfs bootstrap add`，从而恢复之前保存的那份列表：
 
 ```bash
 > ipfs bootstrap rm --all
