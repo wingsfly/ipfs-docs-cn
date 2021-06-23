@@ -99,7 +99,7 @@ module.exports = {
                 ]
               },
               {
-                title: 'Case studies',
+                title: '案例学习',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: [
@@ -112,7 +112,7 @@ module.exports = {
                 ]
               },
               {
-                title: 'Content-addressed data',
+                title: '内容寻址的数据',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: [
@@ -123,7 +123,7 @@ module.exports = {
                 ]
               },
               {
-                title: 'Peer-to-peer sharing',
+                title: '点对点共享',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: [
@@ -137,13 +137,13 @@ module.exports = {
                 ]
               },
               {
-                title: 'Integrating with the Web',
+                title: '与网站集成',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: ['/concepts/ipfs-gateway', '/concepts/dnslink']
               },
               {
-                title: 'Further reading',
+                title: '进一步阅读',
                 sidebarDepth: 1,
                 collapsable: false,
                 children: ['/concepts/further-reading/academic-papers']

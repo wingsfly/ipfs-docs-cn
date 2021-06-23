@@ -1,290 +1,290 @@
 ---
-title: Usage ideas & examples
+title: 应用思路与实例
 sidebarDepth: 0
 description: Explore some helpful use cases, ideas, and examples for the InterPlanetary File System (IPFS).
 ---
 
-# Usage ideas and examples
+# 应用思路与实例
 
-IPFS is a versatile technology and can be used in a huge array of use-cases. Below is a long, yet far from exhaustive, list of projects built on IPFS. Some are minimalistic prototypes, and others are complete projects backed by mature companies.
+IPFS是一个通用技术，可以在大量的场景中应用。以下是一个很长但远非详尽的基于IPFS的项目列表。有些是极简化的原型，有些则是成熟公司支持的完整项目。
 
-## Share files
+## 共享文件
 
-One of the simplest use-cases to grasp is the sharing of files between peers.
+要掌握的最简单场景之一，就是在节点间共享文件。
 
-### Desktop applications
+### 桌面应用
 
-[IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop) is the official desktop client for IPFS. It comes with a built-in IPFS node that lets you pin files and gives you a link to share them. This is generally seen as the easiest point-of-entry into the IPFS ecosystem.
+[IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop)是官方的IPFS桌面客户端。自带IPFS节点，可以固定文件，并提供共享链接。这通常被认为是访问IPFS生态的最简单入口。
 
-[Arbore](https://arbo.re) Arbore is a free and open-source file-sharing application that enables you to send your pictures, documents, files to your contacts privately and without limits.
+(LU:2019/01)[Arbore](https://arbo.re) Arbore是一个自由开源的文件共享应用，使你可以私密的，不受限制的把照片、文档和文件发送给你的联系人。
 
-Another alternative is [Orion](https://orion.siderus.io). Orion is an easy to use IPFS Desktop client. It helps to share content on the public peer to peer network without any command line or technical knowledge. The app includes everything needed to start your own personal IPFS node.
+(LU:2020/09)[Orion](https://orion.siderus.io)是另一个选择。Orion是一个易用的IPFS桌面客户端。可以在没有任何命令行知识和技术背景的情况下帮助人们在公共网络上共享文件。该应用包含了启动个人IPFS节点所需的一切。
 
-### Share your files or sell copies of it
+### 共享文件或者出售文件拷贝
 
-[Enzypt.io](https://enzypt.io) lets you sell files or simply get a link to share.
+[Enzypt.io](https://enzypt.io) 使用eth出售一个文件，或者只是生成一个共享链接。
 
-[FileNation](https://github.com/FileNation/FileNation) is an alternative if you only want to share.
+(LU:2019/01)[FileNation](https://github.com/FileNation/FileNation)如果只想共享的话，是另一个选择。
 
 ### Dead drop
 
-A [dead drop](https://deaddrops.com/) is a drive or another storage device that is physically immobilized in a public location for people to pick-up and deposit files. There is now an IPFS version, thanks to the [IPFS Dead Drop project](https://github.com/c-base/ipfs-deaddrop).
+(LU:2016/03)[dead drop](https://deaddrops.com/)是一个U盘或者别的存储设备，它固定于某一公共场合，以供人们获取或者存放文件。拜[IPFS Dead Drop project](https://github.com/c-base/ipfs-deaddrop)所赐，现在有了一个IPFS的版本。
 
-## Collaborate
+## 协作
 
-Let IPFS coordinate the flow of data between you and your colleagues, even when working offline or on a local network.
+让IPFS来协调你和同事之间的数据流，即便在离线时或者处于本地网络时也能实现。
 
-### Collaborate on written documents
+### 协作处理文档
 
-[PeerPad.net](https://peerpad.net) is a service that allows you to write, collaborate, and export Markdown documents directly in your browser, similar to how Google Docs works.
+[PeerPad.net](https://peerpad.net)允许你在浏览器中直接编辑、协作和导出Markdown文档，类似于Google Docs的方式。
 
-### Version control
+### 版本控制
 
-The [Inter-Planetary Version Control system (IPVC)](https://github.com/martindbp/ipvc) is a distributed version control system similar to [git](https://git-scm.com/) but built on IPFS. It is suitable for any kind of data, not only human-readable content. It is also particularly suitable for versioning large files. The underlying concepts are heavily influenced by [git](https://git-scm.com/) and [gitless](https://gitless.com/).
+(LU:2019/04)[星际版本控制系统(IPVC)](https://github.com/martindbp/ipvc)是一个构建于IPFS的分布式版本系统系统，类似于[git](https://git-scm.com/)。它适用于任何类型的数据，不仅仅是人类可读的内容。它也特别适用于大型文件的版本控制。其底层概念深受[git](https://git-scm.com/)和[gitless](https://gitless.com/)的影响。
 
-### Connect event attendants
+### 连接事件参与者
 
-[Gthr.io](https://gthr.io) was a simple demo app to connect participants to an event by letting them scan each other's QR code. It was made for IPFS Camp 2019. You can look at their [presentation](https://www.dropbox.com/s/wodmbi6ico3inya/Offline%20Presentation.pdf?dl=0). The code of this simple app is still in its [GitHub repository](https://github.com/JustMaier/gathering).
+[Gthr.io](https://gthr.io)是一个简单的demo，通过让参与者扫描彼此的二维码，将他们连接到一个事件中。这是为IPFS Camp 2019开发的，可以查看他们的[演示文稿](https://www.dropbox.com/s/wodmbi6ico3inya/Offline%20Presentation.pdf?dl=0)。这个简单应用的代码在其[GitHub仓库](https://github.com/JustMaier/gathering)中。
 
-### Exchange messages
+### 交流消息
 
-[Berty.tech](https://berty.tech/) will be an IPFS-based messaging app that will ensure connections are made directly between devices, without the need for servers, and will work on a local network if there is no internet connection. It will also work over Bluetooth or other proximity transport.
+[Berty.tech](https://berty.tech/)作为一个基于IPFS的消息应用，能够确保设备间无需通过服务器，直接建立连接。没有互联网连接时，它可以在本地网络中工作，同时还可以通过蓝牙或其他近场传输方案来工作。
 
-Berty is leading the effort to bring [IPFS to mobile](https://github.com/ipfs-shipyard/gomobile-ipfs). There are also some [guidelines](https://jkosem.gitbook.io/ipfs-mobile-guidelines/) made by professionals for the rise of IPFS on mobile.
+Berty正在致力于将[IPFS应用于移动设备](https://github.com/ipfs-shipyard/gomobile-ipfs)。目前已经有了专业人士为IPFS在移动设备兴起所制定的一些[指导方针](https://jkosem.gitbook.io/ipfs-mobile-guidelines/)。
 
-## Store assets
+## 存储应用数据
 
-By storing small scripts or big databases of your project on IPFS, and depending on your architecture, you can yield several benefits. If your users don't use an IPFS client, you will still have content de-duplication out of the box. If they use it, your users will seed the content they use, decreasing the workload on your infrastructure, increase the uptime of the service in case you go offline. Your users also won't contact your servers for the content they already have.
+通过将项目的小脚本或者大型数据库存储在IPFS中，根据具体架构，可以获得许多不同的好处。如果用户并没有使用IPFS客户端，你仍然开箱即用的使用了重复数据删除的功能。如果用户使用了IPFS客户端，他们同时还帮你提供了内容的对外提供服务，从而减轻了你自己的基础设施的负载，并在服务掉线时增加了其在线服务时间。用户也不会向你的服务器请求他们已有的数据内容。
 
-### Decentralized virtual reality
+### 去中心化虚拟现实
 
-[Decentraland](https://decentraland.org/) is a virtual world you can explore with a VR set, your computer, or your smartphone. They store all the assets on IPFS, so these heavy files can be fetched from several other users at the same time for faster loading and synching.
+[Decentraland](https://decentraland.org/)是一个虚拟世界，可以通过VR装置、电脑或者智能手机来探索。他们的所有应用数据都存储于IPFS中，因此这些繁重的文件可以同时从其他许多用户中获取，从而能够更快的加载和同步。
 
-### Video hosting platform
+### 视频托管平台
 
-[DTube](https://d.tube) is hosting videos on IPFS to reduce stress on their infrastructure. The website itself is not decentralized, but it mainly manages coordination between users and the discoverability of content. You can also learn how to replicate [Youtube on IPFS](https://simpleaswater.com/youtube-on-ipfs/)
+[DTube](https://d.tube)在IPFS中托管视频，以减轻他们基础设施的压力。此网站本身并非去中心化的，它主要用于管理协调用户，以及内容的可发现性。你可以了解如何[在IPFS中复制Youtube](https://simpleaswater.com/youtube-on-ipfs/)。
 
-### Co-host large datasets
+### 协作托管大型数据集
 
-[Qri](https://qri.io/) is an open-source tool for the management of large datasets. Qri users enjoy reduced hosting costs, traceability of changes in the data, rollback to previous versions, and easier collaboration when updating data. De-duplication across datasets also helps to keep physical storage usage as small as possible, along with reducing sync times.
+[Qri](https://qri.io/)是一个开源工具，用于管理大型数据集。Qri的用户享受了更低的托管成本，数据更改的可追溯性，版本可回滚以及更轻松的协作更新数据。数据集间的数据去重同样有助于尽量减少物理存储空间和同步所需时间。
 
-### Parallelize Big Data analysis
+### 大数据分析并行化
 
-On some heavy analysis, you can benefit from parallelizing calculations on several nodes using Hadoop, for example. But on very large datasets, fetching the relevant subset for each node to compute is longer than the actual computation. Scott Brisbane proposed a design in a [thesis](https://s3-ap-southeast-2.amazonaws.com/scott-brisbane-thesis/decentralising-big-data-processing.pdf) to drastically reduce the fetching time using IPFS and divided the overall analysis time by four. Here is a [one-page summary](https://www.cse.unsw.edu.au/~hpaik/thesis/showcases/16s2/scott_brisbane.pdf) of the concept.
+在一些繁重的分析任务中，可以受益于使用Hadoop等工具，在多个节点上进行并行计算。但是在非常大的数据集中，为每个节点获取运算相关子集所需的时间比实际运算的时间还要长。Scott Brisbane在一篇[论文](https://s3-ap-southeast-2.amazonaws.com/scott-brisbane-thesis/decentralising-big-data-processing.pdf)中提出了一个设计，通过使用IPFS能够大幅降低获取子集的时间，并使中分析时长降为原来的1/4。这里是此概念的[一页摘要](https://www.cse.unsw.edu.au/~hpaik/thesis/showcases/16s2/scott_brisbane.pdf)。
 
-### Deadman switch
+### 死亡开关
 
-[Killcord](https://killcord.io/) is an open project to automatically publicly publish data if the user doesn't check in after some time. This can ensure the ongoing investigation of a journalist carries on if they are unable to do it themselves, as the information gathered will now be public.
+[Killcord](https://killcord.io/)是一个开放项目，如果用户在一定时间内没有签到，会自动公开发布数据。这可以保证如某个记者正在进行的调查能够被继续下去，即便他们自己已经无法开展调查工作，因为所有收集到的信息现在都被公开了。
 
-### Maps on IPFS
+### IPFS地图服务
 
-There is an existing [IPFS devgrant](https://github.com/ipfs/devgrants) to host [OpenStreetMaps assets on IPFS](https://github.com/ipfs/devgrants/blob/8233f7df4a219122bcf31eaea289d654406e4443/targeted-grants/open-street-map-ipfs.md). In the long run, this could mean faster synchronization for apps using this scheme and lower bandwidth requirements for servers.
+已有一个[IPFS捐赠](https://github.com/ipfs/devgrants)，用于[在IPFS中托管OpenStreetMaps数据](https://github.com/ipfs/devgrants/blob/8233f7df4a219122bcf31eaea289d654406e4443/targeted-grants/open-street-map-ipfs.md)。从长远来看，这意味着使用该方案的应用能够更快的同步数据，对其服务器的带宽需求也更低。
 
-### P2P video streaming platform
+### P2P视频流平台
 
-[Blust.tv](http://www.blust.tv/) wants to use IPFS to distribute movies when requested by its users. By adding their proprietary _secret-sauce_, they will facilitate the legal streaming of videos over P2P networks.
+[Blust.tv](http://www.blust.tv/)期望在用户请求电影时能通过IPFS来分发。通过加入他们专有的密钥信息，可以促进P2P网络中的合法视频数据流。
 
-### Help host important data
+### 帮助托管重要数据
 
-Thanks to recent improvements with IPFS Cluster, you can call for help to store your data without having to trust other nodes won't alter the data. With [collaborative mode](https://cluster.ipfs.io/documentation/collaborative), you can [replicate Pacman packages or COVID-19-related papers](https://collab.ipfscluster.io/) without needing to know the intricacies of IPFS.
+由于最近IPFS集群的更新，现在可以请求他人来帮助存储数据，而不用信任其不会修改数据。使用[协作模式](https://cluster.ipfs.io/documentation/collaborative)，可以无需了解IPFS的复杂性，从而[复制Pacman包或者COVID-19相关的论文](https://collab.ipfscluster.io/)。
 
-### Video live-streaming
+### 视频直播
 
-Let your users stream from each other to remove the need for a server without overloading a popular streamer. You can get inspired by the working prototype of [Toronto Mesh](https://github.com/tomeshnet/ipfs-live-streaming), or by the [experimentations](https://blog.fission.codes/experimenting-with-hls-video-streaming-and-ipfs/) of [Fission](https://fission.codes). [Fleek](https://fleek.co) also did some [experimentation](https://medium.com/temporal-cloud/introducing-s3x-endless-ipfs-dynamic-possibilities-stream-videos-host-dynamic-websites-f0072127070f) using their Amazon S3/IPFS compatibility tool.
+让用户之间可以无需通过服务器，相互之间进行流式传输，从而不会使现有流行的流媒体平台过载。可以从正在开发的原型[Toronto Mesh](https://github.com/tomeshnet/ipfs-live-streaming)，或者[Fission](https://fission.codes)的[试验](https://blog.fission.codes/experimenting-with-hls-video-streaming-and-ipfs/)中获取灵感。[Fleek](https://fleek.co)也使用他们的Amazon S3/IPFS 兼容性工具做了一些[试验](https://medium.com/temporal-cloud/introducing-s3x-endless-ipfs-dynamic-possibilities-stream-videos-host-dynamic-websites-f0072127070f)。
 
-### Decentralized robots
+### 去中心化机器人
 
-The robotics company [KODA](https://www.koda9.com/) is developing the world's first decentralized robot dog called [Koda-9](https://www.whipsaw.com/thinking/new-era-of-household-robots/). It uses IPFS to store user data, such as security footage.
+机器人公司[KODA](https://www.koda9.com/)正在开发全球首个去中心化的机器狗，名为[Koda-9](https://www.whipsaw.com/thinking/new-era-of-household-robots/)。它使用IPFS来存储用户数据，如安全录像等。
 
-## IPFS as infrastructure
+## IPFS作为基础设施
 
-Using IPFS allows you to abstract away a lot of the complexity of coordination between machines. No matter your architecture IPFS handles load balancing, de-duplication, caching, and high availability out-of-the-box. It's highly modular design also means you can easily customize it to your need.
+使用IPFS可以让你从许多机器间协调的复杂性中脱离出来。无论你的架构如何，IPFS都可以开箱即用式的处理负载均衡、数据去重、缓存和高可用性保障。其高模块化设计也使你可以很方便的对其进行定制。
 
-### Decentralized clusters
+### 去中心化集群
 
-[IPFS Cluster](https://cluster.ipfs.io/) is the official tool to manage a cluster of nodes to replicate data. Like any distributed cluster, you will have the benefits of redundancy, load balancing, and write permission management. You can choose to connect your cluster to the rest of the IPFS network or run it privately. You can also invite outsiders to help replicate your data without them having write-access, thanks to the [collaborative mode](https://cluster.ipfs.io/documentation/collaborative/).
+[IPFS Cluster](https://cluster.ipfs.io/)是管理集群节点以复制数据的官方工具。和其他分布式集群一样，你将获得在荣誉、负载均衡和写入权限管理方面的好处。可以选择将集群连接到其他IPFS网络中，或者使其专有运行。也可以基于[协作模式](https://cluster.ipfs.io/documentation/collaborative/)，邀请外部人员来帮助复制数据，但不授予写入权限。
 
-### Content delivery networks
+### 内容分发网络
 
-A [Content Delivery Network](https://en.wikipedia.org/wiki/Content_delivery_network) (CDN) is a network of nodes storing content in places physically close to the users. Having servers physically closer to the users ensures lower latency, enabling load-balancing, and allows you to scale the availability of content with demand. The IPFS network is a CDN by design because each node will cache what they consume and serve that data to its peers.
+[内容分发网络](https://en.wikipedia.org/wiki/Content_delivery_network) (CDN)是一个在物理距离上离用户很近的节点上存储内容的节点网络。与用户物理距离很近的服务器可以确保低延迟、启用负载均衡，并允许按需进行数据内容可用性的扩展。IPFS网络就是按照CDN设计的，因为每个节点都会缓存他们需要的内容，并向其他节点提供。
 
-### Distributed package managers
+### 分布式包管理器Distributed package managers
 
-The [Node package manager (NPM)](https://www.npmjs.com/) is mirrored on IPFS. By using the dedicated client [npm-on-ipfs](https://github.com/ipfs-shipyard/npm-on-ipfs), packages are fetched from IPFS and distributed to other clients needing them. For example, a team working in the same building will fetch packages from each other, meaning less network traffic costs for the company.
+[Node package manager (NPM)](https://www.npmjs.com/)具有IPFS中的镜像。使用特定的客户端[npm-on-ipfs](https://github.com/ipfs-shipyard/npm-on-ipfs)，就可以从IPFS中获取包，并分发给其他需要它们的客户端。例如，在同一栋建筑中的团队就可以彼此间获取包，从而减少公司的流量费用。
 
-The developers of the [Nix package manager](https://nixos.org/) are working on integrating IPFS for the distribution of binary packages and sources.
+[Nix package manager](https://nixos.org/)的开发者们正在集成IPFS，以分发二进制包和源码。
 
-### Hosting software containers
+### 托管软件容器
 
-Netflix is on its way to use IPFS to [synchronize their Docker containers worldwide](https://blog.ipfs.io/2020-02-14-improved-bitswap-for-container-distribution/). Since each node fetches them from the fastest peers they know, synchronization is substantially faster than regular sync methods.
+Netflix正在使用IPFS来[全球同步其Docker容器](https://blog.ipfs.io/2020-02-14-improved-bitswap-for-container-distribution/)。由于每个节点都从他们所知最快的节点中获取数据，同步要比常规方式快很多。
 
 ### Efficient network factories
 
-[Actyx](https://www.actyx.com/) is helping the manufacturers to upgrade their plants to the [_Industry 4.0_](https://en.wikipedia.org/wiki/Industry_4.0) era, meaning connecting the machines together for better performance, tolerance to failure, and flexibility. Actyx built a custom operating system on top of IPFS they deploy on all machines, so they emit metrics, receive orders, sync up information, and compute their next move locally.
+[Actyx](https://www.actyx.com/)正在帮助生产制造商来升级他们的工厂到[工业4.0](https://en.wikipedia.org/wiki/Industry_4.0)时代，这意味着要把机器连接在起来，以获得更好的性能、故障容忍度和灵活性。Actyx在所有的机器上部署了构建于IPFS之上的一个定制化的操作系统，它们能发送指标，接收指令，同步信息，并在本地计算下一步的行动。
 
-## Lower your storage usage
+## 降低存储使用率
 
-By storing identical data only once on your node, storage-constrained projects are another natural fit for IPFS.
+通过在节点中只存储一份相同的数据，IPFS也是存储受限项目的一个自然选择。
 
-### Compress telemetry data
+### 压缩遥测数据
 
-Sensor data is typically-structured and often contains duplicated blocks of data. In cases where a lot of sensor data is recorded, IPFS can reduce disk usage even more than simple compression [thanks to its de-duplication techniques](http://blog.klaehn.org/2018/06/10/efficient-telemetry-storage-on-ipfs/).
+传感器数据通常都是结构化的，包含重复的数据块。在需要记录大量传感器数据的情形下，[通过重复数据删除技术](http://blog.klaehn.org/2018/06/10/efficient-telemetry-storage-on-ipfs/)，IPFS甚至可以比简单压缩还要多的降低存储使用量。
 
-## Decentralize your data
+## 数据去中心化
 
-By decentralizing your data, you increase availability in case your server runs into an issue, your ISP is unhappy with what you publish, or a hostile government issues a take-down-order. You will also decrease the load time for your swarm-connected users and natively enable your app to work offline or on local networks. Depending on your app, your users can also reduce their storage requirements and download time thanks to native de-duplication and caching.
+通过将数据去中心化，可以提高其可用性，以防止服务器出现故障、ISP对你发布的内容不满意或者敌对政府发出了删除指令。同时还能够减少保持连接的用户的数据加载时间，并使应用在本地脱机时或本地网络中可以工作。取决于具体应用，通过本地去重和缓存，你的用户还可能减少存储需求和下载时间。
 
-### Decentralized database
+### 去中心化数据库
 
-[OrbitDB](https://github.com/orbitdb/orbit-db) is a serverless, distributed, peer-to-peer database. OrbitDB uses IPFS as its data storage and IPFS Pubsub to automatically sync databases with peers. It's an eventually consistent database that uses CRDTs for conflict-free database merges, making OrbitDB an excellent choice for decentralized apps (dApps), blockchain applications, and offline-first web applications. There are Go and Javascript implementations available.
+[OrbitDB](https://github.com/orbitdb/orbit-db)是一个无服务器、分布式的点对点数据库。OrbitDB使用IPFS作为数据存储，使用IPFS Pubsub来与节点自动同步数据库。这是一个最终一致的数据库，使用CRDTs来进行无冲突数据合并，使得OrbitDB成为去中心化应用（dApp）、区块链应用和离线优先Web应用的绝佳选择。当前具备Go和Javascript语言的可用实现。
 
-If you are currently using MongoDB, you might be more comfortable with [ThreadDB](https://docs.textile.io/threads/introduction/) or [AvionDB](https://github.com/dappkit/aviondb-onboard), which are unstructured databases built on top of IPFS.
+如果当前正在使用MongoDB，可能会更喜欢[ThreadDB](https://docs.textile.io/threads/introduction/)或[AvionDB](https://github.com/dappkit/aviondb-onboard)，它们是构建于IPFS的非结构化数据库。
 
-### IPFS hosting with Textile
+### 使用Textile进行IPFS托管
 
-[Textile](https://Textile.io) is a hosting company on IPFS developing the layers on top of IPFS. Among other things, they came up with separated _cloud_ environments called [buckets](https://docs.textile.io/hub/buckets/). Textile has also built an impressive toolset for [building decentralized applications and integrations](https://blog.textile.io/announcing-the-textile-protocol-hub/).
+[Textile](https://Textile.io)是一个托管公司，依托于IPFS之上开发了新的IPFS服务层。除此之外，他们还提出了独立的云环境，称之为[buckets](https://docs.textile.io/hub/buckets/)。Textile还开发了令人影响深刻的工具集，用于[构建去中心化应用及集成](https://blog.textile.io/announcing-the-textile-protocol-hub/)。
 
-### NextCloud integration
+### NextCloud集成
 
-[JusticeNode has created an extension](https://github.com/justicenode/files_external_ipfs) for the popular self-hosted cloud service NextCloud. This integration allows users to use IPFS as external storage.
+JusticeNode已经为流行的自托管云服务NextCloud开发了一个[扩展](https://github.com/justicenode/files_external_ipfs)。该集成允许用户使用IPFS作为外部存储。
 
-### Deploy your website on IPFS
+### 在IPFS中部署网站
 
-[Fleek.co](https://fleek.co/) allows you to effortlessly build sites & apps on IPFS. The workflow is similar to that of Netlify: developers can link their website or a web app hosted on GitHub to Fleek and have it automatically built and deployed on IPFS whenever a change is made to a specific branch. Fleek also comes with Ethereum Name Service (ENS) and domain name integration and plan to enable many more ways to deploy soon: more Git providers, deploy via command-line interface, drag & drop a folder, via API, etc.
+[Fleek.co](https://fleek.co/)允许你在IPFS上轻松的构建网站和应用。工作流类似于Netlify：开发者可以把他们在GitHub中的网站或web应用链接到Fleek中，然后特定分支更新的时候，Fleek会自动构建并更新部署到IPFS中。Fleek还提供了以太坊名字服务（ENS）和域名集成，还计划支持更多的部署方式：更多的Git服务商，通过命令行接口部署，拖拽目录，通过API部署等。
 
-### Ethereum and Solidity specific applications
+### Ethereum与Solidity相关应用
 
-[Embark](https://framework.embarklabs.io/) is an all-in-one developer platform for building and deploying decentralized applications. It currently integrates with Ethereum blockchains, decentralized storage like IPFS, and decentralized communication platforms like Whisper and Orbit.
+[Embark](https://framework.embarklabs.io/)是一个用于开发和部署去中心化应用的一站式开发者平台。当前已经与以太坊区块链、去中心化存储如IPFS，以及去中心化社区平台如Whisper和Orbit进行了集成。
 
 ### Static-site generators
 
 Several plugins exist to decentralize your website built with popular static-site generators like [VuePress](https://github.com/cwaring/vuepress-plugin-ipfs) or [Gatsby](https://github.com/moxystudio/gatsby-plugin-ipfs).
 
-## Build a dApp
+## 构建DAPP
 
-There are many available frameworks to build decentralized apps on IPFS. See for example [Dappkit](https://dappkit.io/), [Fission](https://fission.codes/), [Fleek](https://fleek.co/), or [Textile](https://textile.io/).
+有很多有用的框架可以用来在IPFS中构建去中心化应用。例如[Dappkit](https://dappkit.io/), [Fission](https://fission.codes/), [Fleek](https://fleek.co/), 或者[Textile](https://textile.io/)。
 
 ### SecureMyState
 
-This app for government-citizen communication was built in two days during the [DenverETH 2020](https://ethdenver.com/) hackathon. It lets Colorado citizens manage state-owned data about themselves, such as their driving license status or business registration. You can find out more about this project over on [Medium](https://medium.com/twos-complement/secure-mystate-government-services-for-citizens-ethdenver2020-17f47407b656). 
+这个用于政府和公民交流的应用是在[DenverETH 2020](https://ethdenver.com/)黑客马拉松期间，2天内构建的。它允许科罗拉多州的公民管理他们自己的州有数据，如他们的驾照状态或商务登记信息。可以在[Medium](https://medium.com/twos-complement/secure-mystate-government-services-for-citizens-ethdenver2020-17f47407b656)上找到这个项目的更多信息。
 
 ### Marketplace
 
-[Origin](https://www.originprotocol.com/) is a blockchain-powered online commerce platform that stores data on IPFS. The [Brave](https://brave.com/) web browser has its own store on it to sell their swag.
+[Origin](https://www.originprotocol.com/)是一个基于区块链的在线商务平台，其数据存储于IPFS中。[Brave](https://brave.com/)浏览器在这里有它自己的商店，以出售相关的物品。
 
 ### Torrent tracker hub
 
-[BitTorrent](https://en.wikipedia.org/wiki/Bittorrent) is a powerful P2P file-sharing technology, but it works better with the help of centralized _trackers_ helping users know who has what. Some people tried with some success to decentralize them. You can find their working prototype [here](https://github.com/urbanguacamole/torrent-paradise).
+[BitTorrent](https://en.wikipedia.org/wiki/Bittorrent)是一个强大的P2P文件共享技术，在有中心化的追踪节点来帮助用户获知谁拥有哪些数据时，它可以运行的更好。有些人也在尝试将其去中心化，可以[在此](https://github.com/urbanguacamole/torrent-paradise)找到他们的原型工作。
 
-### COVID-19 tracker
+### COVID-19追踪器
 
-This simple tracker API lets any IPFS node request the latest data about the COVID-19 pandemics. See the code on [GitHub](https://github.com/RTradeLtd/ipcoronafs).
+这个简单的追踪API允许任意IPFS节点请求COVID-19大流行的最新数据。在[GitHub](https://github.com/RTradeLtd/ipcoronafs)查看其代码。
 
-### GitHub integration
+### GitHub集成
 
-This simple [GitHub Action](https://github.com/marketplace/actions/upload-to-ipfs) lets you upload your GitHub Releases on IPFS automatically.
+[GitHub Action](https://github.com/marketplace/actions/upload-to-ipfs)让你可以在IPFS上自动上传GitHub发布版本。
 
-### Backup your Wolfram data
+### 备份Wolfram数据
 
-In a recent update, Wolfram let users store their computation or assets on IPFS. Check out the [version notes](https://writings.stephenwolfram.com/2020/03/in-less-than-a-year-so-much-new-launching-version-12-1-of-wolfram-language-mathematica/) for more information.
+在最近一次更新中，Wolfram允许用户在IPFS中保存他们的计算和资产。查看[版本说明](https://writings.stephenwolfram.com/2020/03/in-less-than-a-year-so-much-new-launching-version-12-1-of-wolfram-language-mathematica/)以了解更多信息。
 
-### Music streaming platform
+### 音乐流媒体平台
 
-[Audius](https://audius.co/) is a music streaming platform built on IPFS. Artists are in control, no fees are taken by the platform, and listeners can enjoy their music while offline.
+[Audius](https://audius.co/)是一个构建于IPFS的音乐流媒体平台。艺术家可以完全控制它，平台不收取任何费用，听众在离线时也可以欣赏音乐。
 
-### Music player
+### 音乐播放器
 
-[Diffuse.sh](https://diffuse.sh/) is an online music player that you can connect to your music repositories to listen to it from anywhere. You can now connect it to IPFS repositories.
+[Diffuse.sh](https://diffuse.sh/)是一个在线音乐播放器，你可以连接到你的音乐库，以从任何地方收听。现在它也可以连接到IPFS音乐库上。
 
-### Decentralized autonomous organization (DAO)
+### 去中心化自治组织(DAO)
 
-[Aragon](https://aragon.org/), a service for creating DAOs, uses IPFS to store its data.
+[Aragon](https://aragon.org/)，一个用于创建DAO的服务，使用IPFS来存储数据。
 
-## Decentralize the Web itself
+## 去中心化自身网络
 
-Some core pieces of the web are still centralized, making it more prone to break or being censored. IPFS can help and make the web more resilient.
+互联网网络的一些核心部分依然是中心化的，使其更容易被破坏或被审查。IPFS可以使网络本身更具备弹性。
 
-### Decentralized DNS
+### 去中心化DNS
 
-The [Domain Name System](https://en.wikipedia.org/wiki/Domain_Name_System) (DNS) is one of the most centralized pieces of the web. By having to ask a central place to know where to find `google.com` or `facebook.com`, it is a central point of failure. Backing up the DNS on IPFS could improve its availability. A prototype for Javascript has been [published on NPM](https://www.npmjs.com/package/orbitdns).
+[域名服务](https://en.wikipedia.org/wiki/Domain_Name_System) (DNS)是互联网中最中心化的部分之一。因为必须向一个中心节点请求如何访问到`google.com`或`facebook.com`，导致它也成为故障的集中点。在IPFS中备份DNS可以改进它的可用性，一个JavaScript的原型已经[发布在NPM中](https://www.npmjs.com/package/orbitdns)。
 
-### Archive the web
+### 网络存档
 
-Thanks to de-duplication, IPFS is a powerful tool for archiving the web. The [InterPlanetary Wayback](https://github.com/oduwsdl/ipwb) is tackling this endeavor.
+基于重复数据删除方案，IPFS也是一个强大的网络归档工具。[InterPlanetary Wayback](https://github.com/oduwsdl/ipwb)正在进行这项工作的努力。
 
-### Fight censorship
+### 抗击审查
 
-Wikipedia has not been accessible in Turkey for a few years. The company behind IPFS, Protocol Labs, is hosting a mirror of Wikipedia on IPFS. See the original [blog post](https://blog.ipfs.io/24-uncensorable-wikipedia/) and the [project code](https://github.com/ipfs/distributed-wikipedia-mirror) for more information.
+在土耳其维基已经很多年不允许访问了。IPFS背后的公司Protocol Labs，正在IPFS中托管一个维基镜像。更多信息可以查看原始的[博客](https://blog.ipfs.io/24-uncensorable-wikipedia/)和[项目代码](https://github.com/ipfs/distributed-wikipedia-mirror)。
 
-## Blockchain use-cases
+## 区块链应用场景
 
-IPFS is a natural fit for [blockchain](https://en.wikipedia.org/wiki/Blockchain) use cases. The common state of the chain is distributed on-chain among participants, and specific data is stored on IPFS. Thanks to content addressing, the blockchain only needs to store the IPFS multihash, and users are sure to fetch correct data from any of their peers. This architecture is becoming the de facto standard for blockchain applications.
+IPFS非常适用于[区块链](https://en.wikipedia.org/wiki/Blockchain)的场景下。参与者之间的公共状态信息分布在区块链上，具体的数据则存储在IPFS中。基于内容寻址，区块链上只要存储IPFS的多重哈希，用户就可以从任意节点中获取到对应的正确数据。这种架构正在成为区块链应用的事实标准。
 
-### Global market place for data storage
+### 全球数据存储市场
 
-[Filecoin](https://filecoin.io/) lets any storage owner host data for users who need additional space. It is one of the reasons IPFS exists in the first place and will be a great accelerator of the IPFS growth once fully online later this year. The project is developed by [Protocol Labs](https://protocol.ai/).
+[Filecoin](https://filecoin.io/)允许任何存储提供方为需要额外空间的用户托管其数据。它今年稍晚的时候会完全上线，这是IPFS一开始设计时的想法之一，也是促进IPFS增长的巨大加速器。该项目由[Protocol Labs](https://protocol.ai/)开发。
 
-Textile.io is building the [Powergate](https://blog.textile.io/filecoin-developer-tools-concepts/) tool for your app to interact with Filecoin once the main net is launched.
+Textile.io正在构建[Powergate](https://blog.textile.io/filecoin-developer-tools-concepts/)工具，使得一旦主网发布，应用程序就可以与Filecoin进行交互。
 
-### Exchange Internet-of-Things data
+### 物联网数据交换
 
-[IOTA](https://www.iota.org/) is a foundation maintaining _the Tangle_, a blockchain-like network with zero fees. Their vision is to automate the exchange of data between sensors, machines, and other devices, for free or sold by the provider. IOTA [announced](https://docs.iota.org/docs/blueprints/0.1/tangle-data-storage/overview) that data can now be hosted on IPFS, [as shown in this demo](https://ipfs.iota.org/).
+[IOTA](https://www.iota.org/)是一个基础设施，用于维护Tangle，一个类似于区块链的零费用网络。它们的愿景是使得传感器、机器及其他设备之间能自动化交换数据，以免费或者运营商收费的方式。IOTA[宣称](https://docs.iota.org/docs/blueprints/0.1/tangle-data-storage/overview)这些数据已经可以存储于IPFS中，在[这里可以查看demo](https://ipfs.iota.org/)。
 
-### Send crypto to human-readable addresses
+### 将加密信息转为人类可读的地址
 
-The [Humanize Pay project](https://devfolio.co/submissions/humanize-pay) lets you have a human-readable Ethereum address, so users don't have to deal with long and un-memorable addresses.
+[Humanize Pay项目](https://devfolio.co/submissions/humanize-pay)使人们拥有一个人类可读的以太坊地址，这样用户就无需处理冗长且难以记住的地址了。
 
-### AI as a service
+### AI即服务
 
-[MindSync](https://mindsync.ai/) wants to build a blockchain hosting AI competitions and let AI skills offer and demand meet.
+[MindSync](https://mindsync.ai/)期望构建一个托管AI竞争能力的区块链，从而满足AI技能的供需。
 
-### Education platform
+### 教育平台
 
-[RocketShoes](https://www.rocketshoes.io/) is an education platform where students produce and tag learning materials, assignments, notes, and digital assets. These are stored on IPFS, and the blockchain ensures the timestamping, proof of ownership, and incentivization layer.
+[RocketShoes](https://www.rocketshoes.io/)是一个教育平台，学生在此可以制作和标记学习资料、作业、笔记和其他数字资产。这些内容都存储于IPFS中，然后通过区块链来提供时间戳信息、所有权证明和激励层保障。
 
-### Query the DWeb across blockchains
+### 在多个区块链中查询DWeb信息
 
-[TheGraph](https://thegraph.com/) wants to enable users to look for information on any blockchain or distributed service thanks to their query language GraphQL and the indexations of the chains thanks to IPFS.
+[TheGraph](https://thegraph.com/)期望使用户可以在任意区块链和分布式服务中查询信息。其技术依赖于GraphQL来实现查询语句，以及IPFS来提供链索引信息。
 
-### Proof of ownership
+### 所有权证明
 
-With IPFS and a blockchain, you can prove ownership of a file at a certain time without disclosing it. See here an [example of implementation](https://github.com/mustafarefaey/PrivateStamp).
+通过IPFS和区块链，可以无需披露文件即可证明在特定时刻对此文件的所有权。这里有一个[实现案例](https://github.com/mustafarefaey/PrivateStamp)。
 
-### Proof of _humanness_
+### 人类身份证明
 
-[Idena](https://idena.io/) is a blockchain to prove that you are human (which is distinct from DID). It uses IPFS under the hood.
+[Idena](https://idena.io/)是一个用于证明你是人类（与DID有所不同）的区块链。它底层使用了IPFS。
 
-### Build Smart City apps
+### 构建智慧城市应用
 
-[Robonomics](https://robonomics.network/) is building a framework on top of Ethereum and IPFS for [smart cities](https://en.wikipedia.org/wiki/Smart_city) apps to easily exchange data (from sensors or computation, for example).
+[Robonomics](https://robonomics.network/)正在Ethereum和IPFS之上构建一个框架，以使得[智慧城市](https://en.wikipedia.org/wiki/Smart_city)应用之间更容易交换数据（如来自传感器或计算结果的数据）。
 
-### Decentralized prediction markets
+### 去中心化预测市场
 
-[Augur](https://www.augur.net/) is a blockchain and decentralized market where you can bet on anything or request prediction from the crowd's wisdom. Like so many blockchain-based apps, the data is hosted on IPFS.
+[Augur](https://www.augur.net/)是一个区块链上的去中心化市场。你可以在此押注任何事情，或请求大众智慧来预测事情。如许多区块链应用一样，其数据也是托管在IPFS中。
 
-### Decentralized weather data
+### 去中心化气象数据
 
-The weather risk marketplace [Arbol](https://www.arbolmarket.com/) relies on blockchain technology to track and validate weather data. Arbol uses IPFS to store multiple terabytes of verified weather data without fear of tampering.
+[Arbol](https://www.arbolmarket.com/)是一个气象风险市场，依赖区块链技术来追踪和验证气象数据。Arbol使用IPFS来存储数TB的已验证数据，而无需担心数据被篡改。
 
-## Decentralized Identity
+## 去中心化身份标识
 
-[Decentralized Identity](https://en.wikipedia.org/wiki/Decentralized_Identifiers) is the concept of storing all your personal data on your devices rather than let every service you use store a partial copy of it. You having control of your data means that you decide which app has access to what, that you only fill in your information once, and that you can revoke access. Decentralized identity is a hot topic, and IPFS is one of the core technologies a lot of engineers build around. The identity wallet [Nomios](https://nomios.io/) shared [some thoughts](https://docs.google.com/presentation/d/1HbydOI0w-T_FY23zCACAyHmzDq1ZvyG2tklpPSm6OQQ/edit#slide=id.g5c88e8f60d_0_11) about decentralized identity general during the [IPFS Camp 2019](https://github.com/ipfs/camp).
+[去中心化身份标识](https://en.wikipedia.org/wiki/Decentralized_Identifiers)是这样一个概念：将个人数据都存储于个人设备中，而不是在每个使用的服务中保存其中的一部分副本。你对自己的数据有控制权，即你可以决定哪些应用有权访问哪些数据；只需要对个人信息填充一次；允许撤销数据授权；去中心化身份标识是一个热门话题，IPFS则是其核心技术之一，许多工程师正在围绕它来构建系统。身份标识钱包[Nomios](https://nomios.io/)在[IPFS Camp 2019](https://github.com/ipfs/camp)中分享了关于去中心化身份标识通用的[一些想法](https://docs.google.com/presentation/d/1HbydOI0w-T_FY23zCACAyHmzDq1ZvyG2tklpPSm6OQQ/edit#slide=id.g5c88e8f60d_0_11)。
 
 ### Element
 
-[Element](https://element-did.com) is an open-source project that combines the content addressing and the interactiveness of Ethereum smart contracts to provide a tool for managing identity.
+[Element](https://element-did.com)是一个开源项目，将内容寻址和Ethereum的智能合约的可交互能力结合起来，提供了一个身份标识管理工具。
 
 ### 3ID Connect
 
-3ID Connect is developed by [3Box](https://3box.io/), a personal data manager for apps leveraging IPFS. 3Box wants to make using decentralized identity as simple as clicking on _Connect with Google_ or _Connect with Facebook_. You can read their [article](https://medium.com/3box/introducing-3id-connect-531af4f84d3f) explaining how to bring it to your app.
+3ID Connect由[3Box](https://3box.io/)开发，是一个向基于IPFS开发的应用提供的个人数据管理器。3Box期望如同点击“连接到Google”或者“连接到Facebook”一样简单的来使用去中心化身份标识。可以阅读他们的[文章](https://medium.com/3box/introducing-3id-connect-531af4f84d3f)，其中说明了如何将其集成到你的应用中。
 
 ### Microsoft ION
 
-[Microsoft](https://www.microsoft.com/) started experimentation by pinning some decentralized identity information to IPFS and publishing the hash to the Bitcoin blockchain. Microsoft wrote a [blog post about their findings](https://techcommunity.microsoft.com/t5/azure-active-directory-identity/toward-scalable-decentralized-identifier-systems/ba-p/560168).
+[Microsoft](https://www.microsoft.com/)也开始试验将一些去中心化身份标识信息固定到IPFS中，然后把它们的hash值发布到比特币区块链中。Microsoft在一篇[博客中发布了相关的发现](https://techcommunity.microsoft.com/t5/azure-active-directory-identity/toward-scalable-decentralized-identifier-systems/ba-p/560168)。
 
-### Ceramic Protocol
+### Ceramic协议
 
-The [Ceramic Protocol](https://www.ceramic.network/) is another proposition for decentralized identity on IPFS, along with a complete protocol for data and document exchanges.
+[Ceramic协议](https://www.ceramic.network/)是IPFS中的另一个去中心化身份方案提议，具备完整的数据和文档交换协议。
 
 ## Non-implemented use cases
 
@@ -306,12 +306,12 @@ Here is a non-exhaustive list of use cases that were not implemented yet. Pick u
 - Improve information sharing during disaster recovery
 - [Get a grant for your help or propose an open grand](https://github.com/ipfs/devgrants)
 - Make an interactive app for your classroom
-- [Build a distributed social media](https://discuss.ipfs.io/t/social-media-architecture-with-ipfs/4625/58)
-- [Decentralize peer-reviewing of scholar papers](https://discuss.ipfs.io/t/ipfs-implementation-for-publication-of-decentralized-peer-review/7692)
-- [Help to host NASA databases](https://discuss.ipfs.io/t/nasas-earthdata-cloud/7528)
-- [Help to host LibGen materials](https://discuss.ipfs.io/t/torrent-site-of-scientific-papers-needs-help/6815)
-- [Make a manga reader](https://discuss.ipfs.io/t/manga-reader-over-ipfs/4832)
-- [Make a Gif-sharing platform](https://discuss.ipfs.io/t/a-vine-clone-built-using-ipfs/3337)
+- [构建一个分布式的社交媒体](https://discuss.ipfs.io/t/social-media-architecture-with-ipfs/4625/58)
+- [学术论文的去中心化同行评审](https://discuss.ipfs.io/t/ipfs-implementation-for-publication-of-decentralized-peer-review/7692)
+- [帮助托管NASA数据库](https://discuss.ipfs.io/t/nasas-earthdata-cloud/7528)
+- [帮助托管LibGen材料](https://discuss.ipfs.io/t/torrent-site-of-scientific-papers-needs-help/6815)
+- [构建一个漫画阅读器](https://discuss.ipfs.io/t/manga-reader-over-ipfs/4832)
+- [构建一个Gif分享平台](https://discuss.ipfs.io/t/a-vine-clone-built-using-ipfs/3337)
 - An interactive P2P application working in crowded events such as festivals
-- [Ethereum/Solidity Smart Contract CI Toolchain on IPFS](https://discuss.ipfs.io/t/ethereum-solidity-smart-contract-ci-toolchain-on-ipfs-wip/1780)
-- [Various ideas from GitHub](https://github.com/ipfs/ipfs/labels/applications%20of%20ipfs)
+- [IPFS上的Ethereum/Solidity智能合约CI工具链](https://discuss.ipfs.io/t/ethereum-solidity-smart-contract-ci-toolchain-on-ipfs-wip/1780)
+- [来自GitHub的各种想法](https://github.com/ipfs/ipfs/labels/applications%20of%20ipfs)

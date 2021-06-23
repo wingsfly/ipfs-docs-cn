@@ -1,73 +1,73 @@
 ---
-title: Privacy
+title: 隐私
 sidebarDepth: 0
 description: Learn about user privacy in IPFS and why it does not come with a built-in privacy layer or encryption.
 related:
   'Article: IPFS Privacy (Textile)': https://medium.com/pinata/ipfs-privacy-711f4b72b2ea
 ---
 
-# IPFS and privacy
+# IPFS与隐私
 
-As a protocol for peer-to-peer data storage and delivery, IPFS is by design a _public network_: Nodes participating in the network store data affiliated with globally consistent [content addresses](/concepts/content-addressing) (CIDs) and advertise that they have those CIDs available for other nodes to use through publicly viewable [distributed hash tables](/concepts/dht/) (DHTs). This paradigm is one of IPFS's core strengths — at its most basic, it's essentially a globally distributed "server" of the network's total available data, referenceable both by the content itself (those CIDs) and by the participants (the nodes) who have or want the content.
+作为一个点对点的数据存储和传输协议，IPFS是为公开网络而设计的：参与网络的节点所存储的数据隶属于全局唯一的[内容地址](/concepts/content-addressing) (CID)，并且通过公开可查阅的[分布式哈希表](/concepts/dht/) (DHTs)来发布他们所拥有的可供其他节点使用的CID。这个范式是IPFS的核心竞争力之一，从基础本质上来说，IPFS是一个管理着网络中所有可用数据的全球分布式服务器，可以同时被引用为内容本身（这些CID）和这些持有内容或者获取内容的参与者（节点）。
 
-What this does mean, however, is that IPFS itself isn't explicitly protecting knowledge _about_ CIDs and the nodes that provide or retrieve them. This isn't something unique to the distributed web; on both the d-web and the legacy web, traffic and other metadata can be monitored in ways that can infer a lot about a network and its users. Some key details on this are outlined below, but in short: While IPFS traffic _between nodes_ is encrypted, the metadata those nodes publish to the DHT is public. Nodes announce a variety of information essential to the DHT's function — including their unique node identifiers (PeerIDs) and the CIDs of data that they're providing — and because of this, information about which nodes are retrieving and/or reproviding which CIDs is publicly available.
+然而，这也意味着IPFS本身不会明确去保护关于CID和提供/检索他们的节点的信息。这并非是分布式网络所独有的，在分布式网络和经典网络中，流量和其他的元数据都可以被监控，并以此推断出许多关于其网络和用户的信息。以下简短概括了其关键细节：虽然IPFS节点间的流量是加密的，但他们发布到DHT中的元数据是公开的。节点会发布各种对DHT的功能来说很重要的信息，包括它们的唯一节点标识符（节点ID），它们所提供数据的CID，因此关于哪些节点正在检索和/或重新提供哪些CID的信息是公开可用的。
 
-So why doesn't the IPFS protocol itself explicitly have a "privacy layer" built in? This is in line with key principles of the protocol's highly modular design — after all, different uses of IPFS over its lifetime may call for different approaches to privacy. Explicitly implementing an approach to privacy within the IPFS core could "box in" future builders due to a lack of modularity, flexibility, and future-proofing. On the other hand, freeing those building on IPFS to use the best privacy approach for the situation at hand ensures IPFS is useful to as many as possible.
+那么为什么IPFS协议自己没有明确内建一个“隐私层”呢？这符合协议的高度模块化设计的关键原则：毕竟在IPFS生命期内的不同用途可能会需要不同的隐私方案。在IPFS核心模块中明确实现一种隐私方案可能会因为在模块化、灵活性及未来适应性上的欠缺，从而限制后续的构建者。从另一方面来说，让人们可以根据针对当前场景自由的选择构建到IPFS中的最佳的隐私方案，也最大化了IPFS的适用性。
 
-If you're worried about the implications of this for your own personal use case, it's worth taking additional measures such as disabling reproviding, encrypting sensitive content, or even running a private IPFS network if that's appropriate for you. More details on these are below.
+如果你在担心这个对你个人使用场景下的影响，可以采取额外的方案，如禁用内容重新提供、加密敏感内容甚至是在合适情况下运行一个专有的IPFS网络。以下会介绍详细的信息。
 
 ::: tip
-While IPFS traffic _between nodes_ is encrypted, the essential metadata that nodes publish to the DHT — including their unique node identifiers (PeerIDs) and the CIDs of data that they're providing — is public. If you're worried about the implications of this for your personal use case, it's worth taking additional measures.
+节点间的IPFS流量是加密的，但是节点发布到DHT中的关键元数据是公开的，包括他们的唯一节点标识符（节点ID）和他们所提供数据的CID。如果你担心这个对你个人使用的影响，可以考虑采取额外的措施。
 :::
 
 ## What's public on IPFS
 
-All traffic on IPFS is public, including the contents of files themselves (unless they're encrypted; more about this below). For purposes of understanding IPFS privacy, this may be easiest to think about in two halves: content identifiers (CIDs) and IPFS nodes themselves.
+所有的IPFS流量都是公开的，包括文件内容本身（除非它们被加密了，更多信息见下）。为了理解IPFS的隐私性，最简单的方式是从两个方面来看：内容标识符（CID）和IPFS节点本身。
 
-### Content identifiers
+### 内容标识符
 
-Because IPFS uses [content addressing](/concepts/content-addressing/) rather than the legacy web's method of location addressing, each piece of data stored in the IPFS network gets its own unique content identifier (CID). Copies of the data associated with that CID can be stored in any number of locations worldwide on any number of participating IPFS nodes. To make retrieving the data associated with a particular CID efficient and robust, IPFS uses a [distributed hash table](/concepts/dht/) (DHT) to keep track of what's stored where. When you use IPFS to retrieve a particular CID, your node queries the DHT to find the closest nodes to you with that item — and by default also agrees to reprovide that CID to other nodes for a limited time, until periodic "garbage collection" clears your cache of content you haven't used in a while. You can also "pin" CIDs that you want to make sure are never garbage-collected — either explicitly using IPFS's low-level `pin` API, or implicitly using the [Mutable File System](/concepts/file-systems/#mutable-file-system-mfs) (MFS) — which also means you're acting as a permanent reprovider of that data.
+因为IPFS使用的是[内容寻址](/concepts/content-addressing/)，而不是传统网络的位置寻址，存储于IPFS网络中的每一份数据都有一个自己唯一的内容标识符（CID）。与此CID相关联的数据副本可以存储在位于全球任意位置的不限数量的IPFS参与节点中。为了高效稳健的检索到一个与特定CID关联的数据，IPFS使用[分布式哈希表](/concepts/dht/) (DHT)来跟踪存储的内容。当通过IPFS来检索一个特定CID时，你的节点会查询DHT，以找到拥有该数据的最近的节点，同时默认情况下也会支持在一定时间内向其他节点重新提供此CID，直到定期的垃圾回收机制清空了一段时间内未被使用的内容缓存。你也可以固定那些明确不想被垃圾回收的CID，可以明确使用IPFS的底层固定API，也可以使用[Mutable File System](/concepts/file-systems/#mutable-file-system-mfs) (MFS)来间接实现，这也意味着你成为了该数据的永久提供者。
 
-This is one of the advantages of IPFS over traditional legacy-web hosting. It means retrieving files — especially popular ones that exist on lots of nodes in the network — can be faster and more bandwidth-efficient. However, it's important to note that those DHT queries happen in public. Because of this, it's possible that third parties could be monitoring this traffic to determine what CIDs are being requested, when, and by whom. As IPFS continues to grow in popularity, it's more likely that such monitoring will exist.
+这是IPFS相对于传统网络托管的优势之一。这意味着检索文件，尤其是存储于大量网络节点中的流行文件，可以更快，也更节省流量。但是，需要知道很重要的一点：DHT查询是公开的，因此第三方有可能监视此流量，以确定哪些CID正在被请求，是何时由谁请求的。随着IPFS的日益普及，这种监控的可能性也在日益增加。
 
-### Node identifiability
+### 节点可标识性
 
-The other half of the equation when considering the prospect of IPFS traffic monitoring is that nodes' unique identifiers are themselves public. Just like with CIDs, every individual IPFS node has its own public identifier (known as a PeerID), such as `QmRGgYP1P5bjgapLaShMVhGMSwGN9SfYG3CM2TfhpJ3igE`.
+IPFS流量监控需要关注的另一部分在于，节点自身的唯一标识符也是公开的。和CID一样，每个独立的IPFS节点也有自己的公开标识符（称为节点ID），类似于`QmRGgYP1P5bjgapLaShMVhGMSwGN9SfYG3CM2TfhpJ3igE`。
 
-While a long string of letters and numbers may not be a "Johnny Appleseed" level of human-readable specificity, your PeerID is still a long-lived, unique identifier for your node. Keep in mind that it's possible to do a DHT lookup on your PeerID and, particularly if your node is regularly running from the same location (like your home), find your IP address. (It's possible to [reset your PeerID](https://docs.ipfs.io/reference/cli/#ipfs-key-rotate) if necessary, but similarly to changing your user ID on legacy web apps and services, is likely to involve extra effort.) Additionally, longer-term monitoring of the public IPFS network could yield information about what CIDs your node is requesting and/or reproviding and when.
+虽然这一长串文本数字的字符串不像"Johnny Appleseed"一样是易于被人阅读的文本，节点ID也是你节点的一个长期唯一的标识符。要记住的是可以通过对你的节点ID进行DHT查询，从而获取到你的IP地址，尤其是你的节点定期从同一位置（如你的家里）运行时。（可以在必要时[重置节点ID](https://docs.ipfs.io/reference/cli/#ipfs-key-rotate)，但如同在传统的网站APP和服务中修改用户名一样，这也会带来别的影响。）此外，对公共IPFS网络的长期监控，也可能生成关于你节点请求的和/或重新提供的CID及操作时间的信息。
 
-## Enhancing your IPFS privacy
+## 增强IPFS隐私性
 
-If there are situations in which you know you'll need to remain private but still want to use IPFS, one of the approaches outlined below may help. And don't forget, you can always discuss privacy and get others' input or ideas in the official [IPFS forums](https://discuss.ipfs.io).
+当存在需要保持隐私性，又需要使用IPFS的场景时，以下的任一方案可能有用。同时记住，你随时可以在官方[IPFS论坛](https://discuss.ipfs.io)中讨论隐私性，并获得他人的意见或想法。
 
-### Controlling what you share
+### 控制共享内容
 
-By default, an IPFS node announces to the rest of the network that it is willing to share every CID in its cache (in other words, _reproviding_ content that it's retrieved from other nodes), as well as CIDs that you've explicitly pinned or added to MFS in order to make them consistently available. If you'd like to disable this behavior, you can do so in the [reprovider settings](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#reprovider) of your node's config file.
+默认情况下，IPFS节点向网络宣称其会共享在缓存中的所有CID（换而言之，会重新发布它从其他节点检索到的内容），以及明确固定的或者添加在MFS中以使其始终可用的CID。如果要禁用该行为，可以在节点配置文件的[reprovider设置](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#reprovider)中修改。
 
-Changing your reprovider settings to "pinned" or "roots" will keep your node from announcing itself as a provider of non-pinned CIDs that are in your cache — so you can still use pinning to provide other nodes with content that you care about and want to make sure continues to be available over IPFS.
+修改reprovider设置为"pinned"或"roots"将使节点不再宣布自己会提供缓存中没有固定内容的CID，这样你仍然可以使用固定来向其他节点提供那些你关注的内容和期望在IPFS中确保持续可用的内容。
 
 ### Using a public gateway
 
-Using a public [IPFS gateway](/how-to/address-ipfs-on-web/#http-gateways) is one way to request IPFS-hosted content without revealing any information about your local node — because you aren't using a local node! However, this method does keep you from enjoying all the benefits of being a full participant in the IPFS network.
+使用公共[IPFS网关](/how-to/address-ipfs-on-web/#http-gateways)是一种不泄露你本地节点的任意信息，又可以获取IPFS托管内容的方式，因为你完全没有使用本地节点。然而此方法使你无法享受到完全参与到IPFS网络中带来的所有好处。
 
-Public IPFS gateways are primarily intended as a "bridge" between the legacy web and the distributed web; they allow ordinary web clients to request IPFS-hosted content via HTTP. That's great for back-compatibility, but if you only request content through public gateways rather than directly over IPFS, you're not actually part of the IPFS network; that gateway is the network participant, acting on your behalf. It's also important to remember that gateway operators could be collecting their own private metrics, which could include tracking the IP addresses that use a gateway and correlating those with what CIDs are requested. Additionally, content requested through a gateway is visible on the public DHT, although it's not possible to know _who_ requested it.
+公共IPFS网关主要用于作为传统网络和分布式网络之间的桥梁；它们允许普通的网页客户端通过HTTP来请求IPFS托管的内容。这对向后兼容非常有用，但是如果你只是通过公共网关而非直接通过IPFS来获取内容，你并没有实际参与到IPFS网络中；网关才是网络的参与者，代表你行使了行为。另外一点也很重要：网关运营商也可以收集他们自己的私有指标，其中可能包括跟踪使用网关的IP地址，并将其与请求的CID相关联。此外，通过网关发出的内容请求在公共DHT上依然可见，只是不可能知道具体是谁发起的请求。
 
-### Using Tor
+### 使用Tor
 
-If you're familiar with [Tor](https://www.torproject.org/) and comfortable with the command line, you may wish to try [running IPFS over Tor transport](https://dweb-primer.ipfs.io/avenues-for-access/tor-transport) by configuring your node's settings.
+如果你熟悉[Tor](https://www.torproject.org/)以及命令行，可以考虑尝试配置节点设置，以[通过Tor传输协议来运行IPFS](https://dweb-primer.ipfs.io/avenues-for-access/tor-transport)。
 
-If you're a developer building on IPFS, it's worth noting that the global IPFS community continues to experiment with using Tor transport — see [this example from e-commerce organization OpenBazaar](https://github.com/OpenBazaar/go-onion-transport) — and there may already be an open-source codebase to help your own project achieve this.
+如果你是一个IPFS上的开发人员，值得关注的是全球IPFS社区一直在尝试使用Tor传输协议，查看[this example from e-commerce organization OpenBazaar](https://github.com/OpenBazaar/go-onion-transport)，且可能已经有一个开源代码库供你在自己项目中来实现它了。
 
-### Encrypting content transported via IPFS
+### 通过IPFS传输加密内容
 
-If your privacy concerns are less about the potential for monitoring and more about the visibility of the IPFS-provided content itself, this can be mitigated simply by encrypting the content before adding it to the IPFS network. While traffic involving the encrypted content could still be tracked, the _data_ represented by encrypted content's CIDs remains unreadable by anyone without the ability to decrypt it.
+如果你对隐私的顾虑更多在于IPFS提供的内容本身的可见性，而非潜在的行为监视，可以简单的通过对内容进行加密，然后再添加到IPFS网络中来缓解它。此时虽然关于加密内容的流量仍然可能被追踪，但是CID对应的加密数据对于那些无法解密的人来说，依然不可读。
 
-There's one caveat to keep in mind here: While today's encryption might seem bulletproof _today_, it's not guaranteed that it won't be broken at some point in the future. Future breakthroughs in computing might allow going back and decrypting older content that's been put on a public network such as IPFS. If you want to guard against this potential attack vector, using IPFS hybrid-private networks — in which nodes sit behind connection gates that check request ACLs before giving a node a request — is a potential design direction. (For more details, [this article from Pinata](https://medium.com/pinata/dedicated-ipfs-networks-c692d53f938d) may be helpful.)
+这里有一个警告需要记住：虽然今天的加密手段现在看起来是万无一失的，但不代表未来也无法破解。未来计算能力的突破可能会允许返回过去，以解密放在公共网络如IPFS中的旧内容。如果你想防范这种潜在的攻击模式，可以使用IPFS混合专有网络，其中节点位于连接网关之后，这个网关在向一个节点转发请求之前，会检查请求的ACLs；这是一个潜在的设计方向。（[this article from Pinata](https://medium.com/pinata/dedicated-ipfs-networks-c692d53f938d) 可以帮助了解更多细节）
 
-If you're curious about implementing encryption with IPFS on a large scale, you may enjoy reading [this case study on Fleek, a fast-growing IPFS file hosting and delivery service](/concepts/case-study-fleek/).
+如果你对大规模实施IPFS加密特性感兴趣，可以阅读[this case study on Fleek, a fast-growing IPFS file hosting and delivery service](/concepts/case-study-fleek/).
 
-### Creating a private network
+### 创建一个专有网络
 
-[Private IPFS networks](https://github.com/ipfs/go-ipfs/blob/v0.8.0/docs/experimental-features.md#private-networks) provide full protection from public monitoring but can lack the scale benefits provided by the public IPFS network. A private network operates identically to the public one, but with one critical difference: it can only be accessed by nodes that have been given access, and it will only ever scale to those nodes. This means that the benefits of the public IPFS network's massive scale, such as geographic resiliency and speedy retrieval of high-demand content, won't be realized unless the private network is explicitly designed and scaled with this in mind.
+[专有IPFS网络](https://github.com/ipfs/go-ipfs/blob/v0.8.0/docs/experimental-features.md#private-networks)提供了全面的保护以杜绝公共监控，但同样也缺失了公共IPFS网络的规模优势。专有网络和公共网络的运作方式一致，但又一个关键区别：它只能够被已授权的节点访问，也只能在这些节点中扩展。这意味着公共IPFS网络的大规模优势，如地理位置的弹性和高需求内容的快速检索特性都无法实现，除非该专有网络也明确的为此针对性设计和延展。
 
-Running a private network can be a great option for corporate implementations of IPFS — for one example, see [this case study on Morpheus.Network](/concepts/case-study-morpheus/) — because the network's topology can be specified and built exactly as desired.
+对企业来说，运行专有网络是一个很好的IPFS方案实现选项，例如[this case study on Morpheus.Network](/concepts/case-study-morpheus/)，因为网络拓扑可以完全按需来设计和构建。

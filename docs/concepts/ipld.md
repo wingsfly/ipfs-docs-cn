@@ -10,6 +10,6 @@ related:
   'IPLD specifications': https://github.com/ipld/specs
 ---
 
-# The InterPlanetary Linked Data (IPLD) model
+# 星际链接数据(IPLD)模型
 
 <ContentStatus />

@@ -1,161 +1,161 @@
 ---
-title: Distributed Hash Tables (DHTs)
+title: 分布式哈希表 (DHT)
 description: Learn what distributed hash tables (DHTs) are, how they store who has what data, and how they play a part in the overall lifecycle of IPFS.
 ---
 
-# Distributed Hash Tables (DHTs)
+# 分布式哈希表(DHT)
 
-A distributed hash table (DHT) is a distributed system for mapping keys to values. In IPFS, the DHT is used as the fundamental component of the content routing system and acts like a cross between a catalog and a navigation system. It maps what the user is looking for to the peer that is storing the matching content. Think of it as a huge table that stores _who_ has _what_ data. There are three types of key-value pairings that are mapped using the DHT:
+分布式哈希表(DHT)是一个存储键值对的分布式系统。在IPFS中，DHT是作为内容路由系统的基础组件，扮演了类似于跨越目录和导航系统之间的角色。它将用户查询的内容映射到存储匹配该内容的节点上。可以将它设想为一张巨大的表，其中存储了谁拥有哪些数据的信息。在DHT中使用了三种类型的键值对数据：
 
-| Type             | Purpose                                                                                                                                     | Used by                                                                                                                                      |
+| 类型             | 目的                                                                                                                                     | 用途                                                                                                                                      |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Provider records | Map a data identifier (i.e., a multihash) to a peer that has advertised that they have that content and are willing to provide it to you.   | - IPFS to find content<br> - IPNS over PubSub to find other members of the pubsub _topic_.                                                   |
-| IPNS records     | Map an IPNS key (i.e., the hash of a public key) to an IPNS record (i.e., a signed and versioned pointer to a path like `/ipfs/bafyxyz...`) | - IPNS                                                                                                                                       |
-| Peer records     | Map a peerID to a set of multiaddresses at which the peer may be reached                                                                    | - IPFS when we know of a peer with content, but do not know its address.<br> - Manual connections (e.g., `ipfs swarm connect /p2p/Qmxyz...`) |
+| 提供方记录 | 将数据标识符（即一个多重hash）映射到一个节点，该节点已宣布拥有该数据，并可以对外提供。   | - 供IPFS发现内容<br> - 供IPNS通过PubSub来发现pubsub中特定 _topic_ 的其他成员。                                                  |
+| IPNS 记录     | 将IPNS键（即公钥的hash值）映射到一个IPNS记录（即指向形如`/ipfs/bafyxyz...`路径的已签名和版本化的指针）| - IPNS                                                                                                                                       |
+| 节点记录     | 将节点ID映射到该节点对外可被访问到的一组多重地址集合                                                                    | - 供IPFS在已知具有该内容的节点，但还不知道该节点的地址时使用。<br> - 手动连接时使用。(如`ipfs swarm connect /p2p/Qmxyz...`) |
 
-These record types hold slightly different semantics, but they are all updated and found using the same DHT protocol; IPFS's take on Kademlia.
+这些记录类型的语义有所不同，但都基于相同的DHT协议来被更新和被发现。IPFS采用的是Kademlia。
 
 ## Kademlia
 
-The Kademlia algorithm has been around for a while, and it's purpose is to build a DHT on top of three system parameters:
+Kademlia算法已经存在了一段时间，提出它的目的是在三个系统参数之上来构建一个DHT：
 
-1. An _address space_ as a way that all of the network peers can be uniquely identified. In IPFS, this is all the numbers from `0` to `2^256-1`.
-1. A _metric_ to order the peers in the address space and therefore visualize all the peers along a line ordered from smallest to largest. IPFS takes `SHA256(PeerID)` and interprets it as an integer between `0` and `2^256-1`.
-1. A _projection_ that will take a `record key` and calculate a position in the address space where the peer or peers most ideally suited to store the record should be near. IPFS uses `SHA256(Record Key)`.
+1. 一个可以唯一标识所有网络节点的 _地址空间_。在IPFS中，这是从`0`到`2^256-1`的所有数字。
+1. 一个用于将地址空间中的节点进行排序的 _度量_，从而可以可视化的将所有节点按顺序从小到大排列。IPFS使用`SHA256(PeerID)`，将其表示为`0`到`2^256-1`之间的一个数字。
+1. 一个取`record key`并计算地址空间中对应位置的 _投影_，该位置是最适合存储记录的（一组）节点应该靠近的位置。IPFS使用`SHA256(Record Key)`。
 
-Having this address space and a peer ordering metric allows us to search the network as though it was a sorted list. In particular, we can turn the system into something like a _skip-list_ where a peer knows other peers with distances of around `1,2,4,8...` away from it. This will allow us to search the list in time that is logarithmic in the network's size, `O(log(N))` lookup time.
+有了地址空间和节点排序度量，我们就可以像搜索一个排序列表一样搜索整个网络。特别是我们可以将这个转换为类似于跳跃列表的系统，其中每个节点都可以知道离它大致为`1,2,4,8...`距离的节点。这使得我们能够以整个网络大小的对数底时间来搜索列表，即`O(log(N))`的查询时间。
 
-Unlike a skip-list, Kademlia is somewhat unstable since peers can join, leave, and rejoin the network at any time. To deal with the unstable nature of the system, a Kademlia peer does not just keep links to the peers with distance `1,2,4,8...` away from it. Instead, for each multiple of 2 away, it keeps up to `K` links. In IPFS `K = 20`. For example, instead of a peer keeping a single link 128 away, it would keep 20 links that are between 65 and 128 away.
+与跳跃列表不同，Kademlia是不稳定的，因为节点随时会加入、离开或者重新加入到网络中。为了处理该系统的不稳定特性，Kademlia节点不是保持与距离为`1,2,4,8...`的节点的链接，相反对于每个2的指数倍的距离，它保持最多`K`个链接。在IPFS中`K = 20`。例如，节点不是保持与距离为128的节点的链接，而是在距离为65到128的节点间，保持与其中20个节点的链接。
 
-The selection of network-wide parameters like `K` is not arbitrary. It is determined based on the observed average _churn_ in the network and the frequency with which the network will republish information. System parameters, like `K`, are computed to maximize the probability that the network stays connected and that no data is lost while maintaining the desired latency for queries and assuming the average churn observations stay constant. These system and network parameters drive the decisions made in Kademlia's two main components: the routing table, which tracks all those links in the network, and the lookup algorithm, which determines how to traverse those links to store and retrieve data.
+像`K`这样的网络范围的参数选择不是随意的，它是通过观察网络平均流失率和网络重新发布信息的频率来确定的。系统参数如`K`，是在以下条件下计算出来的：假设平均流失率观察值保持不变时，最大化网络保持连接的可能性，且保持查询需要的延迟而不丢失数据。这些系统和网络参数驱动了Kademlia中两个主要组件的决策：路由表，用于追踪网络中所有的链接；以及查询算法，用于确定如何遍历这些连接以存储和检索数据。
 
-### Undialable peers
+### 不可连接的节点
 
-A major property of Kademlia is that all peers can be arranged from smallest to largest. This is useful because as peer `0` _walks_ down the line to find peer `55`, it can know it's getting progressively closer. However, this requires that everyone on the line can talk to each other. Otherwise, peer `33`might send peer`0` down a dead-end by telling them the content they want is on a node they can't communicate with. This can result in a slow and fragmented network, with data being accessible by some peers and not others.
+Kademlia的一个主要特性是所有节点可以从小到大依次排列。这一点很重要，因为当节点`0`顺着这个排列去查找节点`55`时，它能够确定正在逐渐接近目标。然而这要求排列中的所有节点都能够彼此进行通信，否则节点`33`可能会告知节点`0`它要的内容在无法通信的节点上，从而将节点`0`带到了死胡同。这会导致一个缓慢且碎片化的网络，其中一些节点可以访问数据，一些则无法访问数据。
 
-While having peers that cannot talk to each other may sound like an oddity, two prevalent causes of unreachability are network address translators (NATs) and firewalls. Having asymmetrical networks where peers `X`, `Y`, and `Z` can connect to `A`, but `A` cannot connect to them is fairly common. Similarly, it is _extremely_ common that peers `A` and `B`, which are both behind NATs, cannot talk to each other. To deal with this, IPFS nodes ignore other nodes assumed to be unreachable by the general public. Nodes also filter themselves out of the network if they suspect they are not reachable.
+节点存在无法通信的异常现象，两个常见原因是因为网络地址转换（NAT）和防火墙导致的。在不对称的网络状况下，节点`X`，`Y`和`Z`可以连接到节点`A`，但是`A`无法连接到这些节点相当常见的。同样还有一种情况也非常常见，即节点`A`和`B`都在NAT后面，因此彼此都无法互相通信。为了解决这个问题，IPFS节点忽略了那些被公众认为无法访问的节点。节点如果怀疑它们无法被公众访问，也会将自身过滤掉。
 
-To do this, we use [libp2p's AutoNAT](https://github.com/libp2p/go-libp2p-autonat), which acts as a distributed _session traversal utility for NAT_ (STUN) layer, informing peers of their observed addresses and whether or not they appear to be publicly dialable. Only when peers detect that they are publicly dialable do they switch from client mode (where they can query the DHT but not respond to queries) to server mode (where they can both query and respond to queries). Similarly, if a server discovers that it is no longer publicly dialable, it will switch back into client mode.
+为此，我们使用了[libp2p的AutoNAT](https://github.com/libp2p/go-libp2p-autonat)，它充当了一个分布式的NAT(STUN)层会话遍历工具，用以通知节点它们被公众观察到的地址，以及它们看起来是否可以被公众所连接。只有当节点检测到它们可以被公开连接时，他们才会从客户端模式（这时可以查询DHT，但不会响应其它的查询请求）切换为服务器模式（这是可以同时发起查询和响应其它的查询请求）。同样的，如果服务器发现它不再是可以被公众连接的，就会切换回客户端模式。
 
-IPFS exposes a _rate-limited_ AutoNAT service on all IPFS nodes that have discovered that they are publicly dialable. These requests are infrequent and do not have a noticeable overhead.
+IPFS在所有被确认可公开连接的IPFS节点上开放了一个限速的AutoNAT服务。这些请求并不频繁，因此不会造成明显的开销。
 
 ## Dual DHT
 
-Many IPFS nodes utilize the publicly shared DHT to discover and advertise content. However, some nodes operate in segregated networks such as local networks or isolated VPNs. For these users, having a DHT where all non-publicly dialable nodes are clients is very problematic since none of them are publicly dialable.
+许多IPFS节点利用公开共享的DHT来发现和发布内容。然而一些节点是在隔离网络中运行的，如本地网络或者隔离的VPN中。对这些用户来说，其DHT中所有的非公开可连接的节点都在客户端模式下运行，因此没有任何一个可以被公众连接，这是很有问题的。
 
-A separate DHT is available to nodes that are not part of the public network called _LAN DHT_. This is completely separate from the public _WAN DHT_. These two DHTs are separated by utilizing different DHT protocol names:
+如果一个单独的DHT可以用于非公网的节点，称之为 _LAN DHT_。这与公开的 _WAN DHT_ 完全分开。这两个DHT通过使用不同的DHT协议名称区分开来：
 
-| DHT | Path                  |
+| DHT | 路径                  |
 | --- | --------------------- |
 | WAN | `/ipfs/kad/1.0.0`     |
 | LAN | `/ipfs/lan/kad/1.0.0` |
 
-The main difference between the WAN and LAN DHTs are the acceptance criteria for peers: which peers are eligible to be part of a routing table or query and which are not. The WAN DHT's criteria is _do you look like a public address_, and the LAN DHT's criteria is _do you look like a non-public address_. While WAN DHT nodes switch from client to server mode based on whether they are publicly dialable, LAN DHT nodes are always servers unless the `dhtclient` option has been set.
+WAN和LAN DTH的主要区分在于节点的接受标准：哪些节点有资格成为路由表或者查询的一部分，哪些不行。WAN DHT的标准是 _其是否看起来是公网地址_，而LAN DHT的标准是 _其是否看起来是非公网地址_。WAN DHT节点根据其是否可被公众连接来决定是否从客户端模式切换为服务器模式，LAN DHT则总是服务器模式，除非设置了`dhtclient`选项。
 
-## Routing Tables
+## 路由表
 
-A routing table is a set of rules used to decide where data traveling over a network should go. All IP-enabled devices, including routers and switches, use routing tables. Every IPFS peer maintains a routing table with links to other peers in the network. IPFS relies on Kademlia to define what should and should not go into the routing table:
+路由表指的时候一组规则，用于决定网络中的数据传输流向。所有支持IP的设备，包括路由器和交换机都会使用路由表。每个IPFS节点都维护了一个路由表，其中包含了到其他节点的链接信息。IPFS基于Kademlia来决定哪些信息进入和不进入路由表中：
 
-1. When we connect to a peer, check if it qualifies to be added to our routing table.
-1. If it qualifies, determine how close the new peer is to us to figure out which _bucket_ it should go into.
-1. Attempt to put the peer in the bucket.
-1. If we ever fail to connect to a peer in our routing table, drop them from the routing table.
+1. 当连接到一个节点的时候，检查它是否符合加入到路由表中的条件。
+1. 如果符合条件，判断这个新节点离我们的距离，以决定将其放入哪个桶（_bucket_）中。
+1. 尝试将节点加入桶中。
+1. 如果我们无法连接到路由表中的节点，将其从路由表中移除。
 
-There are three properties of note here: [qualification](#qualification), [buckets](#peer-buckets), and [refreshing/dropping peers](#refreshing-and-dropping-peers).
+这里有三个需要关注的属性：[限定条件](#qualification), [桶](#peer-buckets), and [刷新/移除节点](#refreshing-and-dropping-peers).
 
-### Qualification
+### 限定条件
 
-Qualifying peers that can be added into a routing table fit these two criteria:
+满足这两个标准，节点就符合加入到路由表的条件：
 
-1. Ensure the peer is a DHT server that is advertising the DHT protocol ID, `/ipfs/kad/1.0.0` for the WAN DHT, and `/ipfs/lan/kad/1.0.0` for the LAN DHT.
-1. Ensure the peer has IP addresses that match the ranges we expect. For example, members of the public DHT having at least one public range IP address as opposed to only addresses like `192.168.X.Y`
+1. 确保节点是一个DHT服务器，而且发布了其DHT协议ID，对WAN DHT是`/ipfs/kad/1.0.0`，对LAN DHT是`/ipfs/lan/kad/1.0.0`。
+1. 确保节点具有与期望范围相匹配的IP地址。如公共DHT成员至少要有一个公网IP，而不是只有类似于`192.168.X.Y`的地址。
 
-### Peer buckets
+### 节点桶
 
-A bucket is a collection of up to 20 peers that have _similar_ addresses. For example, if the peer is between `2^7` and `2^8` away from us, and the address space is of size `2^256`, the peer goes into bucket `256-8`. Peers can be added into a bucket if that bucket has less than 20 peers. If the bucket already has 20 peers, then IPFS determines if any peers can be [dropped](#refreshing-and-dropping-peers). Otherwise, IPFS doesn't add the peer to the bucket.
+一个桶是一个集合，其中有最多20个有着相似地址的节点。例如，一个节点离我们的距离在`2^7`到`2^8`之间，地址空间的大小是`2^256`，该节点就会放在`256-8`这个桶中。如果一个桶中节点数不到20个，新节点可以直接加入桶中。如果桶中已经有了20个节点，IPFS会判断是否有可以[移除](#refreshing-and-dropping-peers)的节点，没有的话IPFS就不会把新节点加到桶中。
 
-### Refreshing and dropping peers
+### 刷新和移除节点Refreshing and dropping peers
 
-To keep the routing tables accurate and up to date, IPFS refreshes the routing table every 10 minutes. While this is likely a higher frequency than is strictly necessary, it's important to protect the network's health as IPFS learns more about the dynamics of the DHT network. A routing table refresh works as follows:
+为保持路由表的准确性和实时有效性，IPFS每10分钟刷新一次路由表。虽然这看起来比严格必要的频率还高，但保护网络的健康度更重要，IPFS可以因此而了解到更多DHT的动态信息。路由表的刷新流程如下：
 
-1. Go through all the buckets, from bucket `0` up until the highest bucket we have that contains a peer in it. The highest possible bucket number is capped at 15.
-   1. For each bucket, select a random address in the Kademlia space that could fit in that bucket and do a lookup to find the `K` closest peers to that random address. This will ensure that we will have filled up each bucket with as many peers as will fit.
-1. Also, search for ourselves in the network, just in case the network size and distribution are such that the first 15 buckets do not suffice to learn about the `K` peers closest to us.
+1. 遍历所有的桶，从桶`0`到包含节点的最高的桶，最高的可能桶值上限为15。
+   1. 对每个桶，在Kademlia空间中选择一个适合该桶的随机地址，并查找与该随机地址最接近的`K`个节点地址。这能够确保我们会尽量多的填充每个桶。
+1. 同时，在网络中搜索自身节点，以防止当前的网络规模和分布下，前15个桶不足以让我们了解到离我们最近的`K`个节点。
 
-Peers can be dropped from the routing table for several reasons, usually because that peer is offline or unreachable. After every refresh, IPFS goes through the routing table and attempt to connect to peers that we have not queried recently. If any peers are not active or online, they are dropped from the routing table. Peers can also be dropped if they have not been useful within the time period during which they are _probabilistically expected_ to have been utilized in a refresh. That value is `Log(1/K) * Log(1 - α/K) * refreshPeriod`, where `α` is the number of peers dialed that can be simultaneously queried. Additionally, IPFS defines _useful_ as responding within 2x when it takes any other peer from our routing table to respond to us. This biases against peers that are slow, overloaded, unreliable, or have bad network connectivity to us.
+节点可能因为多种原因被路由表删除，通常是因为对应节点已经离线或者不可访问了。每次刷新之后，IPFS都会遍历路由表并尝试连接我们最近没有查询过的节点。如果存在未在线或者不活跃的节点，它们会从路由表中删除。节点还可能因为在可能被使用的时间段内没有用处，而在刷新时被删除，这个时间段值为`Log(1/K) * Log(1 - α/K) * refreshPeriod`，其中`α`是可以被同时查询的已连接节点数。另外，IPFS将发挥用处定义为：当请求任何路由表中的其他节点响应我们时，能够在2倍时间内给出响应，从而能够筛选掉速度慢、负载过重、不可靠的或者与我们有不良网络连接的节点。
 
-## Lookup algorithm
+## 查询算法
 
-The lookup algorithm answers the question _What are the `K` closest peers to `X`?_. The IPFS implementation of the Kademlia lookup algorithm uses the following workflow:
+查询算法给出了这个答案：_离`X`最近的`K`个节点是哪些_？IPFS的Kademlia查询算法实现按以下过程计算：
 
-1. Load the `K` closest peers to `X` from our routing table into the query-queue.
-1. Allowing up to 10 concurrent queries, grab the peer closest to `X` and ask them _who are the `K` closest peers to `X`?_
-1. When a query to a peer finishes, add those results to the query-queue.
-1. Pull the next-closest peer off the queue and query them.
-1. The query terminates whenever the closest known three peers to `X` have been successfully queried without any timeouts or errors.
-1. After the query is done, take the `K` closest peers that have not failed and return them.
+1. 加载我们路由表中离`X`最近的`K`个节点到查询队列中。
+1. 允许最多10个并发查询，获取离`X`最近的节点，并向它们查询：_离`X`最近的`K`个节点是哪些_？
+1. 对节点的查询完成后，把这些结果也加入查询队列中。
+1. 依次从队列中取出最近的节点，并发起查询。
+1. 只要成功查询了离`X`最近的三个已知节点且没有任何超时或错误，终止该查询。
+1. 完成查询后，取`K`个最近且没有失败的节点，返回它们。
 
 ## Routing particulars
 
-While the lookup algorithm is what allows IPFS to `PUT` and `GET` records into the DHT, how this is done is slightly different for each record type:
+虽然查询算法允许IPFS从DHT中`PUT`和`GET`记录，但对每个记录类型具体的做法还是有所不同的：
 
-### Provider records
+### 提供方记录
 
-For a block with Multihash `H`:
+对一个多重哈希为`H`的块：
 
-#### Provide `PUT`
+#### `PUT` 放入提供方记录
 
-1. Do a standard lookup for the `K` closest peers to `SHA256(H)`
-1. Put the provider record at those K closest peers, and also store it ourselves.
-1. Currently, you are only allowed to put a provider record for yourself. _Alice_ cannot advertise that _Bob_ has content.
+1. 执行一个标准查询：查询到离`SHA256(H)`最近的`K`个节点。
+1. 将提供方记录添加到这K个最近的节点中，同时自身节点也存储它。
+1. 当前你只能放入自己的提供方记录。即 _Alice_ 不能公布 _Bob_ 所拥有的内容。
 
-#### Provider `GET`
+#### `GET` 获取提供方记录
 
-1. Do a lookup for the `K` closest peers to `X=SHA256(H)`.
-1. Ask each peer _who are the `K` closest peers to `X` you know about?_.
-1. Also, ask _send me the record corresponding to `X` if you have it_.
+1. 查询到离`X=SHA256(H)`最近的`K`个节点。
+1. 向每个节点查询：_你所知道的离`X`最近的`K`个节点是哪些？_
+1. 同时，也发出请求： _如果你有和`X`相关的记录，把它发送给我_。
 
-The peer adds new providers it has learned about and continues until the lookup terminates. Depending on which API is used, the lookup can also be forced to abort after receiving a certain number of provider records.
+节点会持续添加它所了解到的提供方信息，直到查询终止。取决于其使用的API，也可以在收到指定数量的提供方记录时强制终止查询。
 
-### IPNS Records
+### IPNS记录
 
-For an IPNS key where the multihash of the public key is `H`:
+对一个公钥多重哈希为`H`的IPNS key：
 
-#### IPNS `PUT`
+#### `PUT` 放入IPNS记录
 
-1. Do a standard lookup for the `K` closest peers to `SHA256(/ipns/H)`.
-1. Put the IPNS record at those `K` closest peers and store it ourselves.
+1. 查询离`SHA256(/ipns/H)`最近的K个节点。
+1. 将IPNS记录放入这`K`个节点中，同时自身节点也存储它。
 
-#### IPNS `GET`
+#### `GET` 获取IPNS记录
 
-1. Do a lookup for the `K` closest peers to `X=SHA256(/ipns/H)`.
-1. Ask each peer _who are the `K` closest peers to `X` you know about?_
-1. Also, ask _send me the record corresponding to `X` if you have it_.
-1. If we receive a record with a higher IPNS sequence number, update the existing one, and continue until the lookup terminates.
+1. 查询到离`X=SHA256(/ipns/H)`最近的`K`个节点。
+1. 向每个节点查询：_你所知道的离`X`最近的`K`个节点是哪些？_
+1. 同时，也发出请求： _如果你有和`X`相关的记录，把它发送给我_。
+1. 如果我们收到一条更高IPNS序列号的记录，更新已有的记录，并继续查询直到终止。
 
-   This is needed to make sure that the user gets the latest record. Recall that IPNS records are mutable, and therefore, we need to make sure that we point a request to the latest version of the content.
+   这是必须的，以确保用户总能获得最新的记录。回想一下，IPNS记录是可变的，因此我们需要确保其请求指向的是最新版本的内容。
 
-1. Once the lookup is done, if any of the `K` closest peers to `X` did not have the newest IPNS record, send them the newest record.
+1. 一旦查询完成，如果任何离`X`最近的`K`个节点没有最新的IPNS记录，则向它们发送最新的记录以更新。
 
-### Peer records
+### 节点记录
 
-For a peer where the multihash of the public key is `H`:
+对一个公钥多重哈希为`H`的节点：
 
-#### Peer records `PUT`
+#### `PUT` 放入节点记录
 
-When libp2p peers connect, they exchange peer information automatically. Being part of the DHT as either a client or server requires frequent contact with your `K` closest peers; therefore, they inherently end up with your peer record.
+当libp2p的节点连接时，他们会自动交换彼此的节点信息。节点作为DHT的一部分，无论是作为客户端还是服务器，都会需要频繁的与`K`个最近节点进行联系；因此最终它们都会获得你的节点记录。
 
-#### Peer records `GET`
+#### `GET` 获取节点记录
 
-1. Do a lookup for the `K` closest peers to `X=SHA256(H)`.
-1. Ask each peer _who are the `K` closest peers to `X` you know about?_
-1. Also, ask _send me the peer record for `H` if you have it_.
+1. 查询到离`X=SHA256(H)`最近的`K`个节点。
+1. 向每个节点查询：_你所知道的离`X`最近的`K`个节点是哪些？_
+1. 同时，也发出请求： _如果你有和`X`相关的记录，把它发送给我_。
 
-IPFS tries to connect to the peer with ID `H` as soon as we learn addresses about it. The lookup can terminate early if we end up connecting to the peer.
+IPFS在我们获得ID为`H`的节点地址的同时，就会立即尝试连接这个节点。如果我们已经连接到了该节点，查询就会提前终止。
 
-## Learn more
+## 了解更多
 
-If you're eager for more information about the DHT, take a look at these resources:
+如果你期望了解DHT的更多信息，可以查看这些资源：
 
 - [_Content Routing Improvements: Deep Dive_ blog post](https://blog.ipfs.io/2020-07-20-dht-deep-dive/)
 - [Go-IPFS 0.5.0 release highlights](https://www.youtube.com/watch?v=G8FvB_0HlCE)

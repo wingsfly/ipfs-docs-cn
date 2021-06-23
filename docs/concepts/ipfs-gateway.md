@@ -1,5 +1,5 @@
 ---
-title: IPFS Gateway
+title: IPFS网关
 description: Learn why gateways are an important part of using IPFS in conjunction with the legacy web.
 related:
   'IPFS Docs: Address IPFS on the Web': /how-to/address-ipfs-on-web/
@@ -9,260 +9,264 @@ related:
   'Tutorial: Setting up an IPFS gateway on Google Cloud Platform (Stacktical)': https://blog.stacktical.com/ipfs/gateway/dapp/2019/09/21/ipfs-server-google-cloud-platform.html
 ---
 
-# IPFS Gateway
+# IPFS网关
 
-This document discusses:
+本文档讨论了：
 
-- The several types of gateways.
-- Gateway role in the use of IPFS.
-- Appropriate situations for the use of gateways.
-- Situations when you should avoid the use of gateways.
-- Implementation guidelines.
+- 几种网关的类型。
+- 网关在IPFS中的角色。
+- 网关的适用场景。
+- 不应使用网关的场景。
+- 实施指南。
 
-You should read this document if you want to:
+你有如下需求时，应该阅读此文档：
 
-- Understand, at a conceptual level, how gateways fit into the overall use of IPFS.
-- Decide whether and what type of gateways to employ for your use case.
-- Understand, at a conceptual level, how to deploy gateways for your use case.
+- 在概念层面理解网关是如何与IPFS的整体使用相适配的。
+- 确定在你的应用场景中是否应该使用，以及该使用何种类型的网关。
+- 从概念层面理解如何在你的应用场景中部署网关。
 
-## Overview
+## 概览
 
-IPFS deployment seeks to include native support of IPFS in all popular browsers and tools. Gateways provide workarounds for applications that do not yet support IPFS natively. For example, errors occur when a browser that does not support IPFS attempts access to IPFS content in the canonical form of `ipfs://{CID}/{optional path to resource}`. Other tools that rely solely on HTTP encounter similar errors in accessing IPFS content in canonical form, such as [Curl](https://curl.haxx.se/) and [Wget](https://www.gnu.org/software/wget/).
+IPFS部署旨在使得所有流行的浏览器和工具中原生支持IPFS，而网关则为那些还没有原生支持IPFS的应用提供解决方案。例如，当一个还没有支持IPFS的浏览器尝试以`ipfs://{CID}/{optional path to resource}`的规范形式来访问IPFS内容时，会发生错误。其它仅仅依赖HTTP的工具，在访问IPFS规范形式的内容时也会遇到类似的错误，如[Curl](https://curl.haxx.se/) 和[Wget](https://www.gnu.org/software/wget/)。
 
-Tools like [IPFS Companion](https://github.com/ipfs-shipyard/ipfs-companion) resolve these content access errors. However, not every user has permission to alter — or be capable of altering — their computer configuration. IPFS gateways provide an HTTP-based service that allows IPFS-ignorant browsers and tools to access IPFS content.
 
-## Gateway providers
+像[IPFS伴侣](https://github.com/ipfs-shipyard/ipfs-companion)之类的工具解决了这些内容访问的错误问题。然而，不是每个用户都有权或者有能力去修改他们电脑的配置。IPFS则提供了一个基于HTTP的服务，允许不理解IPFS的浏览器和工具也能够访问IPFS内容。
 
-Regardless of who deploys a gateway and where, any IPFS gateway resolves access to any requested IPFS [content identifier](/concepts/content-addressing). Therefore, for best performance, when you need the service of a gateway, you should use the one closest to you.
+## 网关提供方
 
-### Your local gateway
+无论是谁在何处部署的IPFS网关，它都能够处理对IPFS[内容标识符](/concepts/content-addressing)的访问请求。因此为了获取最佳性能，在需要网关服务时，应该使用离你最近的网关。
 
-Your machine may host a gateway as a local service; e.g., at `localhost:8080`. You have a local gateway service if you installed [IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop#ipfs-desktop) or another form of IPFS node.
+### 本地网关
 
-### Private gateways
+你的主机可以提供一个本地网关服务，如`localhost:8080`。如果你已经安装了[IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop#ipfs-desktop)或者其他形式的IPFS节点，就已经有一个本地网关服务了。
 
-Running [IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop#ipfs-desktop) or another form of IPFS node triggers connection attempts to other IPFS peers. Private network administrators may treat such connection attempts as potential security vulnerabilities. Private IPFS gateway servers located inside the private network and running a trusted code base provide an alternative architecture for read/write access to externally-hosted IPFS content.
+### 专有网关
 
-A gateway behind a firewall represents just one potential location for a private gateway. More generally, one may consider any gateway as a _private gateway_ when configured to limit access to requests from specific domains or parts of the public internet. This [tutorial configuring an IPFS gateway on a Google Cloud platform](https://blog.stacktical.com/ipfs/gateway/dapp/2019/09/21/ipfs-server-google-cloud-platform.html) includes a description of constraining access.
+运行[IPFS Desktop](https://github.com/ipfs-shipyard/ipfs-desktop#ipfs-desktop)或其他形式的IPFS节点会触发到其他IPFS节点的连接。专有网络的管理员可能会将此类连接看作潜在的安全漏洞。在专有网络中的专有IPFS网关服务器可以运行一个可信代码库以提供替代架构，用于提供对外部托管的IPFS内容的读/写访问。
 
-### Public gateways
+防火墙之后的网关仅仅代表了专有网关的一种潜在位置。更通用的说，只要将一个网关配置为对特定域名或者公开互联网的一部分限制访问时，就可以将其视为专有网关。这篇[在Google Cloud平台上配置IPFS网关的教程](https://blog.stacktical.com/ipfs/gateway/dapp/2019/09/21/ipfs-server-google-cloud-platform.html)就包括了对限制访问的描述。
 
-Public gateway operators include:
+### 公共网关
 
-- Protocol Labs, which deploys the public gateway `https://ipfs.io`.
-- Third-party public gateways. E.g., `https://cf-ipfs.com`.
+公共网关运营商包括：
 
-Protocol Labs maintains a [list of public gateways](https://ipfs.github.io/public-gateway-checker/) and their status.
+- Protocol Labs，部署了公共网关：`https://ipfs.io`。
+- 第三方公共网关，如：`https://cf-ipfs.com`。
+
+Protocol Labs维护了一个[公共网关列表](https://ipfs.github.io/public-gateway-checker/)及其状态。
 
 ![A list of public gateways and their status, available on IPFS](./images/ipfs-gateways/public-gateway-checker.png)
 
-## Gateway types
+## 网关类型
 
-Categorizing gateways involves several dimensions:
+可以从这几个维度来将网关分类：
 
-- [Read/write support](#read-only-and-writeable-gateways)
-- [Resolution style](#resolution-style)
-- [Service](#gateway-services)
+- [读/写支持](#read-only-and-writeable-gateways)
+- [解析方式](#resolution-style)
+- [服务](#gateway-services)
 
-Choosing the form of gateway usage has security, performance, and other functional implications.
+可以从安全性、性能和其他功能影响的角度来选择要使用的网关形式。
 
-### Read-only and writeable gateways
+### 只读及可写网关
 
-The examples discussed in the earlier sections above illustrated the use of read-only HTTP gateways to fetch content from IPFS via an HTTP GET method. _Writeable_ HTTP gateways also support `POST`, `PUT`, and `DELETE` methods.
+之前章节讨论的示例主要说明了只读的HTTP网关，用于通过HTTP GET方法从IPFS获取内容。可写的HTTP网关还支持`POST`, `PUT`, 和`DELETE`方法。
 
-### Resolution style
+### 解析方式
 
-Three resolution styles exist:
+存在三种解析方式：
 
-- [Path](#path)
-- [Subdomain](#subdomain)
+- [路径](#path)
+- [子域名](#subdomain)
 - [DNSLink](#dnslink)
 
-#### Path
+#### 路径
 
-The examples discussed above employed path resolution:
+上面讨论的示例采用了路径解析：
 
 ```bash
 https://{gateway URL}/ipfs/{content ID}/{optional path to resource}
 ```
 
-Path-resolving gateways, however, violate the [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy) that protects one website from improperly accessing session data of another website.
+但是，路径解析网关违背了[同源策略](https://en.wikipedia.org/wiki/Same-origin_policy)，该策略用于保护一个网站不会被其他网站不当的访问其会话数据。
 
-#### Subdomain
+#### 子域名
 
-Subdomain resolution style maintains compliance with the [single-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy). The canonical form of access, `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}`, causes the browser to interpret each returned file as being from a different origin.
+子域名解析方式保持了与[单一来源策略](https://en.wikipedia.org/wiki/Same-origin_policy)的合规性。其访问的规范形式，`https://{CID}.ipfs.{gatewayURL}/{optional path to resource}`，使得浏览器将每个返回的文件解析为来自不同的源。
 
-Subdomain resolution support began with [Go-IPFS](https://github.com/ipfs/go-ipfs) release `0.5.0`.
+子域名解析从[Go-IPFS](https://github.com/ipfs/go-ipfs)发行版`0.5.0`开始支持。
 
 #### DNSlink
 
-Whenever the content of data within IPFS changes, IPFS creates a new CID based on the content of that data. Many applications require access to the latest version of a file or website but will not know the exact CID for that latest version. The [InterPlanetary Name Service (IPNS)](/concepts/ipns) allows a version-independent IPNS identifier to resolve into the current version's IPFS CID.
+只要IPFS的数据内容发生了变化，IPFS都会基于其数据内容创建一个新的CID。许多应用程序都需要访问网站或者文件的最新版本，但是并不知道其最新版本的CID。[星际名字服务(IPNS)](/concepts/ipns)允许通过一个版本无关的IPNS标识符来表示IPFS最新版本内容的CID。
 
-The version-independent IPNS identifier contains a hash. When a gateway processes a request in the form `https://{gatewayURL}/ipns/{IPNS identifier}/{optional path}`, the gateway employs IPNS to resolve the IPNS identifier into the current version's CID and then fetches the corresponding content.
+版本无关的IPNS标识符包含一个hash。当一个网关处理形如`https://{gatewayURL}/ipns/{IPNS identifier}/{optional path}`的请求时，网关使用IPNS来把IPNS标识符解析为当前版本的CID，然后再获取其对应的内容。
 
-But the IPNS identifier may instead refer to a fully-qualified domain name in the usual form of `example.com`.
+但是IPNS标识符也可能指向一个完整的域名，类似于`example.com`的通用形式。
 
-DNSLink resolution occurs when the gateway recognizes an IPNS identifier contains `example.com`. For example, the URL `https://libp2p.io` returns the current version of that website — a site stored in IPFS — as follows:
+当网关识别到IPNS标识符中包含类似`example.com`的域名形式时，就会触发DNSLink解析。例如，URL `https://libp2p.io`会返回存储在IPFS中的当前版本的网站信息，如下：
 
-1. The gateway receives a request in the form:
+1. 网关收到一个如下形式的请求：
 
    ```bash
    https://{gateway URL}/ipns/{example.com}/{optional path}
    ```
 
-2. The gateway searches the DNS TXT records of the requested domain `{example.com}` for a string of the form `dnslink=/ipfs/{CID}` or `_dnslink=/ipfs/{CID}`. If found, the gateway uses the specified CID to serve up `ipfs://{CID}/{optional path}`. As with path resolution, this form of DNSLink resolution violates the single-origin policy. The domain operator may ensure single-origin policy compliance — and the delivery of the current version of content — by adding an `Alias` record in the DNS that refers to a suitable IPFS gateway; e.g., `gateway.ipfs.io`.
-3. The `Alias` record redirects any access to that `example.com` to the specified gateway. Hence the browser's request to `https://{example.com}/{optional path to resource}` redirects to the gateway specified in the `Alias`.
-4. The gateway employs DNSLink resolution to return the current content version from IPFS.
-5. The browser does not perceive the gateway as the origin of the content and therefore enforces the single-origin policy to protect `example.com`.
+1. 网关会向DNS查询请求中域名`{example.com}`的TXT 记录，其响应为一个字符串形式，类似于`dnslink=/ipfs/{CID}`或 `_dnslink=/ipfs/{CID}`。如果查询到了结果，网关就会使用对应的CID提供服务：`ipfs://{CID}/{optional path}`。和路径解析方式一样，DNSLink解析形式也违背了单源策略。域名服务商可以通过在DNS中添加一个`Alias`别名记录来指向合适的IPFS网关，从而确保了单源策略的合规性，以及当前版本内容的交付。如：`gateway.ipfs.io`。
 
-### Gateway services
+1. `Alias`别名记录会将到`example.com`的任何访问重定向到指定的网关上。因此从浏览器中访问`https://{example.com}/{optional path to resource}`，会重定向到`Alias`别名所指定的网关地址上。
 
-Currently HTTP gateways may access both IPFS and IPNS services:
+1. 网关采用DNSLink解析来返回IPFS中的当前内容版本。
 
-| Service | Style     | Canonical form of access                                                                                                                                                                      |
+1. 浏览器不会将网关视为内容的来源，因此会在`example.com`上强制执行单源策略。
+
+### 网关服务
+
+当前HTTP网关可以同时访问IPFS和IPNS服务：
+
+| 服务 | 形式     | 访问规范形式                                                                                                                                                                      |
 | ------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| IPFS    | path      | `https://{gateway URL}/ipfs/{CID}/{optional path to resource}`                                                                                                                                |
-| IPFS    | subdomain | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}`                                                                                                                                 |
-| IPFS    | DNSLink   | `https://{example.com}/{optional path to resource}` **preferred**, or <br>`https://{gateway URL}/ipns/{example.com}/{optional path to resource}`                                              |
-| IPNS    | path      | `https://{gateway URL}/ipns/{IPNS identifier}/{optional path to resource}`                                                                                                                    |
-| IPNS    | subdomain | `https://{IPNS identifier}.ipns.{gatewayURL}/{optional path to resource}`                                                                                                                     |
-| IPNS    | DNSLink   | Useful when IPNS identifier is a domain: <br>`https://{example.com}/{optional path to resource}` **preferred**, or <br>`https://{gateway URL}/ipns/{example.com}/{optional path to resource}` |
+| IPFS    | 路径      | `https://{gateway URL}/ipfs/{CID}/{optional path to resource}`                                                                                                                                |
+| IPFS    | 子网关 | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}`                                                                                                                                 |
+| IPFS    | DNSLink   | `https://{example.com}/{optional path to resource}` **推荐**, 或者 <br>`https://{gateway URL}/ipns/{example.com}/{optional path to resource}`                                              |
+| IPNS    | 路径      | `https://{gateway URL}/ipns/{IPNS identifier}/{optional path to resource}`                                                                                                                    |
+| IPNS    | 子网关 | `https://{IPNS identifier}.ipns.{gatewayURL}/{optional path to resource}`                                                                                                                     |
+| IPNS    | DNSLink   | 当IPNS标识符是一个域名时有用： <br>`https://{example.com}/{optional path to resource}` **推荐**, 或者 <br>`https://{gateway URL}/ipns/{example.com}/{optional path to resource}` |
 
-### Which type to use
+### 使用哪种类型
 
-The preferred form of gateway access varies depending on the nature of the targeted content.
+首选的网关访问形式应该取决于目标内容的特性。
 
-| Target                                          | Preferred gateway type | Canonical form of access <br> features & considerations                                                                                                                                                                                                                                                                     |
+| 目标                                          | 首选网关类型 | 访问规范格式 <br> 功能与注意事项                                                                                                                                                                                                                                                                     |
 | ----------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Current version of <br>potentially mutable root | IPNS subdomain         | `https://{IPNS identifier}.ipns.{gatewayURL}/{optional path to resource}` <br> + supports cross-origin security <br> + supports cross-origin resource sharing <br> + suitable for both domain IPNS names (`{domain.tld}`) and hash IPNS names                                                                               |
-|                                                 | IPFS DNSLink           | `https://{example.com}/{optional path to resource}` <br> + supports cross-origin security <br> + supports cross-origin resource sharing <br> – requires DNS update to propagate change to root content <br> • DNSLink, not user/app, specifies the gateway to use, opening up potential gateway trust and congestion issues |
-| Immutable root or <br> content                  | IPFS subdomain         | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}` <br> + supports cross-origin security <br> + supports cross-origin resource sharing                                                                                                                                                                           |
+| 潜在可变的根内容 | IPNS子网关         | `https://{IPNS identifier}.ipns.{gatewayURL}/{optional path to resource}` <br> + 支持跨域安全性 <br> + 支持跨域资源共享 <br> + 同时适用于IPNS域名名称(`{domain.tld}`)和IPNS hash名称                                                                               |
+|                                                 | IPFS DNSLink           | `https://{example.com}/{optional path to resource}` <br> + 支持跨域安全性 <br> + 支持跨域资源共享 <br> – 需要更新DNS以将根内容的修改传播出去 <br> • 由DNSLink而非用户/应用指定了要使用的网关，可能会带来网关信任和拥塞问题 |
+| 不可变的根或内容                  | IPFS子域名         | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}` <br> + 支持跨域安全性<br> + 支持跨域资源共享                                                                                                                                                                           |
 
-Any form of gateway provides a bridge for apps without native support of IPFS. Better performance and security results from native IPFS implementation within an app.
+任何形式的网关都为没有原生支持IPFS的应用提供了一个桥梁。同时应用中原生的IPFS实现会带来更好的性能和安全性。
 
-## When not to use a gateway
+## 不应使用网关的场景
 
-### Delay-sensitive applications
+### 对延迟敏感的应用程序
 
-Any gateway introduces a delay in completing desired actions because the gateway acts as an intermediary between the source of the request and the IPFS node or nodes capable of returning the desired content. If the serving gateway cached the requested content earlier (e.g., due to previous requests), then the cache eliminates this delay.
+任何网关都会在完成所需操作的同时带来延迟，因为网关充当了请求源头和能够提供所需内容的IPFS节点之间的中介。如果提供服务的网关提前缓存了需要的内容（如由于之前的请求），那么缓存能够缓解这个延迟。
 
-Overuse of a gateway also introduces delays due to queuing of requests.
+网关的负载过高也会导致延迟，因为请求需要排队等待。
 
-When dealing with delay-sensitive processes, you should aim to use a native IPFS node within the app (fastest), or as a local service daemon (almost as fast). Failing that, use a gateway installed as a local service. Note that when an IPFS node runs locally, it includes a gateway at `http://127.0.0.1:8080`.
+在进行延迟敏感的操作时，应该尽量在应用中使用内置IPFS节点（最快），或者访问本地守护服务（几乎一样快）。如果都不行的话，可以使用一个作为本地服务安装的网关。注意当在本地运行IPFS节点时，它提供了一个在`http://127.0.0.1:8080`上的网关。
 
-All time-insensitive processes can be routed through public/private gateways.
+所有对耗时不敏感的处理都可以通过公共/专有网关来请求路由。
 
-### End-to-end cryptographic validation required
+### 需要端到端的加密验证
 
-Because of third-party gateway vulnerabilities, apps requiring end-to-end validation of content read/write should avoid gateways when possible. If the app must employ an external gateway, such apps should use `ipfs.io` or a trusted third-party.
+出于对第三方网关漏洞的担心，需要对内容读写进行端到端验证的应用应该尽可能避免使用网关。如果必须使用外部网关，此类应用可以使用`ipfs.io`或其他可信的第三方网关。
 
-## Limitations and potential workarounds
+## 限制与潜在解决办法
 
-### Centralization
+### 中心化
 
-Use of a gateway requires location-based addressing: `https://{gatewayURL}/ipfs/{CID}/{etc}` All too easily, the gateway URL can become the handle by which users identify the content; i.e., the uniform reference locator (URL) equates (improperly) to the uniform reference identifier (URI). Now imagine that the gateway goes offline or cannot be reached from a different user's location because of firewalls. At this moment, content improperly identified by that gateway-based URL also appears unreachable, defeating a key benefit of IPFS: decentralization.
+网关的使用导致了对基于位置寻址的需求：`https://{gatewayURL}/ipfs/{CID}/{etc}`，网关URL也容易会被用户作为内容标识的句柄；即统一资源定位（URL）（不正确的）等同于了统一资源标识符（URI）。设想网关离线或者无法被其他位于防火墙之后的用户所访问的场景，此时不正确的被网关URL所标识的内容也表现为不可访问，从而破坏了IPFS的一个关键优势：去中心化。
 
-Similarly, the use of DNSLink resolution with `Alias` forces requests through the domain's chosen gateway, as specified in the `dnslink={value}` string within the DNS TXT record. If the specified gateway becomes overloaded, goes offline, or becomes compromised, all traffic with that content becomes deleted, disabled, or suspect.
+类似的，DNSLink解析与`Alias`别名一起的使用，因为在DNS TXT记录中指定的`dnslink={value}`，也强制请求要通过指定的网关。如果指定的网关负载过高、离线或者收到威胁，所有其中的流量也都会被删除、禁用或者不可信了。
 
-### Misplaced trust
+### 信任错位
 
-Trusting a specific gateway, in turn, requires you to trust the gateway's issuing Certificate Authorities and the security of the public key infrastructure employed by that gateway. Compromised certificate authorities or public-key infrastructure implementations may undermine the trustworthiness of the gateway.
+信任一个特定的网关，也就是说，需要你去信任网关的证书颁发机构，以及网关使用的公钥基础设施的安全性。如果证书颁发机构或者公钥基础设施遭到破坏，同样会破坏网关的可信度。
 
-### Violation of same-origin policy
+### 违背同源策略
 
-To prevent one website from improperly accessing HTTP session data associated with a different website, the [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy) permits script access only to pages that share a common domain name and port.
+为了避免网站不当的访问了其他网站的HTTP会话数据，[同源策略](https://en.wikipedia.org/wiki/Same-origin_policy)只允许脚本去访问拥有相同域名和端口的页面。
 
-Consider two web pages stored in IPFS: `ipfs://{CID A}/{webpage A}` and `ipfs://{CID B}/{webpage B}`. Code on `webpage A` should not access data from `webpage B`, as they do not share the same content ID (origin).
+考虑存在IPFS中的两个网页：`ipfs://{CID A}/{webpage A}`和`ipfs://{CID B}/{webpage B}`，在`webpage A`上的代码应该不允许访问`webpage B`中的数据，因为他们不具备相同的内容ID（不同源）。
 
-A browser employing one gateway to access both sites, however, might not enforce that security policy. From that browser's perspective, both webpages share a common origin: the gateway as identified in the URL `https://{gatewayURL}/...`.
+然而，当浏览器通过一个网关来访问这两个网站的时候，可能会无法保障这个安全策略。从浏览器的角度来看，两个网页都有相同的源：URL `https://{gatewayURL}/...`中的网关地址。
 
-The use of subdomain gateways avoids violating the same-origin policy. In this situation, the gateway's reference to the two webpages becomes:
+使用子域名网关则避免了违背同源策略。在这个情形下，网关对这两个页面的引用分别是：
 
 ```bash
 https://{CID A}.ipfs.{gatewayURL}/{webpage A}
 https://{CID B}.ipfs.{gatewayURL}/{webpage B}
 ```
 
-These pages do not share the same origin. Similarly, the use of DNSLink gateway avoids violating the same-origin policy. The [IPFS public gateway checker](https://ipfs.github.io/public-gateway-checker/) identifies those public gateways that avoid violating the same-origin policy.
+这些页面并没有使用相同的源。同样DNSLink网关的使用也可以避免违背同源策略。[IPFS公共网关检查器](https://ipfs.github.io/public-gateway-checker/)可以识别避免了违背同源策略的网关。
 
-### Cross-origin resource sharing (CORS)
+### 跨域资源共享 (CORS)
 
-[CORS](https://web.archive.org/web/20200418003728/https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers) allows a webpage to permit access to specified data by pages with a different origin. The [IPFS public gateway checker](https://ipfs.github.io/public-gateway-checker/) identifies those public gateways that support CORS.
+[CORS](https://web.archive.org/web/20200418003728/https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)允许网页被授权访问不同源的特定数据。[IPFS公共网关检查器](https://ipfs.github.io/public-gateway-checker/)可以识别支持CORS的网关。
 
-### Gateway man-in-the-middle vulnerability
+### 网关中间人漏洞
 
-Employing a public or private HTTP gateway sacrifices end-to-end cryptographic validation of the delivery of the correct content. Consider the case of a browser fetching content with the URL `https://ExampleGateway.com/ipfs/{cid}`. A compromised `ExampleGateway.com` provides man-in-the-middle vulnerabilities, including:
+使用公共或专有HTTP网关牺牲了对正确内容传输的端到端加密验证。考虑这个场景，浏览器从`https://ExampleGateway.com/ipfs/{cid}`获取内容，一个遭破坏的`ExampleGateway.com`可能存在中间人漏洞，包括：
 
-- Substituting false content in place of the actual content retrieved via the CID.
-- Diverting a copy of the query and response, as well as the IP address of the querying browser, to a third party.
+- 用虚假内容替代通过CID检索到的实际内容。
+- 将请求和响应内容的副本，包括请求方浏览器的IP地址信息一起发送给第三方。
 
-A compromised writeable gateway may inject falsified content into the IPFS network, returning a CID which the user believes to refer to the true content. For example:
+一个遭破坏的可写网关可能会将伪造的内容注入到IPFS网络中，从而返回一个用户认为指向正确结果的CID。例如：
 
-1. Alice posts a balance of `123.54` to a compromised writable gateway.
-1. The gateway is currently storing a balance of `0.00`, so it returns the CID of the falsified content to Alice.
-1. Alice gives the falsified content CID to Bob.
-1. Bob fetches the content with this CID and cryptographically validates the balance of `0.00`.
+1. Alice提交了余额`123.54`到一个遭破坏的可写网关。
+1. 网关实际将余额存为`0.00`，并返回这个伪造内容的CID给Alice。
+1. Alice将这个伪造内容的CID发送给Bob。
+1. Bob通过CID取得内容，并加密验证了余额值为`0.00`。
 
-To partially address this exposure, you may wish to use the public gateway [cf-ipfs.com](https://cf-ipfs.com) as an independent, trusted reference with both same-origin policy and CORS support.
+为了部分的解决这个问题，可以使用这个公共网关[cf-ipfs.com](https://cf-ipfs.com)来作为一个独立可信的参考，它也支持同源策略和CORS。
 
-### Assumed filenames when downloading files
+### 下载文件时的假定文件名
 
-When downloading files, browsers will usually guess a file's filename by looking at the last component of the path, e.g., `https://{domainName/tld}/{path}/userManual.pdf` downloads a file stored locally with the name `userManual.pdf`. Unfortunately, when linking directly to a file with no containing directory in IPFS, the CID becomes the final component. Storing the downloaded file with the filename set to the CID fails the human-friendly design test.
+下载文件时，浏览器通常会通过路径的最后一部分来推测其文件名，如`https://{domainName/tld}/{path}/userManual.pdf`会下载并在本地存储一个名为`userManual.pdf`的文件。但是如果在IPFS中直接链接到一个不包含目录的文件时，CID就是其路径的最后组成部分，而下载并保存为CID的文件名无法通过人性化设计的测试。
 
-To work around this issue, you can add a `?filename={filename.ext}` parameter to your query string to preemptively specify a name for the locally-stored downloaded file:
+为了解决这个问题，可以在查询的请求串之后添加`?filename={filename.ext}`参数，以预先指定要下载文件的本地存储文件名：
 
-| Style     | Query                                                                                                                                                     |
+| 形式     | 查询语句                                                                                                                                                     |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path      | `https://{gatewayURL}/ipfs/{CID}/{optional path to resource}?filename={filename.ext}`                                                                     |
-| Subdomain | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}?filename={filename.ext}`                                                                     |
-| DNSLink   | `https://{example.com}/{optional path to resource}` or <br> `https://{gatewayURL}/ipns/{example.com}/{optional path to resource}?filename={filename.ext}` |
+| 路径      | `https://{gatewayURL}/ipfs/{CID}/{optional path to resource}?filename={filename.ext}`                                                                     |
+| 子域名 | `https://{CID}.ipfs.{gatewayURL}/{optional path to resource}?filename={filename.ext}`                                                                     |
+| DNSLink   | `https://{example.com}/{optional path to resource}` 或 <br> `https://{gatewayURL}/ipns/{example.com}/{optional path to resource}?filename={filename.ext}` |
 
-### Stale caches
+### 陈旧的缓存
 
-A gateway may cache DNSLinks from DNS TXT records, which default to a one-hour lifetime. After content changes, cached DNSLinks continue to refer to the now-obsolete CID. To limit the delivery of obsolete cached content, the domain operator should change the DNS record's time-to-live parameter to a minute `60`.
+网关默认会为来自DNS TXT记录的DNSLink信息提供一个小时的缓存生命期。内容更改后，缓存的DNSLink仍然会继续指向过期的CID。为了限制过期缓存内容的传输，域名服务商应该将DNS记录的time-to-live生存期参数设为`60`即一分钟。
 
-## Frequently asked questions (FAQs)
+## 常见问题(FAQs)
 
-### What is the ipfs.io gateway?
+### 什么是ipfs.io网关？
 
-The ipfs.io gateway makes it possible for Internet users to access and view data hosted by third parties on the IPFS network. The ipfs.io gateway is a community resource run by Protocol Labs to help developers build on IPFS.
+ipfs.io网关使得互联网用户可以访问和查看IPFS网络中第三方托管的数据。ipfs.io网关是一个由Protocol Labs运行的社区资源，用于帮助开发者在IPFS中构建应用。
 
-### How is the ipfs.io gateway different from other gateways?
+### ipfs.io网关与其他网关有何不同？
 
-The ipfs.io gateway is a gateway run by Protocol Labs. Many other entities run their own gateways with different policies around throttling and access, which may be subject to other local laws and regulations. A [list of public gateways is available here](https://ipfs.github.io/public-gateway-checker/).
+ipfs.io网关是由Protocol Labs运行的网关。许多其他实体也会运行他们自己的网关，并基于其本地法律和法规的约束，在限制和访问方面提供不同的策略。这里有一个[可用的公共网关列表](https://ipfs.github.io/public-gateway-checker/).
 
-Protocol Labs does not store or host the data that is viewable through the ipfs.io gateway. Rather, the ipfs.io gateway allows users to view content hosted by third parties. Protocol Labs does not have any control over the data that is viewed through the ipfs.io gateway, nor does Protocol Labs have control over other gateways.
+Protocol Labs不会存储或者托管通过ipfs.io可查看的数据。相反，ipfs.io允许用户查看托管在第三方的内容。Protocol Labs对通过ipfs.io可查看的数据，以及其他网关也没有任何控制权。
 
-### Is the ipfs.io gateway a data storage host?
+### ipfs.io网关是否是一个数据存储主机？
 
-No. The ipfs.io gateway is a passthrough portal to data hosted by third parties on nodes in the IPFS network. It is not a data storage host.
+不。ipfs.io网关是一个用于访问IPFS网络中托管在第三方节点数据的通行门户。它不是一个数据存储主机。
 
-### Can websites rely on the ipfs.io gateway for hosting?
+### 网站是否可以依托于ipfs.io网关来托管？
 
-No. Websites should not rely on the ipfs.io gateway for hosting of any kind. The ipfs.io gateway is a community resource run by Protocol Labs to help developers build on IPFS. Users of the ipfs.io gateway must use resources sparingly. Protocol Labs will throttle or ban users who overuse or misuse community resources, including relying on the ipfs.io gateway for website hosting or violating the Community Code of Conduct.
+不。网站不能以任何形式依托于ipfs.io网关来托管。ipfs.io网关是Protocol Labs运行的一个社区资源，用于帮助开发者在IPFS中构建应用。ipfs.io网关的用户应该谨慎的使用其资源。Protocol Labs会限制或者禁用那些过度使用或者滥用社区资源的用户，包括依托于ipfs.io网关来进行网站托管或者违背了社区行为准则。
 
-### How does the ipfs.io Gateway handle global data regulations?
+### ipfs.io网关是如何应对全球的数据法规的？
 
-Protocol Labs complies with the laws and regulations of relevant jurisdictions.
+Protocol Labs遵守相关司法管辖区的法律法规。
 
-As explained above, the ipfs.io gateway is not a website hosting provider or data storage provider, and Protocol Labs cannot remove material from the Internet that is accessible through the ipfs.io gateway.
+如上所述，ipfs.io网关不是网站托管服务商或者数据存储服务商，且Protocol Labs无法删除任何通过ipfs.io网关可访问的内容。
 
-### Who is responsible for the content that is viewed through the ipfs.io gateway?
+### 谁对通过ipfs.io网关可查看的内容负责？
 
-Users of the ipfs.io gateway are required to comply with all applicable laws and regulations while using the ipfs.io gateway.
+ipfs.io网关的用户在使用ipfs.io网关网关时，必须遵守所有其适用的法律法规。
 
-The ipfs.io gateway is not a data storage provider or website host. The ipfs.io gateway allows users to view content hosted by third parties over which Protocol Labs exercises no control. The fact that certain content is viewable through the ipfs.io gateway does not mean it is hosted by the ipfs.io gateway or that Protocol Labs can do anything to delete that content.
+ipfs.io网关不是一个数据存储服务商或者网站托管商。ipfs.io网关允许用户查看托管于第三方的内容，但Protocol Labs没有其控制权。某些内容可以通过ipfs.io网关访问并不意味着它托管在ipfs.io网关中或者Protocol Labs可以做任何事情来删除该内容。
 
-As explained above, the ipfs.io gateway is not a website hosting provider or data storage provider, and Protocol Labs cannot remove material from the Internet that is accessible through the ipfs.io gateway. If you believe that material accessible through the ipfs.io gateway is illegal or violates your copyright, you are encouraged to directly notify whoever is hosting or controls that data.
+如上所述，ipfs.io网关不是一个网站托管服务商或者数据存储服务商，Protocol Labs也无法删除通过ipfs.io网关可访问到的互联网的内容。如果你确信通过ipfs.io网关所访问到的内容是非法的或者侵犯了你的版权，我们鼓励你直接通知托管或者控制该数据的任何人。
 
-While the ipfs.io gateway does not serve as a host for data or websites, in appropriate circumstances, Protocol Labs can disable the ability to view certain content via the ipfs.io gateway. This does not mean that the data itself has been taken down from the network but rather that the content is not viewable using the ipfs.io gateway. This also will not impact the availability of the data through other gateways run by other parties.
+虽然ipfs.io网关并不作为数据或者网站托管商提供服务，在特定情形下，Protocol Labs可以禁用通过ipfs.io网关对某些特定内容的访问。这并不意味着数据已经从网络中删除了，而仅仅是通过ipfs.io网关无法访问了。这也不会影响该数据通过其他团体网关来访问的可用性。
 
-You can report abuse by emailing abuse@protocol.ai. When appropriate, we will disable access through the ipfs.io gateway to the specific content set forth in your abuse report.
+可以通过发送邮件到abuse@protocol.ai来举报滥用行为。适当情形下，我们会根据你的举报内容来禁用某些特定内容通过ipfs.io网关的可访问性。
 
-### Can Protocol Labs take down content viewable through the ipfs.io gateway?
+### Protocol Labs是否可以删除可以通过ipfs.io gateway访问的内容？
 
-No. The ipfs.io gateway is one of many portals used to view content stored by third parties on the Internet. Protocol Labs is not hosting that content and cannot take it down, but it can block the ability of users to view that content via the ipfs.io gateway in appropriate circumstances.
+不。ipfs.io网关只是互联网上第三方存储的内容的许多可访问入口之一。Protocol Labs没有托管这些内容，也无法删除它，但是在特定情形下，它可以禁止用户通过ipfs.io网关来访问该内容。
 
-## Learning more
+## 了解更多
 
 - [Gateway configuration options](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#gateway)

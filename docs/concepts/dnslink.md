@@ -6,27 +6,27 @@ description: Learn how to map IPFS content to DNS names using DNSLink.
 
 # DNSLink
 
-DNSLink uses [DNS `TXT` records](https://en.wikipedia.org/wiki/TXT_record) to map a DNS name, like ipfs.io`, to an IPFS address. Because you can edit your DNS records, you can use them to always point to the latest version of an object in IPFS. Since DNSLink uses DNS records, you can assign names, paths, and sub-domains that are easy to type, read, and remember.
+DNSLink使用[DNS `TXT`记录](https://en.wikipedia.org/wiki/TXT_record) 将一个DNS名字，如`ipfs.io`映射为一个IPFS地址。因为你能够编辑自己的DNS记录，因此可以使用它来一直指向IPFS中对象的最新版本。因为DNSLink使用的是DNS记录，可以为其指定易于输入、阅读和记住的名称、路径和子域名。
 
-A DNSLink address looks like an [IPNS](/guides/concepts/ipns) address, but it uses a DNS name in place of a hashed public key:
+DNSLink地址看起来类似于[IPNS](/guides/concepts/ipns)地址，但是使用了一个域名，而不是一个公钥hash：
 
 ```
 /ipns/example.org
 ```
 
-Just like normal IPFS addresses, they can include links to other files — or other types of resources that IPFS supports, like directories and symlinks:
+和普通的IPFS地址一样，它们也可以链接到其他文件，或者其他IPFS所支持的资源，像目录或者符号链接：
 
 ```
 /ipns/example.org/media/
 ```
 
-## Publish content path
+## 发布内容路径
 
-Publish the mapping as DNS `TXT` record using your hostname prefixed with `_dnslink`. 
+使用带有`_dnslink`前缀的主机名来发布一个DNS `TXT`记录。
 
-This not only makes DNSLink lookup more efficient by only returning relevant `TXT` records but enables you to improve the security of an automated setup or delegate control over your DNSLink records to a third party without giving away complete control over the original DNS zone.
+这不仅使DNSLink查询更加高效，因为只需要返回相关的`TXT`记录；而且提升了自动配置或者委托第三方来控制DNSLink记录的安全性，因为无需将原始DNS域的完全控制权提供出去。
 
-For example, [`docs.ipfs.io`](https://docs.ipfs.io) loads because a `TXT` record exists for `_dnslink.docs.ipfs.io`. If you look up the DNS records for `_dnslink.docs.ipfs.io`, you'll see the DNSLink entry:
+例如，[`docs.ipfs.io`](https://docs.ipfs.io)页面可以被正确访问，因为存在一个`_dnslink.docs.ipfs.io`的`TXT`记录。如果查询`_dnslink.docs.ipfs.io`的DNS记录，就可以看到对应的DNSLink入口：
 
 ```shell
 dig +noall +answer TXT \_dnslink.docs.ipfs.io
@@ -34,9 +34,9 @@ dig +noall +answer TXT \_dnslink.docs.ipfs.io
 
 ```
 
-## Resolve DNSLink name
+## 解析DNSLink名字
 
-When an IPFS client or node attempts to resolve an address, it looks for a `TXT` record that is prefixed with `dnslink=`. The rest can be an `/ipfs/` link (as in the example below), or `/ipns/`, or even a link to another DNSLink.
+当一个IPFS客户端或节点尝试解析地址时，它会查询一个前缀为`dnslink=`的`TXT`记录。其剩余部分可能是一个`/ipfs/`链接（如下面的示例），或者`/ipns/`，甚至是一个到其他DNSLink的链接。
 
 ```
 
@@ -44,25 +44,25 @@ dnslink=/ipfs/<CID for your content here>
 
 ```
 
-For example, let's go back to when we looked up the DNS records for `_dnslink.docs.ipfs.io` and saw its DNSLink entry:
+例如，我们可以回到之前查询`_dnslink.docs.ipfs.io`DNS记录的地方，然后查看其DNSLink入口：
 
 ```sh
 $ dig +noall +answer TXT _dnslink.docs.ipfs.io
 _dnslink.docs.ipfs.io.  34  IN  TXT "dnslink=/ipfs/QmVMxjouRQCA2QykL5Rc77DvjfaX6m8NL6RyHXRTaZ9iya"
 ```
 
-Based on that, this address:
+因此，这个地址：
 
 ```
 /ipns/docs.ipfs.io/introduction/
 ```
 
-Will get you this block:
+会对应于这个块：
 
 ```
 /ipfs/QmVMxjouRQCA2QykL5Rc77DvjfaX6m8NL6RyHXRTaZ9iya/introduction/
 ```
 
-## Further Resources
+## 更多资源
 
-For a complete guide to DNSLink — including tutorials, usage examples, and FAQs — check out [dnslink.io](http://dnslink.io/).
+需要完整的DNSLink指南 — 包括教程、用例和FAQ，查看[dnslink.io](http://dnslink.io/)。

@@ -1,34 +1,34 @@
 ---
-title: Persistence
+title: 持久性
 legacyUrl: https://docs.ipfs.io/guides/concepts/pinning/
 description: Learn about how IPFS treats persistence and permanence on the web and how pinning can help keep data from being discarded.
 ---
 
-# Persistence, permanence, and pinning
+# 持久性 Persistence, 永久性 permanence, 与固定 pinning
 
-Understand the concepts behind IPFS pinning, along with the differences between persistence, permanence, and pinning.
+理解IPFS固定背后的概念，以及持久性 Persistence, 永久性 permanence, 与固定 pinning之间的区别。
 
-## Persistence versus permanence
+## 持久性 Persistence 与 永久性 permanence
 
-One goal of IPFS is to preserve humanity's history by letting users store data while minimising the risk of that data being lost or accidentally deleted. This is often referred to as permanence. But what does permanence _really_ mean, and why does it matter?
+IPFS的一个目标就是通过让用户存储数据的同时，最大程度降低数据丢失或意外删除的风险，从而保留人类的历史。这通常被称为永久性（permanence）。但是永久性到底意味着什么，为什么很重要呢？
 
-A 2011 study found that the [average lifespan of a web page is 100 days](https://blogs.loc.gov/thesignal/2011/11/the-average-lifespan-of-a-webpage/) before it's gone forever. It's not good enough for the primary medium of our era to be this fragile. IPFS can keep every version of your file you wish to store, and make it simple to set up resilient networks for mirroring data.
+一项2011年的研究表明，[网页的平均生命周期是100天](https://blogs.loc.gov/thesignal/2011/11/the-average-lifespan-of-a-webpage/)，之后它就永远消失了。我们这个时代的主要媒介是如此脆弱，这并不是理想的状态。IPFS可以保留你期望存储的文件的每一个版本，并且可以很容易的配置弹性网络以进行数据镜像。
 
-Nodes on the IPFS network can automatically cache resources they download, and keep those resources available for other nodes. This system depends on nodes being willing and able to cache and share resources with the network. Storage is finite, so nodes need to clear out some of their previously cached resources to make room for new resources. This process is called _garbage collection_.
+IPFS网络的节点能够自动缓存他们下载的资源，并且对其他节点保持这些资源的可用性。该系统的运作依赖于节点愿意且能够为网络缓存和共享资源。存储是有限的，因此节点需要清除一些之前的缓存资源，以为新资源腾出空间，这个过程称为垃圾回收。
 
-To ensure that data _persists_ on IPFS, and is not deleted during garbage collection, [data can be pinned](/how-to/pin-files/) to one or more IPFS nodes. Pinning gives you control over disk space and data retention. As such, you should use that control to pin any content you wish to keep on IPFS indefinitely.
+为了确保数据在IPFS上的持久存在，不会被垃圾回收所删除，[数据可以被固定](/how-to/pin-files/)到一个或多个IPFS节点中。固定让你在磁盘空间和数据保留间可以控制选择。因此你可以控制固定你希望在IPFS中无限期保留的任何内容。
 
-## Garbage Collection
+## 垃圾回收
 
-[Garbage collection](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>) is a form of automatic resource management widely used in software development. The garbage collector attempts to reclaim memory occupied by objects that are no longer in use. IPFS uses garbage collection to free disk space on your IPFS node by deleting data that it thinks is no longer needed.
+[垃圾回收](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>)是一个广泛用于软件开发中的自动资源管理方式。辣鸡回收器会尝试收回不在使用的对象所占用的内存。IPFS使用垃圾回收来删除它认为不再需要的数据，以回收磁盘空间。
 
-The IPFS garbage collector is configured in the `Datastore`section of [the go-ipfs config file](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md). The important settings related to the garbage collector are:
+IPFS垃圾回收器在[go-ipfs配置文件](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md)的`Datastore`部分进行配置。与之相关的重要配置有：
 
-- `StorageGCWatermark`: The percentage of the `StorageMax` value at which a garbage collection will be triggered automatically, if the daemon is running with automatic garbage collection enabled. The default is 90`.
+- `StorageGCWatermark`：`StorageMax`的百分比值，如果守护进程启用了自动垃圾回收，在此值之上垃圾回收会被自动触发。默认值是`90`。
 
-- `GCPeriod`: Specify how frequently garbage collection should run. Only used if automatic garbage collection is enabled. The default is 1 hour.
+- `GCPeriod`: 指定垃圾回收的执行频率，在启用自动垃圾回收时生效。默认值是1小时。
 
-To manually start garbage collection, [run `ipfs repo gc`](https://docs.ipfs.io/reference/cli/#ipfs-repo-gc):
+要手动启动垃圾回收，[运行`ipfs repo gc`](https://docs.ipfs.io/reference/cli/#ipfs-repo-gc)：
 
 ```bash
 ipfs repo gc
@@ -38,7 +38,7 @@ ipfs repo gc
 > removed QmS6SJXApoi59hqD8Naktgakc6UNHK1XDhqhtMg9sBhY8g
 ```
 
-To enable automatic garbage collection use `--enable-gc` when starting the IPFS daemon:
+要启动自动垃圾回收，在启动IPFS守护进程时，使用`--enable-gc`标志：
 
 ```bash
 ipfs daemon --enable-gc
@@ -50,30 +50,29 @@ ipfs daemon --enable-gc
 ```
 
 ::: tip
-If you use IPFS Desktop, you can trigger garbage collection by clicking on the taskbar icon of the IPFS Desktop application and selecting **Advanced** → **Run Garbage Collector**.
+如果使用IPFS Desktop，可以单击IPFS Desktop的任务栏图标，然后选择**Advanced** → **Run Garbage Collector**。
 :::
 
 ## Pinning in context
 
-An IPFS node can protect data from garbage collection based on different kinds of user events.
-- The universal way is by adding a low-level [local pin](/how-to/pin-files/). This works for all data types and can be done manually, but if you add a file using the CLI command [`ipfs add`](/reference/cli/#ipfs-add), your IPFS node will automatically pin that file for you.
-- When working with files and directories, a better way may be to add them to the local [Mutable File System (MFS)](/concepts/glossary/#mfs). This protects the data from garbage collection in the same way as local pinning, but is somewhat easier to manage.
-
+IPFS节点可以根据不同类型的用户事件来保护数据不被垃圾回收。
+-通用的方式是添加一个底层的[本地固定](/how-to/pin-files/)。这个对所有数据类型有效，可以手动执行。如果你通过CLI命令[`ipfs add`](/reference/cli/#ipfs-add)添加了一个文件，IPFS节点会自动为你固定这个文件。
+- 在处理多个文件及目录时，更好的方式是将他们添加到本地的[可变文件系统(MFS)](/concepts/glossary/#mfs)中。这个以和本地固定一样的方式来保护数据不被垃圾回收，而且更容易管理。
 
 ::: tip
-If you want to learn more about how pinning fits into the overall lifecycle of data in IPFS, check out the course from [IPFS Camp _The Lifecycle of Data in DWeb_](https://www.youtube.com/watch?v=fLUq0RkiTBA).
+如果你想了解固定是如何与IPFS数据的整个生命周期相适配，阅读这个课程[IPFS Camp _The Lifecycle of Data in DWeb_](https://www.youtube.com/watch?v=fLUq0RkiTBA)。
 :::
 
 
-## Pinning services
+## 固定服务
 
-To ensure that your important data is retained, you may want to use a pinning service. These services run lots of IPFS nodes and allow users to pin data on those nodes for a fee. Some services offer free storage-allowance for new users. Pinning services are handy when:
+为确保你的重要数据能够被保留，可以考虑使用固定服务。这些服务运行了大量节点，允许用户付费将数据固定在上面。一些服务还对新用户提供了免费的存储空间。固定服务适用于以下场景：
 
-- You don't have a lot of disk space, but you want to ensure your data sticks around.
-- Your computer is a laptop, phone, or tablet that will have intermittent connectivity to the network. Still, you want to be able to access your data on IPFS from anywhere at any time, even when the device you added it from is offline.
-- You want a backup that ensures your data is always available from another computer on the network if you accidentally delete or garbage-collect your data on your own computer.
+- 你没有很多磁盘空间，但想确保数据始终存在。
+- 你的计算机是笔记本电脑、手机或者平板，会间歇性连接到网络中。但是你希望能够随时随地访问IPFS中的数据，无论你添加数据的设备是否在线。
+- 你希望在不小心删除或者垃圾回收了自己计算机上的数据时，仍有一个备份，能够通过网络中的其他计算机来确保数据总是可用的。
 
-Some available pinning service providers are:
+一些可用的固定服务提供商如下：
 
 - [Axel](https://www.axel.org/blog/2019/07/23/qa-with-the-developers-of-axel-ipfs/)
 - [Eternum](https://www.eternum.io/)
@@ -82,4 +81,4 @@ Some available pinning service providers are:
 - [Temporal](https://temporal.cloud/)
 - [Crust Network](https://crust.network/)
 
-See how to [work with remote pinning services](/how-to/work-with-pinning-services/).
+查看如何[使用远程固定服务](/how-to/work-with-pinning-services/).

@@ -1,69 +1,70 @@
 ---
-title: Hashing
+title: 哈希
 legacyUrl: https://docs.ipfs.io/guides/concepts/hashes/
 description: Learn about cryptographic hashes and why they're critical to how IPFS, the InterPlanetary File System, works.
 ---
 
-# Hashing
+# 哈希
 
 ::: tip
-If you're interested in how cryptographic hashes fit into how IPFS works with files in general, check out this video from IPFS Camp 2019! [Core Course: How IPFS Deals With Files](https://www.youtube.com/watch?v=Z5zNPwMDYGg)
+如果你对加密哈希是如何嵌入到IPFS的常规文件处理中的感兴趣，查看这个IPFS Camp 2019的视频！[Core Course: How IPFS Deals With Files](https://www.youtube.com/watch?v=Z5zNPwMDYGg)
 :::
 
-Cryptographic hashes are functions that take some arbitrary input and return a fixed-length value. The particular value depends on the given hash algorithm in use, such as [SHA-1](https://en.wikipedia.org/wiki/SHA-1) (used by git), [SHA-256](https://en.wikipedia.org/wiki/SHA-2), or [BLAKE2](<https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2>), but a given hash algorithm always returns the same value for a given input. Have a look at Wikipedia's [full list of hash functions](https://en.wikipedia.org/wiki/List_of_hash_functions) for more.
+加密哈希是一个函数，它接受任意的输入信息，然后返回一个定长的值。这个特定值取决于给定的hash算法，如[SHA-1](https://en.wikipedia.org/wiki/SHA-1) (used by git), [SHA-256](https://en.wikipedia.org/wiki/SHA-2), 或者[BLAKE2](<https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2>)，但是一个给定的hash算法总会对给定的输入返回相同的值。阅读维基的[hash函数完整列表](https://en.wikipedia.org/wiki/List_of_hash_functions)以获取更多信息。
 
-As an example, the input:
+作为一个示例，以下输入：
 
 ```
 Hello world
 ```
 
-would be represented by **SHA-1** as:
+由**SHA-1**会表示为：
 
 ```
 0x7B502C3A1F48C8609AE212CDFB639DEE39673F5E
 ```
 
-However, the exact same input generates the following output using **SHA-256**:
+然而相同的输入，由**SHA-256**则会表示为下面的输出：
 
 ```
 0x64EC88CA00B268E5BA1A35678A1B5316D212F4F366B2477232534A8AECA37F3C
 ```
 
-Notice that the second hash is longer than the first one. This is because SHA-1 creates a 160-bit hash, while SHA-256 creates a 256-bit hash. The prepended `0x` indicates that the following hash is represented as a hexadecimal number.
+注意第二个hash要比第一个长。这是因为SHA-1创建的是160-bit的hash，而sha-256创建的是256-bit的hash。前置的`0x`说明后续的hash值是以十六进制来表示的。
 
-Hashes can be represented in different bases (`base2`, `base16`, `base32`, etc.). In fact, IPFS makes use of that as part of its [content identifiers](/concepts/content-addressing/) and supports multiple base representations at the same time, using the [Multibase](https://github.com/multiformats/multibase) protocol.
+hash可以以不同进制来表示（`base2`, `base16`, `base32`等）。实际上IPFS使用这个作为[内容标识符](/concepts/content-addressing/)的一部分，并且通过[Multibase](https://github.com/multiformats/multibase)协议，同时支持多种进制的表示。
 
-For example, the SHA-256 hash of "Hello world" from above can be represented as base 32 as:
+例如，"Hello world"的SHA-256 hash值，可以按32进制表示为：
 
 ```
 mtwirsqawjuoloq2gvtyug2tc3jbf5htm2zeo4rsknfiv3fdp46a
 ```
 
-## Hashes are important
+## Hash很重要
 
-Cryptographic hashes come with a couple of very important characteristics:
+加密hash带来了一系列非常重要的特性：
 
-- **deterministic** - the same input message always returns exactly the same output hash
-- **uncorrelated** - a small change in the message should generate a completely different hash
-- **unique** - it's infeasible to generate the same hash from two different messages
-- **one-way** - it's infeasible to guess or calculate the input message from its hash
+- **确定性** - 相同的输入消息总是返回完全相同的输出hash值
+- **非相关性** - 消息的一个很小变动，会生成完全不一样的hash值
+- **唯一性** - 从两个不同的消息生成相同的hash值是不可行的
+- **单向性** - 从其hash值来推测或者计算原始输入内容是不行的
 
-These features also mean we can use a cryptographic hash to identify any piece of data: the hash is unique to the data we calculated it from and it's not too long so sending it around the network doesn't take up a lot of resource. A hash is a fixed length, so the SHA-256 hash of a one-gigabyte video file is still only 32 bytes. 
+这些特性也就意味这我们可以使用加密hash来标识任意的数据：hash对我们计算的数据来说是唯一的，而且它不会太长，因此通过网络发送它不会消耗太多的资源。hash是固定长度的，因此即便是1G的视频文件，其hash值也只有32字节。
 
-That's critical for a distributed system like IPFS, where we want to be able to store and retrieve data from many places. A computer running IPFS can ask all the peers it's connected to whether they have a file with a particular hash and, if one of them does, they send back the whole file. Without a short, unique identifier like a cryptographic hash, that wouldn't be possible. This technique is called [content addressing](/concepts/content-addressing/) — because the content itself is used to form an address, rather than information about the computer and disk location it's stored at.
+这对于类似于IPFS的分布式系统来说至关重要，因为我们希望能够从很多地方来存储和检索数据。一个运行IPFS的计算机可以向所有它连接上的节点发出请求，查询它们是否有一个特定hash的文件，如果有的话，他们就会把整个文件发送回来。没有一个如同加密hash一样简短而唯一的标识符的话，这是不可能实现的。这个技术称为[内容寻址](/concepts/content-addressing/)，因为其内容本身被用来形成它的地址，而不是关于它所存储在的计算机及磁盘位置的信息。
 
-## Content identifiers are not file hashes
+## 内容标识符不是文件hash
 
-Hash functions are widely used as to check for file integrity. A download provider may publish the output of a hash function for a file, often called a _checksum_. The checksum enables users to verify that a file has not been altered since it was published. This check is done by performing the same hash function against the downloaded file that was used to generate the checksum. If that checksum that the user receives from the downloaded file exactly matches the checksum on the website, then the user knows that the file was not altered and can be trusted.
+hash函数被广泛用于检查文件的完整性。一个下载提供者可以发布其文件的hash函数输出值，通常称为校验和。校验和让用户可以验证文件自发布以来并没有被修改过，这是通过对生成该校验和的下载文件进行同样的hash函数计算，如果用户从下载文件计算的校验和与网站上提供的校验和一致，用户就可以确信文件没有被修改。
 
-Let us look at a concrete example. When you download an image file for [Ubuntu Linux](https://ubuntu.com/) you might see the following `SHA-256` checksum on the Ubuntu website listed for verification purposes:
+我们来看一个具体的例子。当你从[Ubuntu Linux](https://ubuntu.com/)上下载一个镜像时，你会看到Ubuntu网站上列出的以下`SHA-256`校验和，以供校验用：
 
 ```
 0xB45165ED3CD437B9FFAD02A2AAD22A4DDC69162470E2622982889CE5826F6E3D ubuntu-20.04.1-desktop-amd64.iso
 ```
 
-After downloading the Ubuntu image, you can verify the integrity of the file by hashing the file to make sure the checksums match:
+在下载Ubutnu镜像后，你可以通过计算该文件的hash并确保与网站的值一致，来验证其完整性：
+
 
 ```shell
 echo "b45165ed3cd437b9ffad02a2aad22a4ddc69162470e2622982889ce5826f6e3d *ubuntu-20.04.1-desktop-amd64.iso" | shasum -a 256 --check
@@ -71,7 +72,7 @@ echo "b45165ed3cd437b9ffad02a2aad22a4ddc69162470e2622982889ce5826f6e3d *ubuntu-2
 ubuntu-20.04.1-desktop-amd64.iso: OK
 ```
 
-If we add the `ubuntu-20.04.1-desktop-amd64.iso` file to IPFS we receive a hash as an output:
+如果我们将`ubuntu-20.04.1-desktop-amd64.iso`文件添加到IPFS中，我们也会获得一个输出的hash值：
 
 ```shell
 ipfs add ubuntu-20.04.1-desktop-amd64.iso
@@ -80,7 +81,7 @@ added QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB ubuntu-20.04.1-desktop-amd6
  2.59 GiB / 2.59 GiB [==========================================================================================] 100.00%
 ```
 
-The string `QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB` returned by the `ipfs add` command is the content identifier (CID) of the file `ubuntu-20.04.1-desktop-amd64.iso`. We can utilize the [CID Inspector](https://cid.ipfs.io/) to see what the CID includes. The actual hash is listed under `DIGEST (HEX)`:
+这个通过`ipfs add`命令返回的字符串`QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB`，正是`ubuntu-20.04.1-desktop-amd64.iso`文件的内容标识符（CID）。我们可以使用[CID检测器](https://cid.ipfs.io/)来查看CID中包含的内容。其实际的hash值在`DIGEST (HEX)`后面：
 
 ```
 NAME: sha2-256
@@ -89,10 +90,10 @@ DIGEST (HEX): 0E7071C59DF3B9454D1D18A15270AA36D54F89606A576DC621757AFD44AD1D2E
 ```
 
 ::: tip
-The names of hash functions are not used consistently.`SHA-2`, `SHA-256` or `SHA-256 bit` all refer to the same hash function.
+hash函数的名称使用并不一致。`SHA-2`, `SHA-256` 或`SHA-256 bit`都是指同一个hash函数。
 :::
 
-We can now check if the hash contained in the CID equals the checksum for the file:
+我们现在可以检查CID中包含的hash是否和文件的校验和一致了：
 
 ```shell
 echo "0E7071C59DF3B9454D1D18A15270AA36D54F89606A576DC621757AFD44AD1D2E *ubuntu-20.04.1-desktop-amd64.iso" | shasum -a 256 --check
@@ -101,4 +102,4 @@ ubuntu-20.04.1-desktop-amd64.iso: FAILED
 shasum: WARNING: 1 computed checksum did NOT match
 ```
 
-As we can see, the hash included in the CID does NOT match the hash of the input file `ubuntu-20.04.1-desktop-amd64.iso`. To understand what the hash contained in the CID is, we must understand how IPFS stores files. IPFS uses a [directed acyclic graph (DAG)](/concepts/merkle-dag/) to keep track of all the data stored in IPFS. A CID identifies one specific node in this graph. This identifier is the result of hashing the node's contents using a cryptographic hash function like `SHA256`.
+正如我们所见的，CID中的hash值和输入文件的hash值并不一致。为了了解CID中包含的hash值到底是什么，我们必须了解IPFS是如何存储文件的。IPFS使用了[有向无环图(DAG)](/concepts/merkle-dag/)来保持对IPFS中所存储数据的跟踪。一个CID就标识着这个图中一个特定节点。这个标识就是对这个节点内容的加密hash的结果值（如`SHA256`）。

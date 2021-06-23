@@ -4,29 +4,29 @@ legacyUrl: https://docs.ipfs.io/guides/concepts/merkle-dag/
 description: Learn about Merkle Directed Acyclic Graphs (DAGs) and why they're important to IPFS.
 ---
 
-# Merkle Directed Acyclic Graphs (DAGs)
+# Merkle有向无环图(DAG)
 
 ::: callout
-Take a deep dive into this superpowered, content-addresed data structure in ProtoSchool's tutorial, [Merkle DAGs: Structuring Data for the Distributed Web](https://proto.school/merkle-dags).
+可以在ProtoSchool的教程中深入了解这个强大的，基于内容寻址的数据结构，[Merkle DAGs: Structuring Data for the Distributed Web](https://proto.school/merkle-dags).
 :::
 
-A Merkle DAG is a DAG where each node has an identifier, and this is the result of hashing the node's contents — any opaque payload carried by the node and the list of identifiers of its children — using a cryptographic hash function like SHA256. This brings some important considerations:
+Merkle DAG是一个有向无环图，它的每个节点都有一个标识符，值为节点内容的哈希值（内容包括节点携带的不透明负载，以及其子节点的标识符列表），使用的是如SHA256的加密hash算法。这带来了一些重要的考虑因素：
 
-- Merkle DAGs can only be constructed from the leaves, that is, from nodes without children. Parents are added after children because the children's identifiers must be computed in advance to be able to link them.
-- Every node in a Merkle DAG is the root of a (sub)Merkle DAG itself, and this subgraph is _contained_ in the parent DAG.
-- Merkle DAG nodes are _immutable_. Any change in a node would alter its identifier and thus affect all the ascendants in the DAG, essentially creating a different DAG. Take a look at [this helpful illustration using bananas](https://media.consensys.net/ever-wonder-how-merkle-trees-work-c2f8b7100ed3) from our friends at Consensys.
+- Merkle DAGs只能从叶子节点-即没有子节点的节点开始构建。父节点在子节点之后添加，因为需要提前计算子节点的标识符以链接它们。
+- Merkle DAG中的每个节点也是它自身的（子）Merkle DAG的根，其子图包含在父DAG中。
+- Merkle DAG节点是不可变的。节点的任何修改都会改变它的标识符，从而影响DAG的所有上一级，基本上创建了一个新的DAG。查看来自Consensys公司一个朋友的[this helpful illustration using bananas](https://media.consensys.net/ever-wonder-how-merkle-trees-work-c2f8b7100ed3)。
 
-Merkle DAGs are similar to Merkle trees, but there are no balance requirements, and every node can carry a payload. In DAGs, several branches can re-converge or, in other words, a node can have several parents.
+Merkle DAG和Merkle树很相似，但是没有平衡化要求，且每个节点都可以携带一个负载。在DAG中，多个分叉可以重新收敛，换而言之一个节点可以有多个父节点。
 
-Identifying a data object (like a Merkle DAG node) by the value of its hash is referred to as _content addressing_. Thus, we name the node identifier as [_Content Identifier_](/concepts/content-addressing/), or CID.
+通过数据对象（如同Merkle DAG的节点）的hash值来标识它称为内容寻址。因此我们把节点标识符称为[_内容标识符_](/concepts/content-addressing/)，或CID。
 
-For example, the previous linked list, assuming that the payload of each node is just the CID of its descendant, would be: _A=Hash(B)→B=Hash(C)→C=Hash(∅)_. The properties of the hash function ensure that no cycles can exist when creating Merkle DAGs. (Note: Hash functions are one-way functions. Creating a cycle should then be impossibly difficult unless some weakness is discovered and exploited.)
+以之前的链表为例，假设每个节点的负载仅仅是它后代的CID，即：_A=Hash(B)→B=Hash(C)→C=Hash(∅)_。hash函数的特性确保了在创建Merkle DAG时不会出现循环/回环。（注意：hash函数是一个单向函数，除非发现并利用了某些弱点，创建循环是近乎不可能的）
 
-Merkle DAGs are _self-verified_ structures. The CID of a node is univocally linked to the contents of its payload and those of all its descendants. Thus two nodes with the same CID univocally represent exactly the same DAG. This will be a key property to efficiently sync Merkle-CRDTs (Conflict-free Replicated Data Types) without having to copy the full DAG, as exploited by systems like IPFS. Merkle DAGs are very widely used. Source control systems like git and others use them to efficiently store the repository history in a way that enables de-duplicating the objects and detecting conflicts between branches.
+Merkle DAG是自我验证的结构。节点的CID明确链接到它的载荷内容和它的后代节点。因此两个具备相同CID的节点，明确表示完全相同的DAG。这将是无需复制完整的DAG即可同步Merkle-CRDTs（无冲突复制数据类型）的关键属性，其为IPFS等系统所利用。Merkle DAG用途非常广泛，代码控制系统如git等使用它来高效的存储仓库历史记录，使得可以在代码分支间检查冲突，并进行重复数据删除。
 
-Want to see a real-world example of Merkle DAGs in action? It's easy to see a Merkle DAG representation of a file of your choice using the [DAG Builder visualizer](https://dag.ipfs.io/).
+想了解现实世界中Merkle DAG的应用实例的话，可以使用[DAG可视化构建器](https://dag.ipfs.io/)来查看你选择的文件的Merkle DAG表示。
 
-## Further resources
+## 更多资源
 
-- Full [draft Merkle-CRDTs paper](https://hector.link/presentations/merkle-crdts/merkle-crdts.pdf) by [@hsanjuan](https://www.github.com/hsanjuan), [@haadcode](https://www.github.com/haadcode), and [@pgte](https://www.github.com/pgte)
-- [DAG Builder visualizer](https://dag.ipfs.io/)
+- 完整的[Merkle-CRDTs论文草稿](https://hector.link/presentations/merkle-crdts/merkle-crdts.pdf) by [@hsanjuan](https://www.github.com/hsanjuan), [@haadcode](https://www.github.com/haadcode), and [@pgte](https://www.github.com/pgte)
+- [DAG可视化构建器](https://dag.ipfs.io/)

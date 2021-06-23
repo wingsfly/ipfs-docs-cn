@@ -1,66 +1,66 @@
 ---
-title: File systems
+title: 文件系统
 legacyUrl: https://docs.ipfs.io/guides/concepts/mfs/
 description: Learn about file systems in IPFS and why working with files in IPFS can be a little different than you may be used to.
 ---
 
-# File systems and IPFS
+# 文件系统与IPFS
 
-Working with files in IPFS can be a little different than you're used to for several reasons:
+在IPFS中操作文件与通常的方式会有所不同，主要基于以下几点原因：
 
-- Content addressing means that when files change, the content identifier (CID) of those files changes too.
-- Files may be too big to fit in a single block, so IPFS splits the data into multiple blocks and uses metadata to link it all together.
+- 内容寻址意味着当文件被修改时，这些文件的内容标识符（CID）也发生了变化。
+- 文件可能因为太多而无法放入单一的块中，此时IPFS将数据切分为多个块，并通过元数据将其链接在一起。
 
-Mutable File System (MFS) and Unix File System (UnixFS) can help you address these new ways of thinking of files.
+可变文件系统 Mutable File System (MFS)和 Unix文件系统 Unix File System (UnixFS)可以帮助你了解这些对文件的新处理方式。
 
 ::: tip
-If you're interested in how MFS and UnixFS play into how IPFS works with files in general, check out this video from IPFS Camp 2019! [Core Course: How IPFS Deals With Files](https://www.youtube.com/watch?v=Z5zNPwMDYGg)
+如果对MFS和UnixFS是如何参与到IPFS的文件处理中感兴趣，可以查看这个IPFS Camp 2019的视频！[Core Course: How IPFS Deals With Files](https://www.youtube.com/watch?v=Z5zNPwMDYGg)
 :::
 
-## Mutable File System (MFS)
+## 可变文件系统 (MFS)
 
-Because files in IPFS are content-addressed and immutable, they can be complicated to edit. Mutable File System (MFS) is a tool built into IPFS that lets you treat files like you would a regular name-based filesystem — you can add, remove, move, and edit MFS files and have all the work of updating links and hashes taken care of for you.
+因为IPFS中的文件是内容寻址，且不可变的，要编辑它们会很复杂。可变文件系统(MFS)是IPFS自带的工具，让你可以像处理常规的基于名称的文件系统一样来处理其文件，你可以添加、删除、移动和编辑MFS文件，MFS会帮你处理好包括更新链接及hash的工作。
 
-### Working with files API
+### 使用文件API
 
-MFS is accessed through the files commands in the IPFS CLI and API. The commands on the files API take the format of `ipfs.files.someMethod()`. These methods are used to:
+MFS可以通过IPFS CLI和API的文件命令来访问。文件API的命令格式为`ipfs.files.someMethod()`。其方法可以用于：
 
-- [Create a directory](#create-a-directory)
-- [Check directory status](#check-directory-status)
-- [Add a file to MFS](#add-a-file-to-mfs)
-- [View contents of a directory](#view-contents-of-a-directory)
-- [Copy a file or directory](#copy-a-file-or-directory)
-- [Move a file or directory](#move-a-file-or-directory)
-- [Read the contents of a file](#read-the-contents-of-a-file)
-- [Remove a file or directory](#remove-a-file-or-directory)
+- [创建目录](#创建目录)
+- [检查目录状态](#检查目录状态)
+- [添加文件到MFS](#添加文件到MFS)
+- [查看目录内容](#查看目录内容)
+- [复制文件或目录](#复制文件或目录)
+- [移动文件或目录](#移动文件或目录)
+- [读取文件内容](#读取文件内容)
+- [删除文件或目录](#删除文件或目录)
 
 ::: callout
-Prefer hands-on learning? Explore these MFS methods in ProtoSchool's [Mutable File System](https://proto.school/mutable-file-system) tutorial, solving coding challenges right in your web browser.
+更喜欢上手操作来学习的话，可以在ProtoSchool的[Mutable File System](https://proto.school/mutable-file-system)教程中探索这些MFS方法，直接在你的浏览器中完成这些代码挑战。
 :::
 
-#### Create a directory
+#### 创建目录
 
-The MFS method `ipfs.files.mkdir` creates a new directory at a specified path. For example, to add a directory `example` to our root directory (`/`), run:
+MFS方法`ipfs.files.mkdir`在指定路径下创建了一个新目录。例如要在根目录(`/`)下添加目录`example`，运行：
 
 ```
 await ipfs.files.mkdir('/example')
 ```
 
-If you want to create a new directory nested under others that don't yet exist, you need to explicitly set the value of `parents` to `true`, like so:
+如果要在当前不存在的目录下创建一个新子目录，需要明确设置`parents`值为`true`，如下：
 
 ```
 await ipfs.files.mkdir('/my/directory/example', { parents: true })
 ```
 
-#### Check directory status
+#### 检查目录状态
 
-The method, `ipfs.files.stat` enables you to check the status of a file or directory on your IPFS node. To check the status of a directory called `example` located within the root directory, you could call the method by running:
+`ipfs.files.stat`方法让你能够检查IPFS节点的文件或目录状态。要检查根目录下名为`example`的目录状态，可以这样调用方法：
 
 ```
 await ipfs.files.stat('/example')
 ```
 
-This method returns an object with a `cid`, `size`, `cumulativeSize`, `type`, `blocks`, `withLocality`, `local`, and `sizeLocal`.
+该方法返回一个对象，其中包含`cid`, `size`, `cumulativeSize`, `type`, `blocks`, `withLocality`, `local`, 以及`sizeLocal`。
 
 ```
 // {
@@ -72,11 +72,11 @@ This method returns an object with a `cid`, `size`, `cumulativeSize`, `type`, `b
 // }
 ```
 
-If you add, move, copy, or remove a file into a directory, the hash of that directory will change with every file modified.
+如果你在目录中添加、移动、复制或删除了一个文件，该目录的hash会伴随每个文件的修改而发生改变。
 
-#### Add a file to MFS
+#### 添加文件到MFS
 
-To add a file to IPFS, use the MFS `ipfs.files.write` method using the command:
+要添加一个文件到MFS中，使用`ipfs.files.write`方法来执行命令：
 
 ```
 await ipfs.files.write(path, content, [options])
@@ -84,43 +84,43 @@ await ipfs.files.write(path, content, [options])
 
 ::: tip
 
-This method can create a brand new file that accepts file `content` in multiple formats, in a specified `path` within the IPFS instance by providing the boolean option {`create: true` }.
+该方法可以接受多种格式的`content`，通过指定{`create: true`}选项，可以在指定的`path`中创建全新的文件。
 
 :::
 
-To add a file object called `examplePic` to the root directory you could run:
+要将`examplePic`文件对象添加到根路径下，可以运行：
 
 ```
 await ipfs.files.write('/example.jpg', examplePic, { create: true })
 ```
 
-This method does not provide a return value.
+该方法没有返回值。
 
-#### View contents of a directory
+#### 查看目录内容
 
-To check whether the `ipfs.files.write` method has worked as expected, use the `ipfs.files.ls` method to inspect directories on the MFS by running:
+要验证`ipfs.files.write`方法是否如预期方式工作，可以使用`ipfs.files.ls`方法来检查MFS中的目录：
 
 ```bash
 await ipfs.files.ls([path], [options])
 ```
 
-The method will default to listing the contents of your directory (`/`), or you can choose to specify a specific `path` you'd like to inspect:
+该方法默认会列出(`/`)目录的内容，也可以通过`path`指定要检查的目录：
 
 ```bash
 await ipfs.files.ls('/example')
 ```
 
-This method produces an array of objects for each file or directory with properties such as `name`, `type`, `size`, `cid`, `mode`, and `mtime`. If you wanted to inspect the contents of a `/example` directory, run:
+该方法为每个文件/目录生成了一个对象数组，包含了如`name`, `type`, `size`, `cid`, `mode`, 和`mtime`等属性。如果要检查`/example`目录的内容，可以运行：
 
 ```
 await ipfs.files.ls('/example')
 ```
 
-#### Copy a file or directory
+#### 复制文件或目录
 
-In the Mutable File System, like traditional systems, you can copy a file or directory to a new location while also leaving it intact at its source.
+在可变文件系统中，和传统文件系统一样，可以复制一个文件或目录到新的位置，同时源文件保持不变。
 
-You can do this by using the method:
+可以使用该方法来操作：
 
 ```
 await ipfs.files.cp(...from, to, [options])
@@ -128,109 +128,109 @@ await ipfs.files.cp(...from, to, [options])
 
 ::: tip
 
-This method offers two formatting options for passing the `from` key:
+该方法提供了两种方式来传入`from`信息：
 
-- an existing MFS path to a file or a directory in your node (e.g. `/my-example-dir/my-example-file.txt`)
-- an IPFS path to a file or directory hosted either by you or by a peer (e.g. `/ipfs/QmWc7U4qGeRAEgtsyVyeW2CRVbkHW31nb24jFyks7eA2mF`)
+- 一个你的节点中已有文件/目录的MFS路径(如：`/my-example-dir/my-example-file.txt`)
+- 一个由你或者其他节点托管的文件/目录的IPFS路径(如：`/ipfs/QmWc7U4qGeRAEgtsyVyeW2CRVbkHW31nb24jFyks7eA2mF`)
 
 :::
 
-The `to` key is the destination path in MFS, and there's an option {`create: true` } that can be used to create parent directories that don't already exist.
+`to`表示的是MFS中的目标路径，还支持{`create: true` }选项，可以用于父目录不存在时自动创建。
 
-You can use this method to perform different operations including:
+可以使用该方法来执行不同操作，包括：
 
 ```
-// copy a single file into a directory
+// 复制单一文件到目录中
 await ipfs.files.cp('/example-file.txt', '/destination-directory')
 await ipfs.files.cp('/ipfs/QmWGeRAEgtsHW3ec7U4qW2CyVy7eA2mFRVbk1nb24jFyks', '/destination-directory')
 
-// copy multiple files into a directory
+// 复制多个文件到目录中
 await ipfs.files.cp('/example-file-1.txt', '/example-file-2.txt', '/destination-directory')
 await ipfs.files.cp('/ipfs/QmWGeRAEgtsHW3ec7U4qW2CyVy7eA2mFRVbk1nb24jFyks',
  '/ipfs/QmWGeRAEgtsHW3jk7U4qW2CyVy7eA2mFRVbk1nb24jFyre', '/destination-directory')
 
-// copy a directory into another directory
+// 复制一个目录到目录中
 await ipfs.files.cp('/source-directory', '/destination-directory')
 await ipfs.files.cp('/ipfs/QmWGeRAEgtsHW3ec7U4qW2CyVy7eA2mFRVbk1nb24jFyks', '/destination-directory')
 ```
 
-#### Move a file or directory
+#### 移动文件或目录
 
-MFS allows you to move files between directories using the `ipfs.files.mv`, which looks like this:
+MFS允许使用`ipfs.files.mv`方法在目录间移动文件，类似于：
 
 ```
 await ipfs.files.mv(from, to, [options])
 ```
 
-`from` is the source path (or paths) of the content you'd like to move, while `to` is the destination path.
+`from`是要移动的源路径（多个源路径），`to`则是目标路径。
 
-You can use this method to perform different operations including:
+可以使用该方法来执行不同操作，包括：
 
 ```
-// move a single file into a directory
+// 将单个文件移到目录中
 await ipfs.files.mv('/example-file.txt', '/destination-directory')
 
-// move a directory into another directory
+// 将目录移到另一个目录中
 await ipfs.files.mv('/source-directory', '/destination-directory')
 
-// overwrite the contents of a destination file with the contents of a source file
+// 用源文件覆盖目标文件的内容
 await ipfs.files.mv('/source-file.txt', '/destination-file.txt')
 
-// move multiple files into a directory
+// 将多个文件移到目录中
 await ipfs.files.mv('/example-file-1.txt', '/example-file-2.txt', '/example-file-3.txt', '/destination-directory')
 ```
 
-#### Read the contents of a file
+#### 读取文件内容
 
-The `ipfs.files.read` method allows you to read and, or display the contents of a file in a buffer. The method takes the format:
+`ipfs.files.read`方法允许读取或显示文件的内容到一个buffer中。该方法格式如下：
 
 ```
 ipfs.files.read(path, [options])
 ```
 
-The `path` provided is the path of the file to read, and it must point to a file rather than a directory.
+`path`表示需要读取的文件路径，它必须指向一个文件，而非一个目录。
 
-#### Remove a file or directory
+#### 删除文件或目录
 
-MFS allows you to remove files or directories using the method:
+MFS允许通过以下方法删除文件或目录：
 
 ```
 await ipfs.files.rm(...paths, [options])
 ```
 
-`paths` are one or more paths to remove.
+`paths`是一个或多个待删除的路径。
 
-By default, if you attempt to remove a directory that still has contents, the request will fail. To remove a directory and everything contained in it, you'll need to use the option `recursive: true`.
+默认情况下，如果要删除还有内容的目录，该请求会失败。为了删除一个目录及其中包含的所有内容，需要使用`recursive: true`选项。
 
 ```
-// remove a file
+// 删除单个文件
 await ipfs.files.rm('/my/beautiful/file.txt')
 
-// remove multiple files
+// 删除多个文件
 await ipfs.files.rm('/my/beautiful/file.txt', '/my/other/file.txt')
 
-// remove a directory and its contents
+// 删除一个目录及其中的内容
 await ipfs.files.rm('/my/beautiful/directory', { recursive: true })
 
-// remove a directory only if it is empty
+// 仅在目录为空时删除目录
 await ipfs.files.rm('/my/beautiful/directory')
 ```
 
-## Unix File System (UnixFS)
+## Unix文件系统(UnixFS)
 
-When you add a _file_ to IPFS, it might be too big to fit in a single block, so it needs metadata to link all its blocks together. UnixFS is a [protocol-buffers](https://developers.google.com/protocol-buffers/)-based format for describing files, directories, and symlinks in IPFS. This data format is used to represent files and all their links and metadata in IPFS. UnixFS creates a block (or a tree of blocks) of linked objects.
+当你将一个文件添加到IPFS中时，它可能因为过大无法放到单一块中，此时需要元数据来把这些块链接起来。UnixFS是一个基于[protocol-buffers](https://developers.google.com/protocol-buffers/)的格式，用于在IPFS中描述文件、目录和符号链接。该数据格式可以用于表示IPFS中的文件和它的所有链接及元数据。UnixFS创建链接对象的块（或者块树）。
 
-UnixFS currently has [Javascript](https://github.com/ipfs/js-ipfs-unixfs) and [Go](https://github.com/ipfs/go-ipfs/tree/b3faaad1310bcc32dc3dd24e1919e9edf51edba8/unixfs) implementations. These implementations have modules written in to run different functions:
+UnixFS当前有[Javascript](https://github.com/ipfs/js-ipfs-unixfs)和[Go](https://github.com/ipfs/go-ipfs/tree/b3faaad1310bcc32dc3dd24e1919e9edf51edba8/unixfs)的实现。这些实现都具有运行不同功能的模块：
 
-- **Data Formats**: manage the serialization/deserialization of UnixFS objects to protocol buffers
+- **数据格式**: 管理UnixFS对象到protocol buffer的序列化/反序列化
 
-- **Importer**: Build DAGs from files and directories
+- **导入器**: 为文件和目录构建DAG
 
-- **Exporter**: Export DAGs
+- **导出器**: 导出DAG
 
-### Data Formats
+### 数据格式
 
-On UnixFS-v1 the data format is represented by this protobuf:
+在UnixFS-v1中数据格式会表示为此protobuf：
 
 ```
 message Data {
@@ -263,55 +263,55 @@ message UnixTime {
 }
 ```
 
-This `Data` object is used for all non-leaf nodes in UnixFS:
+`Data`对象用于UnixFS的所有非叶子节点：
 
-- For files that are comprised of more than a single block, the `Type` field will be set to `File`, the `filesize` field will be set to the total number of bytes in the files, and `blocksizes` will contain a list of the filesizes of each child node.
+- 对于有多个块组成的文件，`Type`字段设为`File`，`filesize`字段设为文件的总字节数，且`blocksizes`会包含一个列表，其中为每个子节点的filesize。
 
-- For files comprised of a single block, the `Type` field will be set to `File`, `filesize` will be set to the total number of bytes in the file, and file data will be stored in the `Data` field.
+- 对于单个块组成的文件，`Type`字段设为`File`，`filesize`设为文件的总字节数，且文件数据存储于`Data`字段中。
 
-UnixFS also supports two optional metadata format fields:
+UnixFS支持两个可选的元数据格式字段：
 
-- `mode` - used for persisting the file permissions in [numeric notation](https://en.wikipedia.org/wiki/File_system_permissions#Numeric_notation). If unspecified, this field defaults to `0755` for directories/HAMT shards and `0644` for all the other types where applicable.
+- `mode` - 用于以[数字表示法](https://en.wikipedia.org/wiki/File_system_permissions#Numeric_notation)保留文件的权限信息。如果未指定，该字段的默认值对目录/HAMT分片为`0755`，对所有其他适用类型为`0644`。
 
-- `mtime` - is a two-element structure (`Seconds`, `FractionalNanoseconds`) representing the modification time in seconds relative to the Unix epoch `1970-01-01T00:00:00Z`.
+- `mtime` - 是一个有两个元素的结构(`Seconds`, `FractionalNanoseconds`)，表示相对于Unix纪元`1970-01-01T00:00:00Z`的修改时间，以秒为单位。
 
-### Importer
+### 导入器
 
-Importing a file into UnixFS is split into two processes. A chunking function and a layout function. You can test these features using the IPFS [DAG builder](https://dag.ipfs.io).
+将文件导入到UnixFS中分为两个过程：一个是分块，另一个是布局。可以使用IPFS [DAG builder](https://dag.ipfs.io)来测试这些特性。
 
-#### Chunking
+#### 分块
 
-When an object is added to IPFS, it is chunked up into smaller parts, each part is hashed, and a CID is created for each chunk. This DAG building process has two main parameters, the leaf format and the chunking strategy.
+当一个对象添加到IPFS中的时候，它被分成更小的部分，每个块都进行了hash运算，并为之创建了一个CID。这个DAG构建过程有两个主要的参数：叶子格式和分块策略。
 
-The leaf format takes two format options, UnixFS leaves and raw leaves:
+叶子格式有两个格式选项：UnixFS叶和原始叶：
 
-- The UnixFS leaves format adds a data wrapper on newly added objects to produce UnixFS leaves with additional data sizes. This wrapper is used to determine whether newly added objects are files or directories. This format is the default for CIDv0.
+- UnixFS叶子格式在新增的对象上添加了一个数据包装器，从而生成了有额外数据大小的UnixFS叶子。该包装器用于判断新增的对象是文件还是目录，该格式是CIDv0的默认格式。
 
-- The raw leaves format on IPFS where nodes output from chunking will be raw data from the file with a CID codec of 'raw'. This is mainly configured for backward compatibility with formats that used a UnixFS Data object. This format is the default for CIDv1 created with `ipfs add --cid-version 1`, soon to become the global default.
+- 原始叶子格式指IPFS中，对文件进行分片后输出的各个节点都是其原始数据，其CID也是基于原始数据编码的。该配置主要是为了用于向后兼容来使用UnixFS数据对象的格式。这是通过`ipfs add --cid-version 1`命令生成的CIDv1的默认格式，很快也会称为全局默认格式。
 
-The chunking strategy is used to determine the size options available during the chunking process. The strategy currently has two different options, 'fixed size' and 'rabin'.
+分块策略用于确定在分块过程中可用的大小选项。该策略当前有两个不同的选项：'固定大小' 和 'rabin'。
 
-- Fixed sizing will chunk the input data into pieces of a given size. This could be 512 bytes, 1024 bytes, and more—the smaller the byte size, the better the deduplication of data.
+- 固定大小会将输入的数据按指定大小分片。这个值可以是512 bytes, 1024 bytes等等；字节大小越小，去除重复数据的效果越好。
 
-- Rabin chunking will chunk the input data using Rabin fingerprinting to determine the boundaries between chunks. Rabin also reduces the number of input data chunked nodes.
+- Rabin分块会使用Rabin指纹来确定块之间的边界，从而完成输入数据的分块。Rabin同时还减少了输入数据分块节点的数量。
 
-#### Layout
+#### 布局
 
-The layout defines the shape of the tree that gets built from the chunks of the input file.
+布局定义了从输入文件的块所构建出来的树的形状。
 
-There are currently two options for layout, balanced and trickle. Additionally, a `max-width` must be specified. The default max width is 174.
+当前对布局有两个选项：平衡和trickle。另外，还要指定`max-width`最大宽度值，其默认宽度为174。
 
-The balanced layout creates a balanced tree of width `max-width`. The tree is formed by taking up to `max-width` chunks from the _chunk stream_ and creating a UnixFS file node that links to all of them. This is repeated until `max-width` UnixFS file nodes are created, at which point a UnixFS file node is created to hold all of those nodes recursively. The root node of the resultant tree is returned as the handle to the newly imported file.
+平衡布局创建了一个宽度为`max-width`的平衡树。该树的构建方式是从块数据流中获取`max-width`数量的块，然后创建一个链接到所有这些块的UnixFS文件节点；重复这个过程，直到已经创建了`max-width`数量的UnixFS文件节点，然后又递归式的再创建一个UnixFS节点，以链接这些`max-width`数量的UnixFS文件节点。最后结果树的根节点会作为这个新导入文件的句柄返回。
 
-If there is only a single chunk, no intermediate UnixFS file nodes are created, and the single chunk is returned as the handle to the file.
+如果只有一个块，不会再创建中间的UnixFS文件节点，这个单块会作为文件的句柄直接返回。
 
-### Exporter
+### 导出器
 
-To export or read the file data out of the UnixFS graph, perform an in-order traversal, emitting the data contained in each of the leaves.
+为了从UnixFS图中导出和读取文件数据，可以执行有序遍历，从每个叶子节点中依次取出其包含的数据。
 
-## Further resources
+## 更多资源
 
-You can find additional resources to familiarize with these file systems at:
+可以在此找到更多的资源以熟悉这些文件系统：
 
 - [Protoschool MFS tutorial](https://proto.school/mutable-file-system)
 - [Understanding how the InterPlanetary File System deals with Files](https://github.com/ipfs/camp/tree/master/CORE_AND_ELECTIVE_COURSES/CORE_COURSE_A), from IPFS Camp 2019

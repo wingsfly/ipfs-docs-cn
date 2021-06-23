@@ -4,35 +4,35 @@ legacyUrl: https://docs.ipfs.io/guides/concepts/ipns/
 description: Learn about the InterPlanetary Name System (IPNS) and how it can be used in conjunction with IPFS.
 ---
 
-# InterPlanetary Name System (IPNS)
+# 星际名字系统(IPNS)
 
-IPFS uses [content-based addressing](/concepts/content-addressing/); it creates an address of a file based on data contained within the file. If you were to share an IPFS address such as `/ipfs/QmbezGequPwcsWo8UL4wDF6a8hYwM1hmbzYv2mnKkEWaUp` with someone, you would need to give the person a new link every time you update the content.
+IPFS使用[基于内容的寻址](/concepts/content-addressing/)；它基于文件内的内容创建了文件的地址。如果你曾经将一个类似于`/ipfs/QmbezGequPwcsWo8UL4wDF6a8hYwM1hmbzYv2mnKkEWaUp`的IPFS地址分享给某人，每次你更新了文件内容时，都需要提供一个新的链接地址。
 
-The InterPlanetary Name System (IPNS) solves this issue by creating an address that can be updated.
+星际名字系统(IPNS)通过创建一个可更新的地址，解决了这个问题。
 
-A _name_ in IPNS is the [hash](/concepts/hashing) of a public key. It is associated with a record containing information about the hash it links to that is signed by the corresponding private key. New records can be signed and published at any time.
+IPNS中的 _名字_ 是一个公钥的[hash](/concepts/hashing)。它关联了一条记录，该记录包含了它所链接信息的hash值，并使用对应的私钥进行签名。任何时候都可以签名并发布新的记录。 It is associated with a record containing information about the hash it links to that is signed by the corresponding private key. New records can be signed and published at any time.
 
-When looking up an IPNS address, use the `/ipns/` prefix:
+查找IPNS地址的时候，使用`/ipns/`前缀：
 
 ```bash
 /ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd
 ```
 
-## Example IPNS Setup with CLI
+## 使用CLI设置IPNS的示例
 
-1. Start your IPFS daemon, if it isn't already running:
+1. 如果还没有启动IPFS守护进程，首先启动它：
 
    ```bash
    ipfs daemon
    ```
 
-1. Create the file that you want to set up with IPNS. For the tutorial, we're just going to create a simple _hello world_ file:
+1. 创建一个想通过IPNS来设置的文件。本教程中，我们会创建一个简单的 _hello world_ 文件：
 
    ```bash
    echo "Hello, world!" > hello.txt
    ```
 
-1. Add your file to IPFS:
+1. 将文件添加到IPFS中：
 
    ```bash
    ipfs add hello.txt
@@ -41,9 +41,9 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > 13 B / 13 B [===================================================================] 100.00%
    ```
 
-   Take note of the `Qm` hash output by IPFS.
+   记住IPFS输出的`Qm` hash值。
 
-1. Use `cat` and the `Qm` hash you just got from IPFS to view the file again:
+1. 通过`cat`刚才获得的`Qm` hash值，重新查看文件内容：
 
    ```bash
    ipfs cat QmaMLRsvmDRCezZe2iebcKWtEzKNjBaQfwcu7mcpdm8eY2
@@ -51,7 +51,7 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > Hello, world!
    ```
 
-1. Publish your `Qm` hash to IPNS:
+1. 将此`Qm` hash发布到IPNS中：
 
    ```bash
    ipfs name publish /ipfs/QmaMLRsvmDRCezZe2iebcKWtEzKNjBaQfwcu7mcpdm8eY2
@@ -59,9 +59,9 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > Published to k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew: /ipfs/QmaMLRsvmDRCezZe2iebcKWtEzKNjBaQfwcu7mcpdm8eY2
    ```
 
-   `k51...` is the key of your IPFS installation.
+   `k51...`就是你安装的IPFS节点的密钥。
 
-1. You can view your file by going to `https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew`:
+1. 现在可以通过打开`https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew`来查看你的文件：
 
    ```bash
    curl https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew
@@ -69,7 +69,7 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > Hello, world!
    ```
 
-1. Make a change to your file, add it to IPFS, and update your IPNS:
+1. 修改文件，再添加到IPFS中，并更新IPNS：
 
    ```bash
    echo "Hello IPFS!" > hello.txt
@@ -83,7 +83,7 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > Published to k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew: /ipfs/QmUVTKsrYJpaxUT7dr9FpKq6AoKHhEM7eG1ZHGL56haKLG
    ```
 
-1. You can now go back to `https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew` to view your updated file using the same address:
+1. 现在可以重新打开`https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew`，以查看相同地址下已更新的文件：
 
    ```bash
    curl https://gateway.ipfs.io/ipns/k51qzi5uqu5dkkciu33khkzbcmxtyhn376i1e83tya8kuy7z9euedzyr5nhoew
@@ -91,7 +91,7 @@ When looking up an IPNS address, use the `/ipns/` prefix:
    > Hello IPFS!
    ```
 
-You can view the `Qm` hash of the file associated with your `k5` key by using `name resolve`:
+可以通过`name resolve`命令查看与你的`k5`密钥所关联文件的 `Qm` hash值：
 
 ```bash
 ipfs name resolve
@@ -99,7 +99,7 @@ ipfs name resolve
 > /ipfs/QmUVTKsrYJpaxUT7dr9FpKq6AoKHhEM7eG1ZHGL56haKLG
 ```
 
-To use a different `k5` key, first create one using `key gen test`, and use the `--key` flag when calling `name publish`:
+要使用一个不同的`k5`密钥，首先使用`key gen test`来创建一个，然后在`name publish`时使用`--key`标志：
 
 ```bash
 ipfs key gen SecondKey
@@ -111,11 +111,11 @@ ipfs name publish --key=SecondKey /ipfs/QmUVTKsrYJpaxUT7dr9FpKq6AoKHhEM7eG1ZHGL5
 > Published to k51qzi5uqu5dh5kbbff1ucw3ksphpy3vxx4en4dbtfh90pvw4mzd8nfm5r5fnl: /ipfs/QmUVTKsrYJpaxUT7dr9FpKq6AoKHhEM7eG1ZHGL56haKLG
 ```
 
-## Example IPNS Setup with JS SDK API
+## JS SDK API配置IPNS示例
 
-Imagine you want to publish your website under IPFS. You can use the [Files API](/concepts/file-systems/#mutable-file-system-mfs) to publish your static website, and then you'll get a CID you can link to. But when you need to make a change, a problem arises: you get a new CID because you now have different content. And it is not possible for you to be always giving others a new address.
+假设你准备把你的网站发不到IPFS上。你可以使用[文件API](/concepts/file-systems/#mutable-file-system-mfs)来发布你的静态网站，然后将获得一个链接到该网站的CID。但当你需要进行修改的时候，出现了一个问题：你将获得一个新的CID，因为现在有着不同的内容。每次都给别人一个新的地址也是不现实的。
 
-Here's where the Name API comes in handy. With it, you can create a single, stable IPNS address that points to the CID for the latest version of your website.
+这正是名字API适用的场合。使用它可以创建一个单一的，稳定的IPNS地址，它总是指向网站最新版本内容的CID。
 
 ```js
 // The address of your files.
@@ -129,8 +129,8 @@ ipfs.name.publish(addr).then(function (res) {
 })
 ```
 
-In the same way, you can republish a new version of your website under the same address. By default, `ipfs.name.publish` will use the Peer ID.
+以同样的方式，可以在同一个地址下，重新发布网站的新版本。默认情况下，`ipfs.name.publish`使用的是节点ID为密钥。
 
-## Alternatives to IPNS
+## IPNS的替选
 
-IPNS is not the only way to create mutable addresses on IPFS. You can also use [DNSLink](/concepts/dnslink/), which is currently much faster than IPNS and also uses human-readable names. Other community members are exploring ways to use blockchains to store common name records.
+IPNS不是IPFS中创建可变地址的唯一方式。你也可以使用[DNSLink](/concepts/dnslink/)，它当前比IPNS更快，而且使用了人类可读的名字。还有其他社区成员正在探索使用区块链来存储通用名字记录。

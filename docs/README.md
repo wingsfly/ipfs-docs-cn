@@ -4,7 +4,7 @@ legacyUrl: https://docs.ipfs.io/
 description: The home page for developer documentation for IPFS, the InterPlanetary File System.
 ---
 
-# 学习如何构建互联网的未来
+# 了解如何构建互联网的未来
 
 ::: callout
 无论你是谁、你正在做什么，你都可以参与到这场构建下一代互联网的运动中来。本站包含了你开始使用星际文件系统（IPFS）所需的一切，从而铺平了通向未来网络的道路。
